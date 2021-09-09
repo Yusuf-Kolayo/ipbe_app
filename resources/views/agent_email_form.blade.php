@@ -87,7 +87,7 @@
                     {!! Form::close() !!}
                     <hr class="mt-2 mb-1">
                     <p class="mb-1">
-                    <a href="{{route('login')}}">Already have account? log in</a>
+                    {{-- <a href="{{route('login')}}">Already have account? log in</a> --}}
                     </p> 
             
                     
