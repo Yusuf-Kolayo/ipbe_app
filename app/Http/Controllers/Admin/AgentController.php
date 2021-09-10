@@ -436,9 +436,8 @@ class AgentController extends Controller
 
         $referrer_agent_id = $request['referrer_agent_id']; 
         $referee_email = $request['referee_email'];
-
         $referrer_agent = Agent::where('agent_id', $referrer_agent_id)->firstOrFail();
-
+        
         $i = 1;
         while($i<=1) {
             $code = random_int(1000000, 9999999);  //  dd($code);
@@ -456,17 +455,17 @@ class AgentController extends Controller
         }  
         
         $details = ['code'=> $code];
-        $sent = Mail::to($referee_email)->send(new Referee_email_val($details));
+          //$sent = Mail::to($referee_email)->send(new Referee_email_val($details));
           //echo $referee_email;
-          if ($sent) {
+        //   if ($sent) {
             session(['ref_email_val'=>true, 'referrer_agent_id'=>$referrer_agent_id]); 
             return view('agent_code_form', compact('referee_email','referrer_agent'));
-          } else {
-            session(['ref_email_val'=>false, 'referrer_agent_id'=>$referrer_agent_id]); 
-            $error = 'An error occurred when trying to send verification code, pls try again';
-            Session::flash(['message', $error]);
-            return view('agent_email_form', compact('referrer_agent'));
-          }
+        //   } else {
+        //     session(['ref_email_val'=>false, 'referrer_agent_id'=>$referrer_agent_id]); 
+        //     $error = 'An error occurred when trying to send verification code, pls try again';
+        //     Session::flash(['message', $error]);
+        //     return view('agent_email_form', compact('referrer_agent'));
+        //   }
        
     }
 
@@ -483,14 +482,16 @@ class AgentController extends Controller
         $referee_email  = $request['referee_email'];
 
         $referrer_agent = Agent::where('agent_id', $referrer_agent_id)->firstOrFail();
+        // dd($referrer_agent);
         $verification_code = Verification_code::where(['code'=> $referee_code, 'channel_type'=>'email', 'channel_value'=>$referee_email])->first();
  
         if ($verification_code) {
             $msg = 'Email verification was successfull, now fill in the form below with the accurate information';
-            return view('agent_singup_form', compact('referee_email','referrer_agent_id'))->with('success', $msg);
+            Session::flash('message', $msg);
+            return view('agent_singup_form', compact('referee_email','referrer_agent'));
         } else {
             $error = 'Invalid verification, please check for the correct code';
-            Session::flash(['message', $error]);
+            Session::flash('message', $error);
             return view('agent_code_form', compact('error','referee_email','referrer_agent'));
         } 
 

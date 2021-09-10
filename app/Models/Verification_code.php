@@ -9,5 +9,5 @@ class Verification_code extends Model
 {
     use HasFactory;
     protected $guarded = [];
- 
+
 }

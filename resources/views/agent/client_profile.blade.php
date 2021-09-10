@@ -30,6 +30,7 @@
   
                   <h3 class="profile-username text-center"> {{ $client->user->username }} </h3> 
                   <p class="text-muted text-center"> 
+                    Client ID:  {{ $client->client_id }} <br>
                     Product Sessions: {{count($product_purchase_sessions)}} <br>
                     Transactions: {{count($transactions)}} <br> 
                   </p>

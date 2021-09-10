@@ -6,10 +6,14 @@
         <div class="card-body box-profile">
           <div class="text-center mt-2">
             <span class="profile-user-img img-fluid img-circle"  alt="User profile picture"> {{ $client->first_name[0] }}</span>
-          </div>
+          </div> 
 
-          <h3 class="profile-username text-center"> {{ $client->first_name }} </h3> 
-          <p class="text-muted text-center"> <span class="fa fa-shopping-cart"></span> Product Saver</p>
+          <h3 class="profile-username text-center"> {{ $client->user->username }} </h3> 
+          <p class="text-muted text-center"> 
+            Client ID:  {{ $client->client_id }} <br>
+            Product Sessions: {{count($product_purchase_sessions)}} <br>
+            Transactions: {{count($transactions)}} <br> 
+          </p>
 
        
         </div>
@@ -84,7 +88,7 @@
                 </thead>
                <tbody>
            
-              @foreach ($client->agent->product_purchase_session as $product_purchase_session) 
+              @foreach ($client->product_purchase_session as $product_purchase_session) 
                   @if (count($product_purchase_session->transaction)>0) 
                   @php $last_trans_id = $product_purchase_session->transaction->last()->trans_id @endphp
                     <tr> 
@@ -92,27 +96,29 @@
                       <td colspan="3"> <a href="#" onclick="select_trans_modal('{{$product_purchase_session->pps_id}}')" class="btn btn-primary btn-xs btn-block">Session Details</a> </td> 
                     </tr> 
                     @foreach($product_purchase_session->transaction->sortKeysDesc() as $transaction)
+                      @if (count($transaction)>0) 
                         @php $allow_edit = false;
                         if ($transaction->trans_id==$last_trans_id) { $allow_edit= true; }      // set some initial values and conditions
                         @endphp
-                    <tr>
-                        <td> {{$transaction->trans_id}}   </td>
-                        <td> {{$transaction->product_id}} </td>
-                        <td> {{$transaction->pps_id}} </td>
-                        <td> {{$transaction->amount}} </td>   <td> {{$transaction->new_bal}} </td>
-                        <td> {{$transaction->type}}   </td>     
-                        <td> {{$transaction->created_at}} </td>   
-                        <td> 
-                            @if ($allow_edit===true) 
-                              <a href="#" onclick="trans_edit_modal('{{$transaction->trans_id}}')" class="btn btn-primary btn-xs btn-block"> <span class="fas fa-edit"></span> Update</a>  
-                            @endif
-                        </td>
-                        <td>
-                            @if ($allow_edit===true) 
-                            <a href="#" onclick="trans_delete_modal('{{$transaction->trans_id}}')" class="btn btn-danger btn-xs btn-block"> <span class="fas fa-trash"></span> Delete</a> 
-                            @endif
-                        </td>
-                    </tr>
+                        <tr>
+                            <td> {{$transaction->trans_id}}   </td>
+                            <td> {{$transaction->product_id}} </td>
+                            <td> {{$transaction->pps_id}} </td>
+                            <td> {{$transaction->amount}} </td>   <td> {{$transaction->new_bal}} </td>
+                            <td> {{$transaction->type}}   </td>     
+                            <td> {{$transaction->created_at}} </td>   
+                            <td> 
+                                @if ($allow_edit===true) 
+                                  <a href="#" onclick="trans_edit_modal('{{$transaction->trans_id}}')" class="btn btn-primary btn-xs btn-block"> <span class="fas fa-edit"></span> Update</a>  
+                                @endif
+                            </td>
+                            <td>
+                                @if ($allow_edit===true) 
+                                <a href="#" onclick="trans_delete_modal('{{$transaction->trans_id}}')" class="btn btn-danger btn-xs btn-block"> <span class="fas fa-trash"></span> Delete</a> 
+                                @endif
+                            </td>
+                        </tr>
+                      @endif
                   @endforeach
                   @else
                     
@@ -123,7 +129,7 @@
               </table>
 
             @php
-              if (count($client->agent->transaction)==0) {  
+              if (count($client->transaction)==0) {  
                 echo '<p class="mt-2 text-center">No transactions found yet!</p>';
               }
             @endphp 
@@ -146,10 +152,14 @@
                <tbody>
                       {{-- loop out clients here --}}
                          
-                  @foreach($client->agent->product_purchase_session as $product_purchase_session)
-                  @php
-                    $percentage_bal =  round(($product_purchase_session->transaction->last()->new_bal/$product_purchase_session->product->price)*100, 1)
-                  @endphp
+                  @foreach($client->product_purchase_session as $product_purchase_session) 
+                    @if (count($product_purchase_session->transaction)>0) 
+                    @php
+                      $percentage_bal =  round(($product_purchase_session->transaction->last()->new_bal/$product_purchase_session->product->price)*100, 1)
+                    @endphp
+                    @else
+                      @php $percentage_bal=0; @endphp
+                    @endif  
                   <tr>
                     <td> {{$product_purchase_session->pps_id}} </td>
                     <td> {{$product_purchase_session->status}} </td>
@@ -174,7 +184,7 @@
 
 
               @php
-                if (count($client->agent->product_purchase_session)==0) {  
+                if (count($client->product_purchase_session)==0) {  
                   echo '<p class="mt-2 text-center">No purchase sessions found yet!</p> <hr>';
                 }  
               @endphp  

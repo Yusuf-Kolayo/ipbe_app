@@ -75,7 +75,7 @@
                         <input type="email" class="form-control" value="" placeholder="johndoe@xmail.com" name="referee_email" required>
                         <input type="hidden" name="referrer_agent_id" id="referrer_agent_id" value="{{$referrer_agent->agent_id}}">
                     </div>
-                
+                  
                     <div class="row"> 
                         <div class="col-12">
                            <x-alerts />  {{-- @include('components.alerts')  --}} 

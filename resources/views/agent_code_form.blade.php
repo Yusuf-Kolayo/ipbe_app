@@ -66,7 +66,7 @@
                     <p class="login-box-msg"> A <b>verification code</b> has been sent to the email address submitted, 
                         pls check your inbox first, <b>if you can't find it there check your spam folders as well.</b></p>
             
-                    {!! Form::open(['route' => ['agent.check_referee_code'], 'method'=>'POST', 'files' => false]) !!}
+                    {!! Form::open(['route' => ['agent.check_referee_code'], 'method'=>'get', 'files' => false]) !!}
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-envelope"></i></span>

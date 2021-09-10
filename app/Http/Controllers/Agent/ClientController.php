@@ -14,6 +14,7 @@ use App\Models\Product_purchase_session;
 use App\Models\Transaction;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Activity;
 
 
 class ClientController extends Controller
@@ -106,8 +107,19 @@ class ClientController extends Controller
             'user_id' => $client_id,
             'username' => strtolower($request['username']),
             'email' => $request['email'],
-            'password' =>  Hash::make($request['password']),
+            'password' => Hash::make($request['password']),
             'usr_type' => $usr_type
+        ]);
+    
+    
+        // save user activity
+        $type = 'new_client_reg';
+        $activity = '<b>'.ucfirst(auth()->user()->username).' ['.$agent_id.']</b> registered a new client <b> '.strtolower($request['username']).' ['.$client_id.']</b>';
+        $user = Activity::create ([
+            'user_id' => $agent_id,
+            'usr_type' => auth()->user()->usr_type,
+            'type' => $type,
+            'activity' => $activity
         ]);
 
         return redirect()->route('client.index')->with('success', 'New client ('.$data['username'].') registered Successfuly into your catchment: '.$catchment_id);

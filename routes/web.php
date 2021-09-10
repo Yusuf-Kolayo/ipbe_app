@@ -28,7 +28,7 @@ use App\Http\Controllers\Agent\TransactionController;
 Route::get('/', function () { return redirect()->route('login'); });
 Route::get('/agent/referrer/{agent_id}', [AgentController::class, 'show_referring_form'])->name('agent.show_referring_form');
 Route::post('/agent/send_referee_mail/', [AgentController::class, 'send_referee_mail'])->name('agent.send_referee_mail');
-Route::post('/agent/check_referee_code/', [AgentController::class, 'check_referee_code'])->name('agent.check_referee_code');
+Route::get('/agent/check_referee_code/', [AgentController::class, 'check_referee_code'])->name('agent.check_referee_code');
 
 //=========================      PUBLIC ROUTES      ==========================//
 Auth::routes();

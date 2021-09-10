@@ -352,7 +352,7 @@
         <fieldset class="form-input">
             <h4>Your guarantor data</h4>
              {{--START=> Your guarantor data --}}
-    <div class="row">
+             <div class="row">
 
                 <div class="col-md-6">
                     <div class="form-group">
@@ -474,8 +474,8 @@
                 </div>
              </div>
 
-       <div class="col-md-6">
-        <div class="form-group">
+           <div class="col-md-6">
+           <div class="form-group">
             <label for="grt_relationship"> {{__('Relationship with Agent')}}  </label>
             <input required type="text" class="form-control" id="grt_relationship" name="grt_relationship">
          </div>

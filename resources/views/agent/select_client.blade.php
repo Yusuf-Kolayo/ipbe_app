@@ -62,7 +62,7 @@
                   <td> {{$client->address}} </td>
                   <td> {{$client->agent->catchment->catchment_id}} </td>
                   {{-- <td> {{$client->catchment->lga}} </td> --}}
-                  <td> <a class="btn btn-primary btn-xs w-75" href="#" onclick="show_profile('{{$client->client_id}}', '{{$product->product_id}}')"> <span class="fa fa-user"></span> Profile</a> </td>
+                  <td> <a class="btn btn-primary btn-xs btn-block" href="#" onclick="show_profile('{{$client->client_id}}', '{{$product->product_id}}')"> <span class="fa fa-user"></span> Profile</a> </td>
                  </tr>
                 @endforeach
                   </tbody>
@@ -115,8 +115,8 @@
 <script> 
  // UPDATE PRODUCT MODAL
  function show_profile(client_id, product_id) {   
-        $('#show_profile').modal('show');  // window.stop();
-        // $('#update_ready_div').html('');  
+        $('#show_profile').modal('show');   console.log(client_id);   // window.stop(); 
+        $('#update_ready_div').html('<div class="text-center"> <img src=" {{ asset('images/preloader1.gif') }} " class="img mx-auto" alt=""> </div>');
         var data2send={'client_id':client_id, 'product_id':product_id};  
         $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': $("meta[name=csrf-token]").attr('content') }  });
         $.ajax({

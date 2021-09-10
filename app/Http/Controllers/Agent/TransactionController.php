@@ -13,6 +13,8 @@ use App\Models\User;
 use App\Models\Product_purchase_session;
 use App\Models\Transaction; 
 use App\Models\Product;  
+use App\Models\Activity;  
+use App\Models\Notification;  
 
 
 class TransactionController extends Controller
@@ -152,6 +154,35 @@ class TransactionController extends Controller
             'status' =>  $status 
         ]);
         
+        $client = Client::where('client_id', $client_id)->first();
+
+        // notify admins of this activity
+        $type = 'new_purchase_reg';
+        $message = '<b>'.ucfirst(auth()->user()->username).' ['.$agent_id.']</b> registered a new product purchase session for <b>'.$client->user->username.' ['.$client_id.']</b>';
+        $admninistrators = User::where('usr_type', 'usr_admin')->get();
+        foreach ($admninistrators as $key => $admninistrator) {
+            $user = Notification::create ([
+                'actor_id' => $agent_id,
+                'receiver_id' => $admninistrator->user_id,
+                'type' => $type,
+                'message' => $message,
+                'status' => 'sent',
+                'main_foreign_key' => $client_id
+            ]);
+    
+        }
+
+        // save user activity
+        $type = 'new_purchase_reg';
+        $activity = '<b>'.ucfirst(auth()->user()->username).' ['.$agent_id.']</b> registered a new product purchase session for <b>'.$client->user->username.' ['.$client_id.']</b>';
+        $user = Activity::create ([
+            'user_id' => $agent_id,
+            'usr_type' => auth()->user()->usr_type,
+            'type' => $type,
+            'activity' => $activity
+        ]);
+
+
         // $this->show($client_id, 'New product session opened for this client');
         return redirect()->route('client.show', ['client'=>$client_id])->with('success', 'New product purchase session opened for this client');
     }
