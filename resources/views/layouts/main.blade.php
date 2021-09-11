@@ -85,6 +85,7 @@
     white-space: inherit;
     display: inline-block;
 }
+.short_msg { white-space: break-spaces; margin-bottom: 2px; }
 
   @media (min-width: 576px) {
     .large_modal { max-width:90%!important; } 

@@ -84,4 +84,14 @@ class DashboardController extends Controller
           return redirect()->route('client.show', ['client'=>auth()->user()->user_id]);
        }
     }
+
+
+
+
+
+
+    public function chat_board ()
+    {
+      return view('chat_board');
+    }
 }
