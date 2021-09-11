@@ -34,7 +34,7 @@
          <td> {{$agent->agt_res_address}} </td>
          <td> {{$agent->agt_res_city}} </td> 
          <td> {{$agent->agt_res_state}} </td>   
-         <td>  <a class="btn btn-primary btn-xs" href="{{ route('agent.show', ['agent'=>$agent->user->username]) }}"> <span class="fa fa-user"></span> Profile</a> </td>
+         <td>  <a class="btn btn-primary btn-xs btn-block" href="{{ route('agent.show', ['agent'=>$agent->user->username]) }}"> <span class="fa fa-user"></span> Profile</a> </td>
          </tr>
         @endforeach
           </tbody>

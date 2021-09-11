@@ -5,6 +5,8 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Pagination\Paginator;
+
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -37,5 +39,7 @@ class AppServiceProvider extends ServiceProvider
             return Auth::user() && auth()->user()->usr_type == 'usr_client' ;
         });
 
+
+        Paginator::useBootstrap();
     }
 }

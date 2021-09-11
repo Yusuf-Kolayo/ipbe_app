@@ -79,6 +79,12 @@
 
 .fade_hd_blue { background-color: #d7e9ff; }
 .fade_bd_blue { background-color: #f0f4ff; }
+.card-body { padding: .5rem; }
+.note_each {
+    font-size: 14px;
+    white-space: inherit;
+    display: inline-block;
+}
 
   @media (min-width: 576px) {
     .large_modal { max-width:90%!important; } 
@@ -90,20 +96,35 @@
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper" id="main">
 
-{{-- FETCH MAIN CATEGORIES HERE DUE TO COMMON INTEREST AMONG THE USER TYPES --}}
- @php $main_categories = App\Models\Category::where('parent_id', 0)->get() @endphp
+
+ @php
+//  FETCH MAIN CATEGORIES HERE DUE TO COMMON INTEREST AMONG THE USER TYPES
+ $main_categories = App\Models\Category::where('parent_id', 0)->get();
+
+ // fetch newly sent notifications belonging to current user
+ $new_notifications = App\Models\Notification::where('receiver_id', auth()->user()->user_id)->latest()
+ ->where('status', 'sent')->get();
+
+ $notification_icon_array = array( 
+   'new_purchase_reg' => 'fas fa-shopping-cart',
+   'purchase_session_approved' => 'fas fa-legal',
+);
+ @endphp
+
+
+  @include('components.top_nav') 
 
   <!-- Decide Appropriate Navbars -->
   @admin
-     @include('layouts.admin_navbar') 
+     @include('components.admin_sidebar') 
   @endadmin 
 
   @agent
-   @include('layouts.agent_navbar') 
+   @include('components.agent_sidebar') 
   @endagent 
 
   @client
-   @include('layouts.client_navbar') 
+   @include('components.client_sidebar') 
   @endclient
 
 
@@ -128,7 +149,7 @@
 
 
   <!-- /.content-wrapper -->
-  @include('layouts.footer')
+  @include('components.footer')
 
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">

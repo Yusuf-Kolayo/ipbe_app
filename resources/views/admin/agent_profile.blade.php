@@ -287,9 +287,13 @@
                                 {{-- loop out clients here --}}
                                    
                             @foreach($user->agent->product_purchase_session as $product_purchase_session)
-                            @php
-                              $percentage_bal =  round(($product_purchase_session->transaction->last()->new_bal/$product_purchase_session->product->price)*100, 1)
-                            @endphp
+                            @if (count($product_purchase_session->transaction)>0) 
+                                @php
+                                  $percentage_bal =  round(($product_purchase_session->transaction->last()->new_bal/$product_purchase_session->product->price)*100, 1)
+                                @endphp
+                            @else
+                                @php $percentage_bal=0; @endphp
+                            @endif 
                             <tr>
                               <td> {{$product_purchase_session->pps_id}} </td>
                               <td> {{$product_purchase_session->status}} </td>

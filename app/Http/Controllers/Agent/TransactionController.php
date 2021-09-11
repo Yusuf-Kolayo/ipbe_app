@@ -161,7 +161,7 @@ class TransactionController extends Controller
         $message = '<b>'.ucfirst(auth()->user()->username).' ['.$agent_id.']</b> registered a new product purchase session for <b>'.$client->user->username.' ['.$client_id.']</b>';
         $admninistrators = User::where('usr_type', 'usr_admin')->get();
         foreach ($admninistrators as $key => $admninistrator) {
-            $user = Notification::create ([
+            $notification = Notification::create ([
                 'actor_id' => $agent_id,
                 'receiver_id' => $admninistrator->user_id,
                 'type' => $type,
@@ -174,14 +174,13 @@ class TransactionController extends Controller
 
         // save user activity
         $type = 'new_purchase_reg';
-        $activity = '<b>'.ucfirst(auth()->user()->username).' ['.$agent_id.']</b> registered a new product purchase session for <b>'.$client->user->username.' ['.$client_id.']</b>';
+        $activity = '<b>'.ucfirst(auth()->user()->username).' ['.auth()->user()->user_id.']</b> registered a new product purchase session for <b>'.$client->user->username.' ['.$client_id.']</b>';
         $user = Activity::create ([
-            'user_id' => $agent_id,
+            'user_id' => auth()->user()->user_id,
             'usr_type' => auth()->user()->usr_type,
             'type' => $type,
             'activity' => $activity
-        ]);
-
+        ]); 
 
         // $this->show($client_id, 'New product session opened for this client');
         return redirect()->route('client.show', ['client'=>$client_id])->with('success', 'New product purchase session opened for this client');
@@ -191,10 +190,36 @@ class TransactionController extends Controller
 
     public function approve_session(Request $request)
     {   
-        $pps_id = $request['pps_id'];   $client_id = $request['client_id'];   
+        $pps_id = $request['pps_id'];   $client_id = $request['client_id'];  
+        $client = Client::where('client_id', $client_id)->first();
+        $agent_id = $client->agent->agent_id;
         $new_status = 'ongoing'; //  dd($pps_id);
+
         DB::table('product_purchase_sessions')->where('pps_id', $pps_id)
         ->update(['status' => $new_status]); 
+
+        // notify admins of this activity
+        $type = 'purchase_session_approved';
+        $message = '<b>An administrator</b> approved your newly added product purchase session for <b>'.$client->user->username.' ['.$client_id.']</b>';
+        
+            $notification = Notification::create ([
+                'actor_id' => auth()->user()->user_id,
+                'receiver_id' => $agent_id,
+                'type' => $type,
+                'message' => $message,
+                'status' => 'sent',
+                'main_foreign_key' => $client_id
+            ]);
+
+        // save user activity
+        $type = 'purchase_session_approved';
+        $activity = '<b>'.ucfirst(auth()->user()->username).' ['.auth()->user()->user_id.']</b> approved a new product purchase session for <b>'.$client->user->username.' ['.$client_id.']</b> whose agent is <b>'.$client->agent->user->username. ' ['.$client->agent->agent_id.']</b>';
+        $user = Activity::create ([
+            'user_id' => auth()->user()->user_id,
+            'usr_type' => auth()->user()->usr_type,
+            'type' => $type,
+            'activity' => $activity
+        ]);
 
         return redirect()->route('client.show', ['client'=>$client_id])->with('success', 'Product purchase session ['.$pps_id.'] approved for this client');
     }
@@ -208,6 +233,17 @@ class TransactionController extends Controller
         DB::table('product_purchase_sessions')->where('pps_id', $pps_id)
         ->update(['status' => $new_status]); 
 
+        $product_purchase_session = Product_purchase_session::where('pps_id', $pps_id)->first();
+        // save user activity
+        $type = 'purchase_session_paused';
+        $activity = '<b>'.ucfirst(auth()->user()->username).' ['.auth()->user()->user_id.']</b> paused a product purchase session for <b>'.$product_purchase_session->client->user->username.' ['.$product_purchase_session->client_id.']</b> whose agent is <b>'.$product_purchase_session->client->agent->user->username. ' ['.$product_purchase_session->client->agent->agent_id.']</b>';
+        $user = Activity::create ([
+            'user_id' => auth()->user()->user_id,
+            'usr_type' => auth()->user()->usr_type,
+            'type' => $type,
+            'activity' => $activity
+        ]);
+
         return redirect()->route('client.show', ['client'=>$client_id])->with('success', 'Product purchase session ['.$pps_id.'] paused for this client');
     }
 
@@ -220,6 +256,16 @@ class TransactionController extends Controller
         $client_id = $product_purchase_session->client_id;
         DB::table('product_purchase_sessions')->where('pps_id', $pps_id)
         ->delete(); 
+ 
+        // save user activity
+        $type = 'purchase_session_deleted';
+        $activity = '<b>'.ucfirst(auth()->user()->username).' ['.auth()->user()->user_id.']</b> deleted a product purchase session for <b>'.$product_purchase_session->client->user->username.' ['.$product_purchase_session->client_id.']</b> whose agent is <b>'.$product_purchase_session->client->agent->user->username. ' ['.$product_purchase_session->client->agent->agent_id.']</b>';
+        $user = Activity::create ([
+            'user_id' => auth()->user()->user_id,
+            'usr_type' => auth()->user()->usr_type,
+            'type' => $type,
+            'activity' => $activity
+        ]);
 
         return redirect()->route('client.show', ['client'=>$client_id])->with('success', 'Product purchase session ['.$pps_id.'] and related transactions deleted successfully for this client');
     }
@@ -255,6 +301,16 @@ class TransactionController extends Controller
             'new_bal' => $new_balance,
             'type' => $type
         ]);
+
+        // save user activity
+        $type = 'new_transaction_reg';    $client = Client::where('client_id', $client_id)->first();
+        $activity = '<b>'.ucfirst(auth()->user()->username).' ['.auth()->user()->user_id.']</b> recorded a new transaction for <b>'.$client->user->username.' ['.$client_id.']</b>';
+        $user = Activity::create ([
+            'user_id' => auth()->user()->user_id,
+            'usr_type' => auth()->user()->usr_type,
+            'type' => $type,
+            'activity' => $activity
+        ]); 
         
         return redirect()->route('client.show', ['client'=>$client_id])->with('success', number_format($amount).' deposited successfully for this client');
     }
@@ -296,6 +352,17 @@ class TransactionController extends Controller
                     'new_bal' => $new_bal,
                     'type' => $data['type']
                 ]);  
+
+            // save user activity
+            $type = 'transaction_update';    $client = Client::where('client_id', $client_id)->first();
+            $activity = '<b>'.ucfirst(auth()->user()->username).' ['.auth()->user()->user_id.']</b> edited a transaction ['.$trans_id.'] for <b>'.$client->user->username.' ['.$client_id.']</b> such that: <b>new amount is '.number_format($data['amount']).' and deposit type is '.$data['type'].'</b>';
+            $user = Activity::create ([
+                'user_id' => auth()->user()->user_id,
+                'usr_type' => auth()->user()->usr_type,
+                'type' => $type,
+                'activity' => $activity
+            ]); 
+
                 return redirect()->route('client.show', ['client'=>$client_id])->with('success', 'Transaction: ['.$trans_id.'] updated successfully.');
             }   else {   return redirect()->route('client.show', ['client'=>$client_id])->with('success', 'An error occurred, pls try again ...'); }
 
@@ -314,6 +381,17 @@ class TransactionController extends Controller
 
        if ($transaction) {
            $deleted_rows = Transaction::where('trans_id', $trans_id)->delete();
+
+            // save user activity
+            $type = 'transaction_delete';    $client = Client::where('client_id', $client_id)->first();
+            $activity = '<b>'.ucfirst(auth()->user()->username).' ['.auth()->user()->user_id.']</b> deleted a transaction for <b>'.$client->user->username.' ['.$client_id.']</b>';
+            $user = Activity::create ([
+                'user_id' => auth()->user()->user_id,
+                'usr_type' => auth()->user()->usr_type,
+                'type' => $type,
+                'activity' => $activity
+            ]); 
+
            return redirect()->route('client.show', ['client'=>$client_id])->with('success', 'Transaction: ['.$trans_id.'] deleted successfully.');
         } else {
             return redirect()->route('client.show', ['client'=>$client_id])->with('success', 'An error occurred, pls try again ...');

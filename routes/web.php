@@ -33,6 +33,9 @@ Route::get('/agent/check_referee_code/', [AgentController::class, 'check_referee
 //=========================      PUBLIC ROUTES      ==========================//
 Auth::routes();
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+Route::get('/resolve_notification/{id}', [DashboardController::class, 'resolve_notification'])->name('resolve_notification');
+Route::get('/all_notifications/', [DashboardController::class, 'all_notifications'])->name('all_notifications');
+Route::get('/my_profile/', [DashboardController::class, 'my_profile'])->name('my_profile');
 Route::get('/access_denied', function () { return view('access_denied'); })->name('access_denied');
    
     

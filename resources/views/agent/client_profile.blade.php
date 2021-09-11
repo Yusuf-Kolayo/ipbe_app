@@ -25,16 +25,16 @@
               <div class="card card-primary card-outline">
                 <div class="card-body box-profile">
                   <div class="text-center mt-2">
-                    <span class="profile-user-img img-fluid img-circle"  alt="User profile picture"> {{ $client->user->username[0] }}</span>
+                    <span class="profile-user-img img-fluid img-circle"  alt="User profile picture"> {{ strtoupper($client->user->username[0]) }}</span>
                   </div>
   
-                  <h3 class="profile-username text-center"> {{ $client->user->username }} </h3> 
-                  <p class="text-muted text-center"> 
+                  <h3 class="profile-username text-center"> {{ ucfirst($client->user->username) }} </h3> 
+                  <p class="text-muted text-center" style="font-size: 14px;"> 
                     Client ID:  {{ $client->client_id }} <br>
                     Product Sessions: {{count($product_purchase_sessions)}} <br>
                     Transactions: {{count($transactions)}} <br> 
+                    Agent: {{$client->agent->user->username}} <br> 
                   </p>
-  
                
                 </div>
                 <!-- /.card-body -->
@@ -48,7 +48,7 @@
                   <h3 class="card-title text-white">Profile Data</h3>
                 </div>
                 <!-- /.card-header -->
-                <div class="card-body">
+                <div class="card-body p-3">
                   <strong><i class="fas fa-user mr-1"></i> Fullname </strong>
   
                   <p class="text-muted">

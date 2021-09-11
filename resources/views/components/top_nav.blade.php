@@ -8,7 +8,7 @@
       
     </ul>
  
-
+    
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
         
@@ -16,26 +16,37 @@
       <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#" style="padding: .2rem 1rem;">
             <div class="image" style="width:30px;">
-                <img src=" {{ asset('css/dist/img/user2-160x160.jpg') }}" class="img-circle elevation-2 img-fluid" alt="User Image">
+                <img src=" {{ asset('images/avatar_dummy.png') }}" class="img-circle img-fluid" alt="User Image" style="border: 2px solid #2196f3; padding: 1px;"> 
             </div> 
         </a>
         <div class="dropdown-menu dropdown-menu-sm dropdown-menu-left">
               
                     <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ml-auto">
+                    <ul class="navbar-nav ml-auto d-block">
                         <!-- Authentication Links -->
-                       
-                            <li class="nav-item">  
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form> 
+                        @agent
+                            <li class="nav-item mt-2">
+                                <a class="dropdown-item" href="{{route('my_profile')}}"> My Profile  </a>
                             </li>
+                        @endagent
+
+                        @client
+                        <li class="nav-item mt-2">
+                            <a class="dropdown-item" href="{{route('my_profile')}}"> My Profile  </a>
+                        </li>
+                        @endclient
+
+                        <li class="nav-item mt-2">  
+                                <a class="dropdown-item" href="{{ route('logout') }}"
+                                   onclick="event.preventDefault();
+                                                 document.getElementById('logout-form').submit();">
+                                    {{ __('Logout') }}
+                                </a>
+
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                </form> 
+                        </li>
                        
                     </ul>
         </div>
@@ -100,30 +111,26 @@
         </div>
       </li>
       <!-- Notifications Dropdown Menu -->
+  
       <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
           <i class="far fa-bell"></i>
-          <span class="badge badge-warning navbar-badge">15</span>
+          @if (count($new_notifications)>0)
+            <span class="badge badge-warning navbar-badge">{{count($new_notifications)}}</span>
+          @endif
+         
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-          <span class="dropdown-item dropdown-header">15 Notifications</span>
+          <span class="dropdown-item dropdown-header"> {{count($new_notifications)}} new notifications </span>
+  
           <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-envelope mr-2"></i> 4 new messages
-            <span class="float-right text-muted text-sm">3 mins</span>
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-users mr-2"></i> 8 friend requests
-            <span class="float-right text-muted text-sm">12 hours</span>
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-file mr-2"></i> 3 new reports
-            <span class="float-right text-muted text-sm">2 days</span>
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
+          @foreach ($new_notifications as $new_notification)
+          <a href="{{route('resolve_notification', ['id'=>$new_notification->id])}}" class="dropdown-item note_each">
+             <i class="{{$notification_icon_array[$new_notification->type]}}"></i> {!!$new_notification->message!!}
+            <span class="float-right text-muted text-sm"> {{$new_notification->created_at}} </span>
+          </a> <div class="dropdown-divider"></div>
+          @endforeach 
+          <a href="{{route('all_notifications')}}" class="dropdown-item dropdown-footer">See All Notifications</a>
         </div>
       </li>
       <li class="nav-item">
@@ -139,56 +146,3 @@
     </ul>
   </nav>
   <!-- /.navbar -->
-
-
-
-
- 
-
-
-
-
-  {{-- ASIDE NAVBAR --}}
-
-<aside class="main-sidebar sidebar-dark-primary elevation-4">
-  <!-- Brand Logo -->
-  <a href="{{ route('dashboard') }}" class="brand-link">
-    <img src=" {{ asset('css/dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-    <span class="brand-text font-weight-light"> ALUPI ITN'L</span>
-  </a>
-
-  <!-- Sidebar -->
-  <div class="sidebar">
-
-
-    <!-- SidebarSearch Form -->
-    <div class="form-inline mt-2">
-      <div class="input-group" data-widget="sidebar-search">
-        <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
-        <div class="input-group-append">
-          <button class="btn btn-sidebar">
-            <i class="fas fa-search fa-fw"></i>
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Sidebar Menu -->
-    <nav class="mt-2">
-      <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-        <!-- Add icons to the links using the .nav-icon class
-             with font-awesome or any other icon font library -->
-             
-        <li class="nav-item">
-          <a href="{{ route('dashboard') }}" class="nav-link ">
-            <i class="nav-icon fas fa-tachometer-alt"></i>
-            <p> {{__('Dashboard')}} </p>
-          </a> 
-        </li>    
-       
-      </ul>
-    </nav>
-    <!-- /.sidebar-menu -->
-  </div>
-  <!-- /.sidebar -->
-</aside>

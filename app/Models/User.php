@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\Notification;
 
 class User extends Authenticatable
 {
@@ -47,4 +48,8 @@ class User extends Authenticatable
         return $this->hasOne('App\Models\Agent', 'agent_id', 'user_id');
     } 
  
+
+    public function notification () {
+        return $this->hasMany('App\Models\Notification', 'receiver_id', 'user_id');
+    } 
 }

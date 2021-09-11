@@ -116,7 +116,7 @@ class ClientController extends Controller
         $type = 'new_client_reg';
         $activity = '<b>'.ucfirst(auth()->user()->username).' ['.$agent_id.']</b> registered a new client <b> '.strtolower($request['username']).' ['.$client_id.']</b>';
         $user = Activity::create ([
-            'user_id' => $agent_id,
+            'user_id' => auth()->user()->user_id,
             'usr_type' => auth()->user()->usr_type,
             'type' => $type,
             'activity' => $activity
@@ -138,8 +138,6 @@ class ClientController extends Controller
         $main_categories = Category::where('parent_id', 0)->get(); 
         $product_purchase_sessions = Product_purchase_session::where('client_id', $client->client_id)->orderBy('id', 'desc')->get();  
         $transactions = Transaction::where('client_id', $client->client_id)->orderBy('id', 'desc')->get(); 
-
-        $last_transaction = Transaction::where('client_id', $client->client_id)->orderBy('id', 'desc')->get();  
 
         return view('agent.client_profile', compact('client','product_purchase_sessions','transactions','main_categories'));    
     }
