@@ -37,8 +37,7 @@
                           <img src=" {{ asset('css/dist/img/user1-128x128.jpg') }} " alt="User Avatar" class="img-size-50 mr-3 img-circle">
                           <div class="media-body">
                             <h3 class="dropdown-item-title">
-                              Brad Diesel
-                             
+                              Brad Diesel  
                             </h3>
                             <p class="text-sm short_msg">Call me whenever you can...</p>
                             <p class="text-sm text-muted mb-0"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
@@ -79,9 +78,6 @@
                         <!-- Message End -->
                       </a>
                       <div class="dropdown-divider"></div>
-
-
-
 
   
                   </div>

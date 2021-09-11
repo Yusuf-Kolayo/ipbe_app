@@ -81,7 +81,7 @@ class DashboardController extends Controller
        } elseif (auth()->user()->usr_type=='usr_agent') {
           return redirect()->route('agent.show', ['agent'=>auth()->user()->username]);
        } elseif (auth()->user()->usr_type=='usr_client') {
-          return redirect()->route('client.show', ['client'=>auth()->user()->user_id]);
+           return redirect()->route('client.show', ['client'=>auth()->user()->user_id]);
        }
     }
 
