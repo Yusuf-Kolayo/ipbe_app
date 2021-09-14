@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB; 
@@ -204,8 +203,7 @@ class AgentController extends Controller
  
                 'hr_staff_id' =>  $request['hr_staff_id'],
                 'hr_grt_response' =>  $request['hr_grt_response'],
-                'hr_remark' =>  $request['hr_remark'], 
-
+                'hr_remark' =>  $request['hr_remark'],  
                 'actor_id' => auth()->user()->id
             ]); 
 

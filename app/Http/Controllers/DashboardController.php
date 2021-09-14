@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB; 
 use App\Models\Notification;  
+use App\Models\User;  
+use App\Models\Message;  
 
 
-class DashboardController extends Controller
+class DashboardController extends BaseController
 {
     /**
      * Create a new controller instance.
@@ -16,7 +18,8 @@ class DashboardController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth');  
+        parent::__construct();
     }
 
     /**
@@ -65,7 +68,7 @@ class DashboardController extends Controller
 
 
     public function all_notifications ()
-    {
+    {  
        return view('components.notifications');
     }
 
@@ -78,10 +81,10 @@ class DashboardController extends Controller
     {
        if (auth()->user()->usr_type=='usr_admin') {
           return redirect()->route('admin.profile', ['admin'=>auth()->user()->username]);
-       } elseif (auth()->user()->usr_type=='usr_agent') {
+         } elseif (auth()->user()->usr_type=='usr_agent') {
           return redirect()->route('agent.show', ['agent'=>auth()->user()->username]);
-       } elseif (auth()->user()->usr_type=='usr_client') {
-           return redirect()->route('client.show', ['client'=>auth()->user()->user_id]);
+         } elseif (auth()->user()->usr_type=='usr_client') {
+          return redirect()->route('client.show', ['client'=>auth()->user()->user_id]);
        }
     }
 
@@ -90,8 +93,43 @@ class DashboardController extends Controller
 
 
 
-    public function chat_board ()
+    public function chat_board ($user_id=null)
     {
-      return view('chat_board');
+      $users = User::all();     // dd($user_id); 
+      return view('chat_board', compact('users', 'user_id'));
+    }   
+    
+    
+    
+    public function post_chat (Request $request)
+    { // dd($request);   
+      $receiver_id = $request['user_id'];         $message = $request['message'];
+      $sender_id = auth()->user()->user_id;       $status = 'sent';
+      $channel = auth()->user()->user_id.'_'.$receiver_id;   $timestamp = time();
+      $response = ['status'=>'failed'];
+
+      $message = Message::create ([
+        'sender_id' => $sender_id,
+        'receiver_id' => $receiver_id,
+        'channel' => $channel,
+        'message' => $message,
+        'status' => $status, 
+        'timestamp' => $timestamp 
+     ]);   $response = ['status'=>'sent'];
+
+     return response()->json($response); 
+    } 
+
+
+    public function fetch_chat (Request $request)
+    { // dd($request); 
+      $receiver_id = $request['user_id'];      $user_id = auth()->user()->user_id;  
+      $channel1 = $user_id.'_'.$receiver_id;   $channel2 = $receiver_id.'_'.$user_id;
+      $messages = Message::where('channel', $channel1)->orWhere('channel', $channel2)->paginate(50);   // dd($message);
+      return view('chat_box_ajax_fetch', compact('messages'));
     }
+    
+    
+
+ 
 }
