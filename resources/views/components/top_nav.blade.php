@@ -1,6 +1,6 @@
   <!-- Top Navbar -->
   <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-    <!-- Left navbar links -->
+    <!-- Left navbar links --> 
     <ul class="navbar-nav">
       <li class="nav-item">
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
@@ -16,7 +16,7 @@
       <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#" style="padding: .2rem 1rem;">
             <div class="image" style="width:30px;">
-                <img src=" {{ asset('images/avatar_dummy.png') }}" class="img-circle img-fluid" alt="User Image" style="border: 2px solid #2196f3; padding: 1px;"> 
+                <img src="{{ asset('images/avatar_dummy.png') }}" class="img-circle img-fluid" alt="User Image" style="border: 2px solid #2196f3; padding: 1px;"> 
             </div> 
         </a>
         <div class="dropdown-menu dropdown-menu-sm dropdown-menu-left">
@@ -24,17 +24,12 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto d-block">
                         <!-- Authentication Links -->
-                        @agent
+                        
                             <li class="nav-item mt-2">
                                 <a class="dropdown-item" href="{{route('my_profile')}}"> My Profile  </a>
-                            </li>
-                        @endagent
+                            </li> 
 
-                        @client
-                        <li class="nav-item mt-2">
-                            <a class="dropdown-item" href="{{route('my_profile')}}"> My Profile  </a>
-                        </li>
-                        @endclient
+                        
 
                         <li class="nav-item mt-2">  
                                 <a class="dropdown-item" href="{{ route('logout') }}"

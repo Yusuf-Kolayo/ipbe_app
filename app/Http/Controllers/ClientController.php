@@ -1,8 +1,7 @@
 <?php
  
-namespace App\Http\Controllers\Agent;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB; 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth; 
@@ -134,7 +133,7 @@ class ClientController extends Controller
      */
     public function show($client_id)
     {
-        $client = Client::where('client_id', $client_id)->firstOrFail();   
+        $client = Client::where('client_id', $client_id)->firstOrFail();
         $main_categories = Category::where('parent_id', 0)->get(); 
         $product_purchase_sessions = Product_purchase_session::where('client_id', $client->client_id)->orderBy('id', 'desc')->get();  
         $transactions = Transaction::where('client_id', $client->client_id)->orderBy('id', 'desc')->get(); 
