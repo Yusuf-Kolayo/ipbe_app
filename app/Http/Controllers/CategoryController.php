@@ -7,13 +7,21 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Category;
 
 
-class CategoryController extends Controller
+class CategoryController extends BaseController
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+
+     
+    public function __construct() {
+      $this->middleware('auth');
+      parent::__construct();
+    }
+
+
     public function index()
     { 
         $main_categories = Category::where('parent_id', 0)->get(); 

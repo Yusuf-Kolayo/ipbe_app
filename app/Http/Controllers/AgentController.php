@@ -16,12 +16,14 @@ use App\Mail\Referee_email_val;
 use Illuminate\Support\Facades\Session;
  
 
-class AgentController extends Controller 
+class AgentController extends BaseController 
 {
 
     public function __construct()
     {
-        $this->middleware('auth', ['except'=> ['show_referring_form','send_referee_mail','check_referee_code']]);
+        $this->middleware('auth');
+        parent::__construct();
+        // $this->middleware('auth', ['except'=> ['show_referring_form','send_referee_mail','check_referee_code']]);
     }
 
     /**
