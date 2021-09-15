@@ -16,14 +16,15 @@ use App\Models\Product;
 use App\Models\Activity;
 
 
-class ClientController extends Controller
+class ClientController extends BaseController
 {
 
-    public function __construct()
-    {
-        $this->middleware('auth');
+    
+    public function __construct() {
+      $this->middleware('auth');
+      parent::__construct();
     }
-
+ 
 
     /**
      * Display a listing of the resource.

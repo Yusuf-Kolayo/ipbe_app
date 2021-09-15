@@ -17,7 +17,7 @@
  display: block;  width: 100%; overflow-x: auto; 
  -webkit-overflow-scrolling: touch; -ms-overflow-style: -ms-autohiding-scrollbar;
  }
- 
+ .fg_skyblue { color:#6db4ff; } .fg_grey { color:grey; }   .active_msg { font-size:12px; }
  .tmcomp { font-size: .8em; float: right!important; }
  .nk-chat-panel    {  background-color: rgb(249, 249, 249); }
  .dark-mode  .cust {  background: #141c26; color: #798bff;  }    .dark-mode .comp {  background: #798bff;   color: #000;  }
@@ -57,32 +57,39 @@
       <section class="content">
         <div class="container-fluid">
           <div class="row">
-            <div class="col-md-4">
+            <div class="d-none d-sm-none d-md-block col-md-4">
                 <div class="card">
                   <div class="card-header p-3 px-3">
                     <h3 class="card-title"> <i class="fa fa-clock-o"></i> Recent Conversations  </h3> 
                   </div><!-- /.card-header -->
                   <div class="card-body">
-                @foreach ($users as $user)
-                  @php
-                       if ($user->usr_type=='usr_admin'){ 
-                            $fullname = $user->staff->agt_first_name.' '.$user->staff->agt_first_name;   
-                        } elseif ($user->usr_type=='usr_agent') {
-                            $fullname = $user->agent->agt_first_name.' '.$user->agent->agt_last_name;
-                        }  elseif ($user->usr_type=='usr_client') {
-                            $fullname = $user->client->first_name.' '.$user->client->last_name;
-                        } 
+                @foreach ($chat_patners as $user) 
+                  @php  // dd($user);
+                      //  if ($user[0]->usr_type=='usr_admin') { 
+                      //       $fullname = $user[0]->staff->agt_first_name.' '.$user[0]->staff->agt_first_name;   
+                      //   } elseif ($user[0]->usr_type=='usr_agent') {
+                      //       $fullname = $user[0]->agent->agt_first_name.' '.$user[0]->agent->agt_last_name;
+                      //   }  elseif ($user[0]->usr_type=='usr_client') {
+                      //       $fullname = $user[0]->client->first_name.' '.$user[0]->client->last_name;
+                      //   } 
                   @endphp
-                <a href="{{route('chat_board', ['user_id'=>$user->user_id])}}" class="dropdown-item px-1">   
+                <a href="{{route('chat_board', ['user_id'=>$user[0]->user_id])}}" class="dropdown-item px-1">   
                     <!-- Message Start -->
                     <div class="media">
                       <img src="{{ asset('images/avatar_dummy.png') }}" alt="User Avatar" class="img-size-50 mr-3 img-circle">
                       <div class="media-body">
                         <h3 class="dropdown-item-title">
-                          {{$fullname}}  
+                          {{$user[0]->username}}  
                         </h3>
-                        <p class="text-sm short_msg">Call me whenever you can...</p>
-                        <p class="text-sm text-muted mb-0"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
+
+
+                        @if ($user[1])
+                        <p class="text-sm short_msg">{{$user[1]->message}}</p>
+                        <p class="text-sm text-muted mb-0"><i class="far fa-clock mr-1"></i>{{$user[1]->created_at}}</p>
+                        @else
+                        <p class="text-sm short_msg">---</p>
+                        @endif
+
                       </div>
                     </div>
                     <!-- Message End -->
@@ -99,8 +106,9 @@
             <div class="col-md-8">
                 <!-- DIRECT CHAT -->
 <div class="card direct-chat direct-chat-primary">                  
-<div class="card-header p-2 px-3"> 
-  <h3 class="card-title"> <i class="fa fa-clock-o"></i> Active Conversations  </h3>
+<div class="card-header py-3 px-3"> 
+  <h3 class="card-title mb-1" id="active_time"></h3>
+ 
   <div class="card-tools">
 
     <button type="button" class="btn btn-tool" title="Contacts" data-widget="chat-pane-toggle">
@@ -111,7 +119,7 @@
 <!-- /.card-header -->
 <div class="card-body">
   <!-- Conversations are loaded here -->
-  @if ($user_id!='')
+  @if ($chat_patner->user_id!='')
     <div class="direct-chat-messages" id="msg_body" style=""></div> 
   @else
     <div class="pt-4"> <img src="{{asset('images/chats.gif')}}" class="img img-fluid" alt=""> </div>
@@ -122,27 +130,38 @@
   <div class="direct-chat-contacts">
     <ul class="contacts-list">
         
-            @foreach ($users as $user)
+            @foreach ($chat_patners as $user)
             @php
-                 if ($user->usr_type=='usr_admin'){ 
-                      $fullname = $user->staff->agt_first_name.' '.$user->staff->agt_first_name;   
-                  } elseif ($user->usr_type=='usr_agent') {
-                      $fullname = $user->agent->agt_first_name.' '.$user->agent->agt_last_name;
-                  }  elseif ($user->usr_type=='usr_client') {
-                      $fullname = $user->client->first_name.' '.$user->client->last_name;
-                  } 
+                //  if ($user[0]->usr_type=='usr_admin'){ 
+                //       $fullname = $user[0]->staff->agt_first_name.' '.$user[0]->staff->agt_first_name;   
+                //   } elseif ($user[0]->usr_type=='usr_agent') {
+                //       $fullname = $user[0]->agent->agt_first_name.' '.$user[0]->agent->agt_last_name;
+                //   }  elseif ($user[0]->usr_type=='usr_client') {
+                //       $fullname = $user[0]->client->first_name.' '.$user[0]->client->last_name;
+                //   } 
             @endphp
                 <!-- End Contact Item -->
                 <li>
-                    <a href="#">
+                    <a href="{{route('chat_board', ['user_id'=>$user[0]->user_id])}}">
                         <img class="contacts-list-img" src="{{asset('css/dist/img/user7-128x128.jpg') }}" alt="User Avatar">
 
                         <div class="contacts-list-info">
                         <span class="contacts-list-name">
-                           {{$fullname}}
-                            <small class="contacts-list-date float-right">2/23/2015</small>
+                           {{$user[0]->username}}
+
+                           @if ($user[1])
+                           <small class="contacts-list-date float-right">{{$user[1]->message}}</small>
+                           @else
+                           <small class="contacts-list-date float-right">---</small>
+                           @endif
+                         
                         </span>
-                        <span class="contacts-list-msg">I will be waiting for...</span>
+                       
+                        @if ($user[1])
+                        <span class="contacts-list-msg">{{$user[1]->created_at}}</span>
+                        @else
+                        <span class="contacts-list-msg"></span>
+                        @endif
                         </div>
                         <!-- /.contacts-list-info -->
                     </a>
@@ -159,19 +178,19 @@
 </div>
 <!-- /.card-body -->
 <div class="card-footer">
-  @if ($user_id!='')
+  @if ($chat_patner->user_id!='')
   <form action="#" method="post" id="form_msg">
     <div class="input-group">
       <input type="text" name="message" placeholder="Type Message ..." class="form-control" id="txt_msg">
-      <input type="hidden" name="user_id" value="{{$user_id}}" id="user_id"> 
+      <input type="hidden" name="patner_id" value="{{$chat_patner->user_id}}" id="patner_id"> 
       <span class="input-group-append">
-        <button type="submit" class="btn btn-primary" id="btn_send">Send</button>
+        <button type="submit" class="btn btn-outline-primary" id="btn_send">Send</button>
       </span>
     </div>
   </form>
   @else
     <p class="text-center">. . .</p>
-    <input type="hidden" name="user_id" value="" id="user_id"> 
+    <input type="hidden" name="patner_id" value="{{$chat_patner->user_id}}" id="patner_id"> 
   @endif
 
 </div>
@@ -198,35 +217,7 @@
 <script>
 
     window.onload = (event) => {   
-      var user_id = $('#user_id').val(); 
-      if (user_id) {
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    const user_id = urlParams.get('user_id');     // console.warn('{{$user_id}}');
-      
-      
-    function fetch_chat () { 
-            // after page loading or refresh
-      
-            var data2send={"user_id":"{{$user_id}}"}; 
-            $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': $("meta[name=csrf-token]").attr('content') }  });
-            $.ajax({
-                url:"{{route('fetch_chat')}}",
-                dataType:"text",
-                method:"GET",
-                data:data2send,
-                success:function(resp) {
-                    $('#msg_body').html(resp); 
-                    var element = document.getElementById("msg_body");
-                    element.scrollTop = element.scrollHeight; 
-                    // document.querySelector('#msg_base').scrollIntoView({  behavior: 'smooth' });
-                    // fetch_status()        // fetch_status
-                }
-            });
-       } 
-    fetch_chat ();
-    
-    
+
     
     $('#form_msg').on('submit', function(e){
         e.preventDefault();   
@@ -239,8 +230,9 @@
                 contentType: false,
                 cache: false,
                 processData:false,
+                beforeSend: function(){  $("#txt_msg").val("") },
                 success: function(response){ //console.log(response); 
-                    $("#txt_msg").val("")
+                   
                     if(response.status == 'sent'){
                       console.warn(response.message);    fetch_chat();    
                     } else {  console.warn(response.message);  }  
@@ -249,42 +241,10 @@
     });
     
     
-    // $("#msg").keyup(function(){
-    //     var data2send={"acnumber":''};
-    //     $.ajax({
-    //             url:"customer_chat_status.php",
-    //             dataType:"text",
-    //             method:"POST",
-    //             data:data2send,
-    //             // success:function(resp){ 
-    //             //     console.warn(response.message); 
-    //             // }
-    //         });
-    // });
+   
     
-    
-    
-    function fetch_status () { 
-            // after page loading or refresh
-            var data2send={"acnumber":''};
-            
-            $.ajax({
-                url:"customer_status_fetch.php",
-                dataType:"text",
-                method:"POST",
-                data:data2send,
-                success:function(resp){
-                    $('.msg_status').html(resp); 
-                }
-            });
-    }
-    
-    
-    var intervalId = window.setInterval(function() {
-     fetch_chat(); // fetch new chat data at 5 seconds interval
-    }, 5000);
 
-      }
+ 
     
     }
      

@@ -16,13 +16,15 @@ use App\Models\Activity;
 use App\Models\Notification;  
 
 
-class TransactionController extends Controller
+class TransactionController extends BaseController
 {
 
-    public function __construct()
-    {
+
+    
+      public function __construct() {
         $this->middleware('auth');
-    }
+        parent::__construct();
+      }
 
 
     /**

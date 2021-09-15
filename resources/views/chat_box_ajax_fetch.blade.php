@@ -15,10 +15,7 @@
     <p class="comp mb-1">{{$message['message']}}<span class="tmcomp"> <b style="font-size:12px;">{!!$eye!!} you:</b> <br> {{$message['created_at']}} </span> </p>  
     @else  
      <p class="cust mb-1">{{$message['message']}}<span class="tmcus"> <b style="font-size:12px;"><span class="ion-ios-contact-outline"></span> {{$message->sender->username}} </b><br> {{$message['created_at']}}</span> </p>
- 
-
-      {{-- $strk = "update messages set status = 'seen' where mid='$mid1'";
-      mysqli_query($conn,$strk) or die ('system error in saving  009'); --}}
+  
       @php
                 Illuminate\Support\Facades\DB::table('messages')->where('id', $message['id'])
                 ->update([
