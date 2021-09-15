@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\CatchmentController;
 use App\Http\Controllers\Admin\AgentController;
 use App\Http\Controllers\Admin\BrandController;
+use App\Http\Controllers\Admin\ExpenseController;
 use App\Http\Controllers\Agent\ClientController;
 use App\Http\Controllers\Agent\TransactionController;
 
@@ -53,10 +54,15 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'is_admin']], functi
     
     Route::get('/product/refresh_product_ajax_fetch', [ProductController::class, 'refresh_product_ajax_fetch'])->name('product.refresh_product_ajax_fetch');
     Route::get('/product/update_product_ajax_fetch', [ProductController::class, 'update_product_ajax_fetch'])->name('product.update_ajax_fetch');
+   
+   
     
     Route::resource('brand', BrandController::class);
+    
+   
 });
-
+Route::get('/company_expenses',[ExpenseController::class,'allExpensesCatergories'])->name('admin_expenses');
+//Route::get('/company_expenses','App\Http\Controllers\Admin\ExpenseController@allExpensesCatergories')->name('admin_expenses');
 
 
 //=========================      AGENT ROUTES      ==========================//

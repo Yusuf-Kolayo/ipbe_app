@@ -44,6 +44,9 @@
         <li class="nav-item">
           <a href="{{ route('agent.index') }}" class="nav-link">  <i class="nav-icon fa fa-android"></i> <p> Agents </p>   </a>
         </li>
+        <li class="nav-item">
+          <a href="{{ route('admin_expenses') }}" class="nav-link">  <i class="nav-icon fas fa-money-bill"></i> <p> Expenses </p>   </a>
+        </li>
     
     
         <li class="nav-header"> PRODUCTS </li>   
