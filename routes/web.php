@@ -2,14 +2,14 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\Admin\CategoryController;
-use App\Http\Controllers\Admin\ProductController;
-use App\Http\Controllers\Admin\CatchmentController;
-use App\Http\Controllers\Admin\AgentController;
-use App\Http\Controllers\Admin\BrandController;
-use App\Http\Controllers\Admin\ExpenseController;
-use App\Http\Controllers\Agent\ClientController;
-use App\Http\Controllers\Agent\TransactionController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CatchmentController;
+use App\Http\Controllers\AgentController;
+use App\Http\Controllers\BrandController;
+use App\Http\Controllers\ClientController;
+use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\ExpenseController;
 
 
 
@@ -27,19 +27,21 @@ use App\Http\Controllers\Agent\TransactionController;
 // Route::get('/', function () {  return view('welcome'); });
 
 Route::get('/', function () { return redirect()->route('login'); });
-Route::get('/agent/referrer/{agent_id}', [AgentController::class, 'show_referring_form'])->name('agent.show_referring_form');
-Route::post('/agent/send_referee_mail/', [AgentController::class, 'send_referee_mail'])->name('agent.send_referee_mail');
-Route::get('/agent/check_referee_code/', [AgentController::class, 'check_referee_code'])->name('agent.check_referee_code');
+Route::get('/agent/referrer/{agent_id}', [ReferringController::class, 'show_referring_form'])->name('agent.show_referring_form');
+Route::post('/agent/send_referee_mail/', [ReferringController::class, 'send_referee_mail'])->name('agent.send_referee_mail');
+Route::get('/agent/check_referee_code/', [ReferringController::class, 'check_referee_code'])->name('agent.check_referee_code');
 
 //=========================      PUBLIC ROUTES      ==========================//
 Auth::routes();
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-Route::get('/chat_board', [DashboardController::class, 'chat_board'])->name('chat_board');
+Route::get('/chat_board/{user_id?}', [DashboardController::class, 'chat_board'])->name('chat_board');
+Route::post('/post_chat/', [DashboardController::class, 'post_chat'])->name('post_chat');
+Route::get('/fetch_chat/', [DashboardController::class, 'fetch_chat'])->name('fetch_chat');
 Route::get('/resolve_notification/{id}', [DashboardController::class, 'resolve_notification'])->name('resolve_notification');
 Route::get('/all_notifications/', [DashboardController::class, 'all_notifications'])->name('all_notifications');
 Route::get('/my_profile/', [DashboardController::class, 'my_profile'])->name('my_profile');
 Route::get('/access_denied', function () { return view('access_denied'); })->name('access_denied');
-   
+Route::resource('client', ClientController::class);  
     
     
 //=========================      ADMIN ROUTES      ==========================//
@@ -96,12 +98,13 @@ Route::group (['prefix' => 'admin_agent', 'middleware' => ['auth', 'is_admin_age
     Route::get('/transaction/pps_details_ajax_fetch', [TransactionController::class, 'pps_details_ajax_fetch'])->name('client.pps_details_ajax_fetch');
   
     Route::resource('transaction', TransactionController::class); 
-    Route::resource('client', ClientController::class);  
     
     Route::get('/category/sub_cat_ajax_fetch', [CategoryController::class, 'sub_cat_ajax_fetch'])->name('category.sub_cat_ajax_fetch');
     Route::resource('category', CategoryController::class);
 });
 
+
+        //=========================      EXPENSES ROUTES      ==========================//
 Route::get('/company/expenses/all',[ExpenseController::class,'allExpenses'])->name('expenses_list');
 //Route::get('/company_expenses','App\Http\Controllers\Admin\ExpenseController@allExpensesCatergories')->name('admin_expenses');
 Route::get('/company/expenses/add_or_delete_catergory',[ExpenseController::class,'allExpensesCatergories'])->name('expenses_cat');
@@ -121,7 +124,4 @@ Route::get('/company/expenses/search_with_date_and_branch',[ExpenseController::c
 Route::get('/company/expenses/search_with_date_and_name',[ExpenseController::class,'searchDateAndName'])->name('date_name');
 Route::get('/company/expenses/search_with_branch_and_name',[ExpenseController::class,'searchBranchAndName'])->name('branch_name');
 Route::get('/company/expenses/search_with_all',[ExpenseController::class,'searchWithAll'])->name('search_all');
-Route::get('/company/expenses/search_result', function () {
-    return view('expense_search_result');
-});
 
