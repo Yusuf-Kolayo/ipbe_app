@@ -119,7 +119,7 @@
 <!-- /.card-header -->
 <div class="card-body">
   <!-- Conversations are loaded here -->
-  @if ($chat_patner->user_id!='')
+  @if ($chat_patner)
     <div class="direct-chat-messages" id="msg_body" style=""></div> 
   @else
     <div class="pt-4"> <img src="{{asset('images/chats.gif')}}" class="img img-fluid" alt=""> </div>
@@ -178,7 +178,7 @@
 </div>
 <!-- /.card-body -->
 <div class="card-footer">
-  @if ($chat_patner->user_id!='')
+  @if ($chat_patner)
   <form action="#" method="post" id="form_msg">
     <div class="input-group">
       <input type="text" name="message" placeholder="Type Message ..." class="form-control" id="txt_msg">
@@ -190,7 +190,7 @@
   </form>
   @else
     <p class="text-center">. . .</p>
-    <input type="hidden" name="patner_id" value="{{$chat_patner->user_id}}" id="patner_id"> 
+    <input type="hidden" name="patner_id" value="" id="patner_id"> 
   @endif
 
 </div>
