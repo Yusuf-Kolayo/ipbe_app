@@ -53,28 +53,27 @@
             <ul class="nav nav-treeview"> 
               
               <li class="nav-item">
-                <a href="{{ route('expenses_list') }}" class="nav-link">
-                  <i class="fas fa-list-ol mr-1"></i> 
-                    <p> List Expenses</p>
-                  </a>
-              </li> 
-
-              <li class="nav-item">
                 <a href="{{ route('new_expense') }}" class="nav-link">
                   <i class="fas fa-plus-square mr-1"></i> 
                   <p> Add Expenses </p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ route('expenses_cat') }}" class="nav-link">
-                <i class="fas fa-pencil-alt mr-1"></i> 
-                  <p> Edit Expenses Catergory </p>
-                </a>
-              </li>
+                <a href="{{ route('expenses_list') }}" class="nav-link">
+                  <i class="fas fa-list-ol mr-1"></i> 
+                    <p> List Expenses</p>
+                  </a>
+              </li> 
               <li class="nav-item">
                 <a href="{{ route('expenses_print') }}" class="nav-link">
                 <i class="fas fa-search mr-1"></i> 
                   <p> Search Expenses </p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ route('expenses_cat') }}" class="nav-link">
+                  <i class="fas fa-plus-circle mr-1"></i>
+                  <p> Add Expenses Catergory </p>
                 </a>
               </li>
 

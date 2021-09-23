@@ -12,6 +12,7 @@
 
 <div class="row">
     <div class="col-12">
+        <h5 class="mb-0 btn btn-sm mb-2 btn-danger" id="addExpenseBtn">ADD NEW EXPENSE</h5>
         <h5 class="mb-0 float-right btn btn-sm btn-primary" data-toggle="modal" data-target="#addmodal">ADD NEW CATEGORY</h5>
     </div>
 </div>
@@ -22,11 +23,17 @@
             {{ session('status') }}
         </div>
     @endif
-    @if (session('statuss'))
+    @isset ($_GET['edited_successfully'])
         <div class="alert alert-success col-md-6 offset-md-3 text-center mt-2">
-            {{ session('statuss') }}
+            {{ $_GET['edited_successfully'] }}
         </div>
-    @endif
+    @endisset
+    @isset ($_GET['deleted_successfully']))
+        <div class="alert alert-success col-md-6 offset-md-3 text-center mt-2">
+            {{ $_GET['deleted_successfully'] }}
+        </div>
+    @endisset
+
     <div class="col-12 table-responsive text-nowrap">
     <h5 class="mb-0 text-right btn btn-sm btn-primary mb-4" >EXPENSES CATEGORY</h5>
         <table class="table table-striped table-bordered table-hover">
@@ -79,7 +86,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer form-group">
+                <div class="text-right pr-4 form-group">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Exit</button>
                     <button type="submit" class="btn btn-primary">Add</button>
                 </div>
@@ -112,7 +119,7 @@
                         <p id="showResponse"></p>
                     </div> 
                 </div>
-                <div class="modal-footer form-group">
+                <div class="text-right pr-4 form-group">
                     <input type="text" name="currentId" id="idInput" class="d-none" >
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Exit</button>
                     <button type="submit" class="btn btn-primary" id="editButton">Change</button>
@@ -140,7 +147,7 @@
                 <div class="modal-body form-group">
                 <p id="doublecheck"></p>
                 </div>
-                <div class="modal-footer form-group">
+                <div class="text-right pr-4 mt-0 form-group">
                     <input type="number" name="currentId" id="idInput" class="d-none">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Exit</button>
                     <button type="submit" class="btn btn-danger" id="deleteButton">Delete</button>
@@ -179,15 +186,15 @@
                     url:"{{'/company/expenses/delete_catergory'}}"+newId,
                     type:'post',
                     dataType:'text',
-                    success:function(){
-                        $(window).attr('location','/company/expenses/add_or_delete_catergory')
+                    success:function(success){
+                        $(window).attr('location','/company/expenses/add_or_delete_catergory?deleted_successfully='+success);
                     },
                     error:function(error){
                         console.log(error);
                         
                     }
                 })
-            })
+        })
         
 
         $('#editModal').on('show.bs.modal', function(e) {
@@ -211,7 +218,7 @@
                     data:{'catName':newName,'id': newId },
                     dataType:'text',
                     success:function(success){
-                        $(window).attr('location','/company/expenses/add_or_delete_catergory');
+                        $(window).attr('location','/company/expenses/add_or_delete_catergory?edited_successfully='+success);
                     },
                     error:function(error){
                         console.log(error);
@@ -221,6 +228,10 @@
                 
             })
         
+        })
+
+        $('#addExpenseBtn').click(function (){
+            $(window).attr('location','/company/expenses/add_newexpenses');
         })
 
        

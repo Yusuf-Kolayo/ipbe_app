@@ -42,14 +42,16 @@ class ExpenseController extends Controller
         $data=Expenses_category::find($id);
         $data->expense_catname=$catName;
         $data->save();
-        return redirect()->back()->with('statuss',$catName.' Successfully Changed');   
+        echo('Category name changed successfully');
+        //return redirect()->back();   
     }
     
         //this category function deletes expenses category name
     public function deleteExpensesCatergory($id){
         $data=Expenses_category::find($id);
         $data->delete();
-        return redirect()->back()->with('status','Deleted Successfully');
+        //return redirect()->back()->with('status','Deleted Successfully');
+        echo('Deleted Successfully');
 
     }
 
@@ -96,7 +98,8 @@ class ExpenseController extends Controller
     }
 
     public function expensesPrint(){
-        return view ('Admin\expensesprint');
+        $category=Expenses_category::orderBy('expense_catname', 'ASC')->get();
+        return view ('Admin\expensesprint',['category'=>$category]);
     }
 
 
@@ -105,9 +108,11 @@ class ExpenseController extends Controller
         $allExpense=Expense::join('expenses_categories','expenses.cat_id','=','expenses_categories.id')
         ->orderBy('date', 'DESC')
         ->get();
+
+        $category=Expenses_category::orderBy('expense_catname', 'ASC')->get();
+
         $no=1;
-        return view ('Admin\expenses',['Expense'=>$allExpense,'no'=>$no]) ;
-       
+        return view ('Admin\expenses',['Expense'=>$allExpense,'no'=>$no,'category'=>$category]) ; 
     }
 
     public function deleteExpenses(Request $req){
@@ -179,6 +184,93 @@ class ExpenseController extends Controller
         
         return view ('Admin\expense_search_result',['searchDate'=>$result,'no'=>$no,'sum'=>$sum]);
     }
+
+    public function searchCategory(request $req){
+        $no=1;
+        $category=$req['category'];
+       
+        $result=DB::table('expenses')
+        ->join('expenses_categories','expenses.cat_id','=','expenses_categories.id')
+        ->where('expense_catname', $category)
+        ->orderBy('date', 'DESC')
+        ->get();
+        
+        $sum=DB::table('expenses')
+        ->join('expenses_categories','expenses.cat_id','=','expenses_categories.id')
+        ->where('expense_catname', $category)
+        ->orderBy('date', 'DESC')
+        ->sum('amount');
+        
+        return view ('Admin\expense_search_result',['searchCategory'=>$result,'no'=>$no,'sum'=>$sum]);
+    }
+
+    public function searchCategoryAndName(request $req){
+        $no=1;
+        $category=$req['category'];
+        $initiator=$req['initiator'];
+       
+        $result=DB::table('expenses')
+        ->join('expenses_categories','expenses.cat_id','=','expenses_categories.id')
+        ->where('expense_catname', $category)
+        ->where('initiator', [$initiator])
+        ->orderBy('date', 'DESC')
+        ->get();
+        
+        $sum=DB::table('expenses')
+        ->join('expenses_categories','expenses.cat_id','=','expenses_categories.id')
+        ->where('expense_catname', $category)
+        ->where('initiator', [$initiator])
+        ->orderBy('date', 'DESC')
+        ->sum('amount');
+        
+        return view ('Admin\expense_search_result',['searchNameCategory'=>$result,'no'=>$no,'sum'=>$sum]);
+    }
+
+    public function searchCategoryAndDate(request $req){
+        $no=1;
+        $category=$req['category'];
+        $from=$req['fromDate'];
+        $to=$req['toDate'];
+       
+        $result=DB::table('expenses')
+        ->join('expenses_categories','expenses.cat_id','=','expenses_categories.id')
+        ->whereBetween('date', [$from, $to],)
+        ->where('expense_catname', [$category])
+        ->orderBy('date', 'DESC')
+        ->get();
+
+        $sum=DB::table('expenses')
+        ->join('expenses_categories','expenses.cat_id','=','expenses_categories.id')
+        ->whereBetween('date', [$from, $to],)
+        ->where('expense_catname', [$category])
+        ->orderBy('date', 'DESC')
+        ->sum('amount');
+        
+        return view ('Admin\expense_search_result',['searchDateCategory'=>$result,'no'=>$no,'sum'=>$sum]);
+    }
+
+    public function searchCategoryAndBranch(request $req){
+        $no=1;
+        $category=$req['category'];
+        $branch= $req['branch'];
+
+        $result=DB::table('expenses')
+        ->join('expenses_categories','expenses.cat_id','=','expenses_categories.id')
+        ->where('branch', [$branch])
+        ->where('expense_catname', [$category])
+        ->orderBy('date', 'DESC')
+        ->get();
+
+        $sum=DB::table('expenses')
+        ->join('expenses_categories','expenses.cat_id','=','expenses_categories.id')
+        ->where('branch', [$branch])
+        ->where('expense_catname', [$category])
+        ->orderBy('date', 'DESC')
+        ->sum('amount');
+        
+        return view ('Admin\expense_search_result',['searchBranchCategory'=>$result,'no'=>$no,'sum'=>$sum]);
+    }
+
     public function searchDateAndBranch(Request $req){
         $no=1;
         $from=$req['fromDate'];
@@ -201,6 +293,60 @@ class ExpenseController extends Controller
 
         return view ('Admin\expense_search_result',['searchDateBranch'=>$result,'no'=>$no,'sum'=>$sum]); 
     }
+
+    public function searchCategoryAndBranchAndDate(Request $req){
+        $no=1;
+        $from=$req['fromDate'];
+        $to=$req['toDate'];
+        $branch=$req['branch'];
+        $category=$req['category'];
+        
+        $result=DB::table('expenses')
+        ->join('expenses_categories','expenses.cat_id','=','expenses_categories.id')
+        ->whereBetween('date', [$from, $to],)
+        ->where('expense_catname', [$category])
+        ->where('branch', [$branch])
+        ->orderBy('date', 'DESC')
+        ->get();
+
+        $sum=DB::table('expenses')
+        ->join('expenses_categories','expenses.cat_id','=','expenses_categories.id')
+        ->whereBetween('date', [$from, $to],)
+        ->where('expense_catname', [$category])
+        ->where('branch', [$branch])
+        ->orderBy('date', 'DESC')
+        ->sum('amount');
+
+        return view ('Admin\expense_search_result',['searchCategoryDateBranch'
+        =>$result,'no'=>$no,'sum'=>$sum]); 
+    }
+
+    public function searchCategoryAndBranchAndName(Request $req){
+        $no=1;
+        $initiator=$req['initiator'];
+        $branch=$req['branch'];
+        $category=$req['category'];
+        
+        $result=DB::table('expenses')
+        ->join('expenses_categories','expenses.cat_id','=','expenses_categories.id')
+        ->where('initiator', [$initiator])
+        ->where('expense_catname', [$category])
+        ->where('branch', [$branch])
+        ->orderBy('date', 'DESC')
+        ->get();
+
+        $sum=DB::table('expenses')
+        ->join('expenses_categories','expenses.cat_id','=','expenses_categories.id')
+        ->where('initiator', [$initiator])
+        ->where('expense_catname', [$category])
+        ->where('branch', [$branch])
+        ->orderBy('date', 'DESC')
+        ->sum('amount');
+
+        return view ('Admin\expense_search_result',['searchCategoryNameBranch'
+        =>$result,'no'=>$no,'sum'=>$sum]); 
+    }
+
     public function searchDateAndName(Request $req){
         $no=1;
         $from=$req['fromDate'];
@@ -245,7 +391,7 @@ class ExpenseController extends Controller
         return view ('Admin\expense_search_result',['searchBranchName'=>$result,'no'=>$no,'sum'=>$sum]); 
     }
 
-    public function searchWithAll(Request $req){
+    public function searchDateAndBranchAndName(Request $req){
         $no=1;
         $from=$req['fromDate'];
         $to=$req['toDate'];
@@ -265,6 +411,61 @@ class ExpenseController extends Controller
         ->whereBetween('date', [$from, $to],)
         ->where('branch', $branch,)
         ->where('initiator', [$initiator])
+        ->orderBy('date', 'DESC')
+        ->sum('amount');
+
+        return view ('Admin\expense_search_result',['searchBranchDateName'=>$result,'no'=>$no,'sum'=>$sum]); 
+    }
+
+    public function searchDateAndCategoryAndName(Request $req){
+        $no=1;
+        $from=$req['fromDate'];
+        $to=$req['toDate'];
+        $initiator=$req['initiator'];
+        $category=$req['category'];
+        
+        $result=DB::table('expenses')
+        ->join('expenses_categories','expenses.cat_id','=','expenses_categories.id')
+        ->whereBetween('date', [$from, $to],)
+        ->where('initiator', $initiator,)
+        ->where('expense_catname', [$category])
+        ->orderBy('date', 'DESC')
+        ->get();
+
+        $sum=DB::table('expenses')
+        ->join('expenses_categories','expenses.cat_id','=','expenses_categories.id')
+        ->whereBetween('date', [$from, $to],)
+        ->where('initiator', $initiator,)
+        ->where('expense_catname', [$category])
+        ->orderBy('date', 'DESC')
+        ->sum('amount');
+
+        return view ('Admin\expense_search_result',['searchCategoryDateName'=>$result,'no'=>$no,'sum'=>$sum]); 
+    }
+
+    public function searchWithAll(Request $req){
+        $no=1;
+        $from=$req['fromDate'];
+        $to=$req['toDate'];
+        $initiator=$req['initiator'];
+        $category=$req['category'];
+        $branch=$req['branch'];
+        
+        $result=DB::table('expenses')
+        ->join('expenses_categories','expenses.cat_id','=','expenses_categories.id')
+        ->whereBetween('date', [$from, $to],)
+        ->where('initiator', $initiator,)
+        ->where('expense_catname', [$category])
+        ->where('branch', [$branch])
+        ->orderBy('date', 'DESC')
+        ->get();
+
+        $sum=DB::table('expenses')
+        ->join('expenses_categories','expenses.cat_id','=','expenses_categories.id')
+        ->whereBetween('date', [$from, $to],)
+        ->where('initiator', $initiator,)
+        ->where('expense_catname', [$category])
+        ->where('branch', [$branch])
         ->orderBy('date', 'DESC')
         ->sum('amount');
 

@@ -8,19 +8,19 @@
    
 </style>
 
-<form class="form" enctype="multipart/form-data" action="{{route('save_new_expense')}}" method="POST">
+<form class="form bg-dark card" enctype="multipart/form-data" action="{{route('save_new_expense')}}" method="POST">
     @csrf
     <div class="row">
         <div class="col-12">
-            <h5 class="mb-0 text-right btn btn-sm btn-primary mb-4 ml-md-5" >NEW EXPENSES</h5>
+            <h5 class="mb-0 text-right btn btn-sm btn-primary mt-4 mb-4 ml-md-5" >NEW EXPENSES</h5>
         </div>
     </div>
     <div class="row form-group">
-        <div class="col-12">
-           <div class="row">
-                <label for="date" class="col-md-1 offset-md-8">Expenses Date</label>
-                <input type="date" id="date" name="date" class="col-md-2 form-control form-control-sm" required>
-           </div>
+        <div class="col-md-2 offset-md-9 mb-3">
+            <div class="row">
+                <label for="date" class="col-12">Expenses Date</label>
+                <input type="date" id="date" name="date" class="col-12 form-control form-control-sm" required>
+            </div>
         </div>
     </div>
     <div class="row form-group justify-content-center">
