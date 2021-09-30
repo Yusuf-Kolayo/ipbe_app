@@ -13,6 +13,7 @@ class CreateMessagesTable extends Migration
      */
     public function up()
     {
+        if(Schema::hasTable('messages')) return;
         Schema::create('messages', function (Blueprint $table) {
             $table->integer('id')->primary();
             $table->string('sender_id', 22);

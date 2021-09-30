@@ -185,13 +185,13 @@
                     },
                     url:"{{'/company/expenses/delete_catergory'}}"+newId,
                     type:'post',
-                    dataType:'text',
+                    dataType:'text',  // expenses_cat
                     success:function(success){
-                        $(window).attr('location','/company/expenses/add_or_delete_catergory?deleted_successfully='+success);
+                    //  $(window).attr('location','/company/expenses/add_or_delete_catergory?deleted_successfully='+success);
+                        $(window).attr('location','{{route("expenses_cat", ["add_or_delete_catergory"=>'+success+'])}}')
                     },
-                    error:function(error){
+                    error:function(error) {
                         console.log(error);
-                        
                     }
                 })
         })
@@ -218,7 +218,8 @@
                     data:{'catName':newName,'id': newId },
                     dataType:'text',
                     success:function(success){
-                        $(window).attr('location','/company/expenses/add_or_delete_catergory?edited_successfully='+success);
+                       // $(window).attr('location','/company/expenses/add_or_delete_catergory?edited_successfully='+success);
+                       $(window).attr('location','{{route("expenses_cat", ["add_or_delete_catergory"=>'+success+'])}}')
                     },
                     error:function(error){
                         console.log(error);
@@ -231,7 +232,8 @@
         })
 
         $('#addExpenseBtn').click(function (){
-            $(window).attr('location','/company/expenses/add_newexpenses');
+         //   $(window).attr('location','/company/expenses/add_newexpenses');
+            $(window).attr('location','{{route("new_expense")}}');
         })
 
        

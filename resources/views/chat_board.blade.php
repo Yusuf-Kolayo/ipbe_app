@@ -22,7 +22,8 @@
  .nk-chat-panel    {  background-color: rgb(249, 249, 249); }
  .dark-mode  .cust {  background: #141c26; color: #798bff;  }    .dark-mode .comp {  background: #798bff;   color: #000;  }
  #img_status { width: 9px; height: 9px; border-radius: 50%; }
- 
+ #msg_body { max-height:355px; overflow-y:scroll; }
+
  @media screen and (min-width: 0px) and (max-width: 400px) { 
 
  }
@@ -41,17 +42,19 @@
      </style>
   
 
+
     <!-- Content Header (Page header) -->
-    <section class="content-header">
+    <section class="content-header mb-2">
         <div class="container-fluid">
-          <div class="row mb-2">
-            <div class="col-sm-6">
-              <h1>Chat Page</h1>
-            </div>
-            
+          <div class="card card-inner p-2">
+            <div class="">
+              <h5 class="mb-0">Chat Page</h5>
+            </div> 
           </div>
         </div><!-- /.container-fluid -->
       </section>
+
+
   
       <!-- Main content -->
       <section class="content">
@@ -60,11 +63,11 @@
             <div class="d-none d-sm-none d-md-block col-md-4">
                 <div class="card">
                   <div class="card-header p-3 px-3">
-                    <h3 class="card-title"> <i class="fa fa-clock-o"></i> Recent Conversations  </h3> 
+                    <h6 class="card-title mb-0"> <em class="icon ni ni-clock"></em> Recent Conversations  </h6> 
                   </div><!-- /.card-header -->
                   <div class="card-body">
                 @foreach ($chat_patners as $user) 
-                  @php  // dd($user);
+                  @php   // dd($user);
                       //  if ($user[0]->usr_type=='usr_admin') { 
                       //       $fullname = $user[0]->staff->agt_first_name.' '.$user[0]->staff->agt_first_name;   
                       //   } elseif ($user[0]->usr_type=='usr_agent') {
@@ -77,14 +80,14 @@
                     <!-- Message Start -->
                     <div class="media">
                       <img src="{{ asset('images/avatar_dummy.png') }}" alt="User Avatar" class="img-size-50 mr-3 img-circle">
-                      <div class="media-body">
-                        <h3 class="dropdown-item-title">
+                      <div class="media-body" style="font-size:13px;">
+                        <h6 class="dropdown-item-title mb-1">
                           {{$user[0]->username}}  
-                        </h3>
+                        </h6>
 
 
                         @if ($user[1])
-                        <p class="text-sm short_msg">{{$user[1]->message}}</p>
+                        <p class="text-sm short_msg">{{substr($user[1]->message,0,75)}} ...</p>
                         <p class="text-sm text-muted mb-0"><i class="far fa-clock mr-1"></i>{{$user[1]->created_at}}</p>
                         @else
                         <p class="text-sm short_msg">---</p>
@@ -107,74 +110,26 @@
                 <!-- DIRECT CHAT -->
 <div class="card direct-chat direct-chat-primary">                  
 <div class="card-header py-3 px-3"> 
-  <h3 class="card-title mb-1" id="active_time"></h3>
+  <h3 class="card-title mb-0" id="active_time"></h3>
  
-  <div class="card-tools">
+  {{-- <div class="card-tools">
 
     <button type="button" class="btn btn-tool" title="Contacts" data-widget="chat-pane-toggle">
       <i class="fas fa-comments"></i>
     </button>
-  </div>
+  </div> --}}
 </div>
 <!-- /.card-header -->
 <div class="card-body">
   <!-- Conversations are loaded here -->
   @if ($chat_patner)
-    <div class="direct-chat-messages" id="msg_body" style=""></div> 
+    <div class="direct-chat-messages" id="msg_body" style="max"></div> 
   @else
     <div class="pt-4"> <img src="{{asset('images/chats.gif')}}" class="img img-fluid" alt=""> </div>
   @endif
   <!--/.direct-chat-messages-->
 
-  <!-- Contacts are loaded here -->
-  <div class="direct-chat-contacts">
-    <ul class="contacts-list">
-        
-            @foreach ($chat_patners as $user)
-            @php
-                //  if ($user[0]->usr_type=='usr_admin'){ 
-                //       $fullname = $user[0]->staff->agt_first_name.' '.$user[0]->staff->agt_first_name;   
-                //   } elseif ($user[0]->usr_type=='usr_agent') {
-                //       $fullname = $user[0]->agent->agt_first_name.' '.$user[0]->agent->agt_last_name;
-                //   }  elseif ($user[0]->usr_type=='usr_client') {
-                //       $fullname = $user[0]->client->first_name.' '.$user[0]->client->last_name;
-                //   } 
-            @endphp
-                <!-- End Contact Item -->
-                <li>
-                    <a href="{{route('chat_board', ['user_id'=>$user[0]->user_id])}}">
-                        <img class="contacts-list-img" src="{{asset('css/dist/img/user7-128x128.jpg') }}" alt="User Avatar">
-
-                        <div class="contacts-list-info">
-                        <span class="contacts-list-name">
-                           {{$user[0]->username}}
-
-                           @if ($user[1])
-                           <small class="contacts-list-date float-right">{{$user[1]->message}}</small>
-                           @else
-                           <small class="contacts-list-date float-right">---</small>
-                           @endif
-                         
-                        </span>
-                       
-                        @if ($user[1])
-                        <span class="contacts-list-msg">{{$user[1]->created_at}}</span>
-                        @else
-                        <span class="contacts-list-msg"></span>
-                        @endif
-                        </div>
-                        <!-- /.contacts-list-info -->
-                    </a>
-                    </li>
-                    <!-- End Contact Item -->    
-                    
-          @endforeach
-
-     
-      </ul>
-    <!-- /.contacts-list -->
-  </div>
-  <!-- /.direct-chat-pane -->
+ 
 </div>
 <!-- /.card-body -->
 <div class="card-footer">

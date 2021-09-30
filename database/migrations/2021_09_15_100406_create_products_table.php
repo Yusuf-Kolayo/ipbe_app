@@ -13,6 +13,7 @@ class CreateProductsTable extends Migration
      */
     public function up()
     {
+        if(Schema::hasTable('products')) return;
         Schema::create('products', function (Blueprint $table) {
             $table->integer('id')->primary();
             $table->string('product_id', 22);

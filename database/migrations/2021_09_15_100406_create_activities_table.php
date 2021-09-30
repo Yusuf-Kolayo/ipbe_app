@@ -13,6 +13,7 @@ class CreateActivitiesTable extends Migration
      */
     public function up()
     {
+        if(Schema::hasTable('activities')) return;
         Schema::create('activities', function (Blueprint $table) {
             $table->integer('id')->primary();
             $table->string('user_id', 22);

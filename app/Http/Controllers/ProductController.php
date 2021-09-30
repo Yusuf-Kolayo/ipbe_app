@@ -148,9 +148,9 @@ class ProductController extends BaseController
 
 
 
-    public function show($id)
+    public function show($product_id)
     {
-        $product = Product::findOrFail($id);
+        $product = Product::where('product_id', $product_id)->firstOrFail();
         return view('admin.product_profile')->with('product',$product);
     }
 

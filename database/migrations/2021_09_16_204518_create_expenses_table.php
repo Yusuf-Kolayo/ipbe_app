@@ -13,6 +13,7 @@ class CreateExpensesTable extends Migration
      */
     public function up()
     {
+        if(Schema::hasTable('expenses')) return;
         Schema::create('expenses', function (Blueprint $table) {
             $table->bigIncrements('expense_id');
             $table->datetime('date');

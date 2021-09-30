@@ -32,6 +32,7 @@ class DashboardController extends BaseController
     public function index()
     {
         $curr_user = auth()->user();  // get user data
+        
         if ($curr_user->usr_type=='usr_admin')       { $view = 'admin.dashboard'; } 
         else if ($curr_user->usr_type=='usr_agent')  { $view='agent.dashboard';   }
         else if ($curr_user->usr_type=='usr_client') { $view='client.dashboard';  }
@@ -81,7 +82,7 @@ class DashboardController extends BaseController
     public function my_profile ()
     {
        if (auth()->user()->usr_type=='usr_admin') {
-          return redirect()->route('admin.profile', ['admin'=>auth()->user()->username]);
+          return redirect()->route('admin.profile', ['username'=>auth()->user()->username]);
          } elseif (auth()->user()->usr_type=='usr_agent') {
           return redirect()->route('agent.show', ['agent'=>auth()->user()->username]);
          } elseif (auth()->user()->usr_type=='usr_client') {
@@ -89,6 +90,17 @@ class DashboardController extends BaseController
        }
     }
 
+
+
+
+
+
+
+    public function profile ($username)
+    {  
+       $user = User::where('username', $username)->firstOrFail();
+       return view('admin.admin_profile', compact('user'));
+    }
 
 
 
@@ -175,16 +187,22 @@ class DashboardController extends BaseController
     }  
  
 
-    $topnav_msg = '
-    <a class="nav-link" data-toggle="dropdown" href="#">
-      <i class="far fa-comments"><\/i>';
+    $topnav_msg = '  
+      <a href="#" class="dropdown-toggle nk-quick-nav-icon" data-toggle="dropdown" aria-expanded="true">
+      <i class="icon ni ni-chat"></i>';
 
       if (count($chat_patners)>0) {
-          $topnav_msg .= '<span class="badge badge-danger navbar-badge">'.count($chat_patners).'</span>';
-      } 
+          $topnav_msg .= '<sup> <span class="badge badge-danger">'.count($chat_patners).'</span></sup>';
+        } 
       $topnav_msg .= '</a>
-      <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right"> ';
-       
+      <div class="dropdown-menu dropdown-menu-xl dropdown-menu-right dropdown-menu-s1">
+        <div style="padding:3px;" class="mt-0"> 
+
+          <div class="dropdown-head">
+                <span class="sub-title nk-dropdown-title"> '.count($chat_patners).' recent conversations </span>
+                <a href="#">Mark All as Read</a>
+          </div>
+          <div class="">'; 
 
       foreach ($chat_patners as $user) {
                   // dd($user);
@@ -201,7 +219,7 @@ class DashboardController extends BaseController
               <div class="media">
                 <img src="'.asset('images/avatar_dummy.png').'" alt="User Avatar" class="img-size-50 ml-1 mr-2 img-circle">
                 <div class="media-body">
-                  <h3 class="dropdown-item-title">'.$user[0]->username.'<\/h3>';
+                  <h6 class="dropdown-item-title">'.$user[0]->username.'<\/h6>';
 
                     if ($user[1]) {
                     $topnav_msg .= '
@@ -209,16 +227,17 @@ class DashboardController extends BaseController
                     <p class="text-sm text-muted mb-0"><i class="far fa-clock mr-1"><\/i>'.$user[1]->created_at.'<\/p>';
                     } else { $topnav_msg .= '<p class="text-sm short_msg">---<\/p>'; }
 
-                $topnav_msg .= '
+                $topnav_msg .='
               <\/div>
             <\/div>
-          <\/a>
+          <\/a> 
           <div class="dropdown-divider"><\/div>';
       }
 
  
         $topnav_msg .= '
-      <a href="'.route('chat_board', ['chat_patner'=>[]]).'" class="dropdown-item dropdown-footer">See All Messages<\/a>
+      <a href="'.route('chat_board', ['chat_patner'=>[]]).'" class="dropdown-item dropdown-footer hover_bg_none">See All Messages<\/a>
+    <\/div>
     <\/div>';
 
    // dd($topnav_msg);

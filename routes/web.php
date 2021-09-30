@@ -43,9 +43,15 @@ Route::get('/my_profile/', [DashboardController::class, 'my_profile'])->name('my
 Route::get('/access_denied', function () { return view('access_denied'); })->name('access_denied');
 Route::resource('client', ClientController::class);  
     
-    
+
+Route::get('/product/sub/{sub_category_id}', [ProductController::class, 'sub'])->name('product.sub');
+Route::resource('product', ProductController::class);
+
+
 //=========================      ADMIN ROUTES      ==========================//
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'is_admin']], function() {     
+    Route::get('/profile/{username}', [DashboardController::class, 'profile'])->name('admin.profile');
+ 
     Route::get('/catchment/ajax_fetch_lga', [CatchmentController::class, 'ajax_fetch_lga'])->name('catchment.ajax_fetch_lga');
     Route::get('/catchment/{catchment}/trash', [CatchmentController::class, 'trash'])->name('catchment.trash');
     Route::resource('catchment', CatchmentController::class);
@@ -56,55 +62,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'is_admin']], functi
     
     Route::get('/product/refresh_product_ajax_fetch', [ProductController::class, 'refresh_product_ajax_fetch'])->name('product.refresh_product_ajax_fetch');
     Route::get('/product/update_product_ajax_fetch', [ProductController::class, 'update_product_ajax_fetch'])->name('product.update_ajax_fetch');
-   
-   
-    
-    Route::resource('brand', BrandController::class);
-    
-   
-});
+       
+    Route::resource('brand', BrandController::class); 
 
 
-//=========================      AGENT ROUTES      ==========================//
-Route::group (['prefix' => 'agent', 'middleware' => ['auth', 'is_agent']], function() {
-    Route::get('/agent/catalog', [ClientController::class, 'delete'])->name('agent.catalog'); 
-    Route::get('/product/select_client/', [ClientController::class, 'select_client'])->name('client.select_client');
-    
-    Route::post('/client/new_purchase_session/', [TransactionController::class, 'new_purchase_session'])->name('client.new_purchase_session');
-});
-
-
-
-//=========================      ADMIN/AGENT ROUTES      ==========================//
-Route::group (['prefix' => 'admin_agent', 'middleware' => ['auth', 'is_admin_agent']], function() {
-    Route::get('/agent/ajax_fetch', [AgentController::class, 'ajax_fetch'])->name('agent.ajax_fetch');
-    Route::resource('agent', AgentController::class);
-
-    Route::get('/product/show_details_ajax_fetch', [ProductController::class, 'show_details_ajax_fetch'])->name('product.show_details_ajax_fetch');
-    Route::get('/product/sub/{sub_category_id}', [ProductController::class, 'sub'])->name('product.sub');
-    Route::resource('product', ProductController::class);
-    
-    Route::get('/client/show_profile_ajax_fetch', [ClientController::class, 'show_profile_ajax_fetch'])->name('client.show_profile_ajax_fetch');
-    Route::get('/client/{client}/delete', [ClientController::class, 'delete'])->name('client.delete');  
-    
-    // Route::get('/client/show/{client}/{flash_msg?}', [ClientController::class, 'show'])->name('client.show');  
-    
-    Route::get('/transaction/delete_trans_ajax_fetch', [TransactionController::class, 'delete_trans_ajax_fetch'])->name('transaction.delete_trans_ajax_fetch');
-    Route::get('/transaction/edit_trans_ajax_fetch', [TransactionController::class, 'edit_trans_ajax_fetch'])->name('transaction.edit_trans_ajax_fetch');
-    Route::post('/transaction/create_deposit', [TransactionController::class, 'create_deposit'])->name('client.create_deposit');
-
-    Route::get('/transaction/trans_details_ajax_fetch', [TransactionController::class, 'trans_details_ajax_fetch'])->name('client.trans_details_ajax_fetch');
-    Route::get('/transaction/pps_delete_ajax_fetch', [TransactionController::class, 'pps_delete_ajax_fetch'])->name('client.pps_delete_ajax_fetch');
-    Route::get('/transaction/pps_details_ajax_fetch', [TransactionController::class, 'pps_details_ajax_fetch'])->name('client.pps_details_ajax_fetch');
-  
-    Route::resource('transaction', TransactionController::class); 
-    
-    Route::get('/category/sub_cat_ajax_fetch', [CategoryController::class, 'sub_cat_ajax_fetch'])->name('category.sub_cat_ajax_fetch');
-    Route::resource('category', CategoryController::class);
-});
-
-
-        //=========================      EXPENSES ROUTES      ==========================//
+ //=========================      EXPENSES ROUTES      ==========================//
 Route::get('/company/expenses/all',[ExpenseController::class,'allExpenses'])->name('expenses_list');
 //Route::get('/company_expenses','App\Http\Controllers\Admin\ExpenseController@allExpensesCatergories')->name('admin_expenses');
 Route::get('/company/expenses/add_or_delete_catergory',[ExpenseController::class,'allExpensesCatergories'])->name('expenses_cat');
@@ -133,3 +95,46 @@ Route::get('/company/expenses/search_with_date_and_branch_and_name',[ExpenseCont
 Route::get('/company/expenses/search_with_date_and_category_and_name',[ExpenseController::class,'searchDateAndCategoryAndName'])->name('category_date_name');
 Route::get('/company/expenses/search_with_all',[ExpenseController::class,'searchWithAll'])->name('search_all');
 
+
+});
+
+
+//=========================      AGENT ROUTES      ==========================//
+Route::group (['prefix' => 'agent', 'middleware' => ['auth', 'is_agent']], function() {
+    Route::get('/agent/catalog', [ClientController::class, 'delete'])->name('agent.catalog'); 
+    Route::get('/product/select_client/', [ClientController::class, 'select_client'])->name('client.select_client');
+    
+    Route::post('/client/new_purchase_session/', [TransactionController::class, 'new_purchase_session'])->name('client.new_purchase_session');
+});
+
+
+
+//=========================      ADMIN/AGENT ROUTES      ==========================//
+Route::group (['prefix' => 'admin_agent', 'middleware' => ['auth', 'is_admin_agent']], function() {
+    Route::get('/agent/ajax_fetch', [AgentController::class, 'ajax_fetch'])->name('agent.ajax_fetch');
+    Route::resource('agent', AgentController::class);
+
+    
+    Route::get('/product/show_details_ajax_fetch', [ProductController::class, 'show_details_ajax_fetch'])->name('product.show_details_ajax_fetch');
+    
+    Route::get('/client/show_profile_ajax_fetch', [ClientController::class, 'show_profile_ajax_fetch'])->name('client.show_profile_ajax_fetch');
+    Route::get('/client/{client}/delete', [ClientController::class, 'delete'])->name('client.delete');  
+    
+    // Route::get('/client/show/{client}/{flash_msg?}', [ClientController::class, 'show'])->name('client.show');  
+    
+    Route::get('/transaction/delete_trans_ajax_fetch', [TransactionController::class, 'delete_trans_ajax_fetch'])->name('transaction.delete_trans_ajax_fetch');
+    Route::get('/transaction/edit_trans_ajax_fetch', [TransactionController::class, 'edit_trans_ajax_fetch'])->name('transaction.edit_trans_ajax_fetch');
+    Route::post('/transaction/create_deposit', [TransactionController::class, 'create_deposit'])->name('client.create_deposit');
+
+    Route::get('/transaction/trans_details_ajax_fetch', [TransactionController::class, 'trans_details_ajax_fetch'])->name('client.trans_details_ajax_fetch');
+    Route::get('/transaction/pps_delete_ajax_fetch', [TransactionController::class, 'pps_delete_ajax_fetch'])->name('client.pps_delete_ajax_fetch');
+    Route::get('/transaction/pps_details_ajax_fetch', [TransactionController::class, 'pps_details_ajax_fetch'])->name('client.pps_details_ajax_fetch');
+  
+    Route::resource('transaction', TransactionController::class); 
+    
+    Route::get('/category/sub_cat_ajax_fetch', [CategoryController::class, 'sub_cat_ajax_fetch'])->name('category.sub_cat_ajax_fetch');
+    Route::resource('category', CategoryController::class);
+});
+
+
+    

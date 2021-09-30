@@ -13,6 +13,7 @@ class CreateCatchmentsTable extends Migration
      */
     public function up()
     {
+        if(Schema::hasTable('catchments')) return;
         Schema::create('catchments', function (Blueprint $table) {
             $table->id();
             $table->string('catchment_id', 22);

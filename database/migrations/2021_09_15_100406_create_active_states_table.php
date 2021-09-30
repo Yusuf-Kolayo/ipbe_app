@@ -11,8 +11,12 @@ class CreateActiveStatesTable extends Migration
      *
      * @return void
      */
+
+   
+
     public function up()
     {
+        if(Schema::hasTable('active_states')) return;
         Schema::create('active_states', function (Blueprint $table) {
             $table->integer('id')->primary();
             $table->string('user_id', 55);

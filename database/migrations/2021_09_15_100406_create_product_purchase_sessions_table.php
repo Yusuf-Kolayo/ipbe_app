@@ -13,6 +13,7 @@ class CreateProductPurchaseSessionsTable extends Migration
      */
     public function up()
     {
+        if(Schema::hasTable('product_purchase_sessions')) return;
         Schema::create('product_purchase_sessions', function (Blueprint $table) {
             $table->integer('id')->primary();
             $table->string('pps_id', 22);

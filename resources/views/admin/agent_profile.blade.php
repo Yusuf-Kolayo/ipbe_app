@@ -9,17 +9,23 @@
     .li_decl { font-size: 13px; }
 </style>
 
-             <!-- Content Header (Page header) --> 
-    <section class="content-header">
-        <div class="container-fluid">
-          <div class="row mb-2">
-            <div class="col-sm-6">
-              <h1>Agent Profile</h1>
-            </div>
-            
-          </div>
-        </div><!-- /.container-fluid -->
-      </section>
+    <!-- Content Header (Page header) -->
+    <section class="content-header mb-2">
+      <div class="container-fluid">
+        <div class="card card-inner p-2">
+          <div class="">
+           @if ($user->user_id==auth()->user()->user_id)
+             <h5 class="mb-0">My Profile</h5>
+           @else
+             <h5 class="mb-0">Agent Profile</h5>
+           @endif
+           
+          </div> 
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+
   
       <!-- Main content -->
       <section class="content">
@@ -1257,7 +1263,7 @@ function copyToClipboard(elem) {
 <!-------------     SOME FREE GAP HERE  ----------------->
 
 
-
+@section('page_scripts')
 <!-- jquery.steps js -->
 {{-- <script src='https://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.js'></script> --}}
 <script src="{{ asset('css/dist/js/jquery.validate.js') }}"></script>
@@ -1378,7 +1384,7 @@ function copyToClipboard(elem) {
 
 
 </script>
-
+@endsection
 
 
 

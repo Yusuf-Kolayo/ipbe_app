@@ -13,6 +13,7 @@ class CreateVerificationCodesTable extends Migration
      */
     public function up()
     {
+        if(Schema::hasTable('verification_codes')) return;
         Schema::create('verification_codes', function (Blueprint $table) {
             $table->integer('id')->primary();
             $table->string('code', 22);
