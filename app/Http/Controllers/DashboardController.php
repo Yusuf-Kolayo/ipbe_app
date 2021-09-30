@@ -218,7 +218,7 @@ class DashboardController extends BaseController
 
  
         $topnav_msg .= '
-      <a href="'.route('chat_board').'" class="dropdown-item dropdown-footer">See All Messages<\/a>
+      <a href="'.route('chat_board', ['chat_patner'=>[]]).'" class="dropdown-item dropdown-footer">See All Messages<\/a>
     <\/div>';
 
    // dd($topnav_msg);
