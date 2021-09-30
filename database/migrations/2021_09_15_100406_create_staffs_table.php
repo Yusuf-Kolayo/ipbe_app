@@ -13,6 +13,7 @@ class CreateStaffsTable extends Migration
      */
     public function up()
     {
+        if(Schema::hasTable('staffs')) return;
         Schema::create('staffs', function (Blueprint $table) {
             $table->id();
             $table->string('staff_id', 22)->unique('agent_id');

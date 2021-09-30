@@ -111,8 +111,10 @@
 
 
 
+ @section('page_scripts')
+     <x-datatables />    {{-- datatables js scripts --}}
+ @endsection
 
-  <x-datatables />    {{-- datatables js scripts --}}
 
 
 @endsection

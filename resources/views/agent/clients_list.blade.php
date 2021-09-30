@@ -109,7 +109,7 @@
         <div class="card">
             <div class="card-header">{{ __('Registered Clients') }}</div>
             <div class="card-body table-responsive"> 
-                 <table id="t1" class="table table-bordered table-striped" style="width:1000px;">
+                 <table id="example1" class="table table-bordered table-striped" style="width:1200px;">
                   <thead>
                   <tr>
                     <th>ID</th>
@@ -163,6 +163,7 @@
         </div>
  
 
-   
+   @section('page_scripts')
     <x-datatables />    {{-- datatables js scripts --}}
+   @endsection
 @endsection

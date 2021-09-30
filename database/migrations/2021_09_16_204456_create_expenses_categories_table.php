@@ -13,6 +13,7 @@ class CreateExpensesCategoriesTable extends Migration
      */
     public function up()
     {
+        if(Schema::hasTable('expenses_categories')) return;
         Schema::create('expenses_categories', function (Blueprint $table) {
             $table->id();
             $table->string('expense_catname')->unique();

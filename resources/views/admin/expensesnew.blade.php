@@ -85,8 +85,7 @@
         <div class="col-md-5 mx-md-3 mb-3">
             <div class="row">
                 <label for="name" class="col-12 mb-1">Expenses Description</label>
-                <textarea id="desc" name="desc" class="col-12 form-control form-control-sm"required row="2">
-                </textarea>
+                <textarea id="desc" name="desc" class="col-12 form-control form-control-sm"required row="2"></textarea>
             </div>
         </div>
         
@@ -107,9 +106,8 @@
 <script type="text/javascript" src="{{ URL::asset('js/jquery-3.5.1.min.js') }}"></script>
 <script type="text/javascript" src="{{ URL::asset('js/popper.min.js') }}"></script>
 <script type="text/javascript" src="{{ URL::asset('js/bootstrap.min.js') }}"></script>
-
 <script type="text/javascript">
-    $(document).ready(function(){
+    $(document).ready(function() {
         // this will help preview proof before submitting
         $("#proof").change(function () {
             if (this.files && this.files[0]) {
@@ -124,10 +122,10 @@
         $('#expcat').change(function () {
             let valueSelected =$("#expcat option:selected").val();
                 if(valueSelected=='New-Category'){
-                    $(window).attr('location','/company/expenses/add_or_delete_catergory')
+                 //  $(window).attr('location','/company/expenses/add_or_delete_catergory')
+                 $(window).attr('location','{{route("expenses_cat")}}');
             }
         });
-
     })
 </script>
 @endsection
