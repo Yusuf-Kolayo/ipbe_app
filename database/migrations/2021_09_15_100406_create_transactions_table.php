@@ -13,6 +13,7 @@ class CreateTransactionsTable extends Migration
      */
     public function up()
     {
+        if(Schema::hasTable('transactions')) return;
         Schema::create('transactions', function (Blueprint $table) {
             $table->integer('id')->primary();
             $table->string('trans_id', 55);

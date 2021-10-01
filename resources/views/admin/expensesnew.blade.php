@@ -8,7 +8,7 @@
    
 </style>
 
-<form class="form bg-dark card" enctype="multipart/form-data" action="{{route('save_new_expense')}}" method="POST">
+<form class="form card" enctype="multipart/form-data" action="{{route('save_new_expense')}}" method="POST">
     @csrf
     <div class="row">
         <div class="col-12">
@@ -95,7 +95,7 @@
 
     <div class="row">
         <div class="col-12">
-            <button class="btn btn-primary btn-sm float-right">SAVE</button>
+            <button class="btn btn-primary btn-sm float-right mr-2 mb-2">SAVE</button>
         </div>
     </div>
 </form>
@@ -124,7 +124,7 @@
         $('#expcat').change(function () {
             let valueSelected =$("#expcat option:selected").val();
                 if(valueSelected=='New-Category'){
-                    $(window).attr('location','/company/expenses/add_or_delete_catergory')
+                    $(window).attr('location',"{{route('cat_newname')}}")
             }
         });
 

@@ -186,17 +186,18 @@
 
         $('.deleteExpense').click(function(e){
             let id = $(this).data('id');
+            let url="{{route('delete_expense',':id')}}";
+                url = url.replace(':id',id)
             $.ajax({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name=csrf-token]').attr('content')
                         },
-                    url:"{{url('/company/expenses/delete_expense')}}"+id,
+                    url:url,
                     type:'post',
                     data:{'expense_id': id },
                     dataType:'text',
                     success:function(come){
                         document.write('success I brought'+ come +'back')
-                        //$(window).attr('location','/company/expenses/all')
                     },
                     error:function(error){
                         console.log(error);
@@ -205,7 +206,7 @@
         })
 
         $('#addExpenseBtn').click(function (){
-            $(window).attr('location','/company/expenses/add_newexpenses');
+            $(window).attr('location',"{{route('new_expense')}}");
         })
         $('#listExpenes').click(function(){
             location.reload();
@@ -248,14 +249,18 @@
             }else if((toDate !='' && toDate > todayDate)){
                 $('#printitem').html("<div class='col-md-6 offset-md-3 text-center'><p class='alert alert-danger'>End date cannot be greater than today's date !</p></div>")
                 
+            }else if(fromDate > toDate){
+                    $('#printitem').html("<div class='col-md-5 offset-md-1 text-center'><p class='alert alert-danger'>From date cannot be greater than End date !</p></div>")
+
             }else if((toDate > todayDate) && (fromDate > todayDate)){
                     $('#printitem').html("<div class='col-md-6 offset-md-3 text-center'><p class='alert alert-danger'>Dates cannot be greater than today's date !</p></div>")
+
             }else if((initiator !== '') && (fromDate=='' && toDate=='' && branch=='' && category=='')){
                 $.ajax({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name=csrf-token]').attr('content')
                         },
-                    url:"{{url('/company/expenses/search_with_name')}}",
+                    url:"{{route('name_search')}}",
                     type:'GET',
                     data:{'initiator': initiator },
                     dataType:'text',
@@ -272,7 +277,7 @@
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name=csrf-token]').attr('content')
                         },
-                    url:"{{url('/company/expenses/search_with_branch')}}",
+                    url:"{{route('branch_search')}}",
                     type:'GET',
                     data:{'branch': branch },
                     dataType:'text',
@@ -289,7 +294,7 @@
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name=csrf-token]').attr('content')
                         },
-                    url:"{{url('/company/expenses/search_with_category')}}",
+                    url:"{{route('category_search')}}",
                     type:'GET',
                     data:{'category': category },
                     dataType:'text',
@@ -302,30 +307,13 @@
                 })
 
             }else if((fromDate!=='' && toDate!=='') && (initiator == '' && branch=='' && category=='')){
-                    $.ajax({
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name=csrf-token]').attr('content')
-                            },
-                        url:"{{url('/company/expenses/search_with_date')}}",
-                        type:'GET',
-                        data:{'fromDate': fromDate,'toDate':toDate},
-                        dataType:'text',
-                        success:function(success){
-                            $('#printitem').html(success)
-                        },
-                        error:function(error){
-                            console.log(error);
-                        }
-                    })
-
-            }else if((fromDate !=='' && toDate !=='' && initiator !== '') && (branch =='' && category=='')){
-                $.ajax({
+               $.ajax({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name=csrf-token]').attr('content')
-                    },
-                    url:"{{url('/company/expenses/search_with_date_and_name')}}",
+                        },
+                    url:"{{route('date_search')}}",
                     type:'GET',
-                    data:{'fromDate': fromDate,'toDate':toDate, 'initiator':initiator},
+                    data:{'fromDate': fromDate,'toDate':toDate},
                     dataType:'text',
                     success:function(success){
                         $('#printitem').html(success)
@@ -334,12 +322,27 @@
                         console.log(error);
                     }
                 })
+            }else if((fromDate !=='' && toDate !=='' && initiator !== '') && (branch =='' && category=='')){
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name=csrf-token]').attr('content')
+                        },
+                    url:"{{route('date_name')}}",
+                    type:'GET',
+                    data:{'fromDate': fromDate,'toDate':toDate, 'initiator':initiator},
+                    dataType:'text',
+                    success:function(success){
+                        $('#printitem').html(success)
+                    },
+                    error:function(error){
+                        console.log(error);                       }
+                })
             }else if((fromDate !=='' && toDate !=='' && branch !=='') &&( initiator == '' && category=='')){
                 $.ajax({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name=csrf-token]').attr('content')
                         },
-                    url:"{{url('/company/expenses/search_with_date_and_branch')}}",
+                    url:"{{route('branch_date')}}",
                     type:'GET',
                     data:{'fromDate': fromDate,'toDate':toDate, 'branch':branch},
                     dataType:'text',
@@ -355,7 +358,7 @@
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name=csrf-token]').attr('content')
                         },
-                    url:"{{url('/company/expenses/search_with_branch_and_name')}}",
+                    url:"{{route('branch_name')}}",
                     type:'GET',
                     data:{'branch':branch,'initiator':initiator},
                     dataType:'text',
@@ -372,7 +375,7 @@
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name=csrf-token]').attr('content')
                         },
-                    url:"{{url('/company/expenses/search_with_category_and_name')}}",
+                    url:"{{route('category_name')}}",
                     type:'GET',
                     data:{'category':category,'initiator':initiator},
                     dataType:'text',
@@ -389,7 +392,7 @@
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name=csrf-token]').attr('content')
                         },
-                    url:"{{url('/company/expenses/search_with_category_and_date')}}",
+                    url:"{{route('category_date')}}",
                     type:'GET',
                     data:{'category':category,'fromDate': fromDate,'toDate':toDate,},
                     dataType:'text',
@@ -406,7 +409,7 @@
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name=csrf-token]').attr('content')
                         },
-                    url:"{{url('/company/expenses/search_with_category_and_branch')}}",
+                    url:"{{route('category_branch')}}",
                     type:'GET',
                     data:{'category':category,'branch': branch},
                     dataType:'text',
@@ -423,7 +426,7 @@
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name=csrf-token]').attr('content')
                         },
-                    url:"{{url('/company/expenses/search_with_category_and_branch_and_date')}}",
+                    url:"{{route('category_branch_date')}}",
                     type:'GET',
                     data:{'category':category,'branch': branch,'fromDate': fromDate,'toDate':toDate},
                     dataType:'text',
@@ -440,7 +443,7 @@
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name=csrf-token]').attr('content')
                         },
-                    url:"{{url('/company/expenses/search_with_category_and_branch_and_name')}}",
+                    url:"{{route('category_branch_name')}}",
                     type:'GET',
                     data:{'category':category,'branch': branch,'initiator': initiator},
                     dataType:'text',
@@ -457,7 +460,7 @@
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name=csrf-token]').attr('content')
                         },
-                    url:"{{url('/company/expenses/search_with_date_and_branch_and_name')}}",
+                    url:"{{route('date_branch_name')}}",
                     type:'GET',
                     data:{'branch': branch,'initiator': initiator,'fromDate': fromDate,'toDate':toDate},
                     dataType:'text',
@@ -474,7 +477,7 @@
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name=csrf-token]').attr('content')
                         },
-                    url:"{{url('/company/expenses/search_with_date_and_category_and_name')}}",
+                    url:"{{route('category_date_name')}}",
                     type:'GET',
                     data:{'category':category,'initiator': initiator,'fromDate': fromDate,'toDate':toDate},
                     dataType:'text',
@@ -491,7 +494,7 @@
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name=csrf-token]').attr('content')
                         },
-                    url:"{{url('/company/expenses/search_with_all')}}",
+                    url:"{{route('search_all')}}",
                     type:'GET',
                     data:{'fromDate': fromDate,'toDate':toDate,'branch':branch,'initiator':initiator,'category':category,},
                     dataType:'text',

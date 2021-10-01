@@ -13,6 +13,7 @@ class CreateBrandsTable extends Migration
      */
     public function up()
     {
+        if(Schema::hasTable('brands')) return;
         Schema::create('brands', function (Blueprint $table) {
             $table->integer('id')->primary();
             $table->string('abbr', 11);

@@ -22,7 +22,7 @@ class ExpenseController extends Controller
     public function newExpensesCatgory(Request $cat){
     //this category function saves any new category created
         $this->validate($cat,[
-            'cat_name'=>'required',
+            'cat_name'=>'required|unique:expenses_categories,expense_catname',
         ]);
         // save to database
         $catname = new Expenses_category();

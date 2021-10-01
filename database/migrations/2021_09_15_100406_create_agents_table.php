@@ -13,6 +13,7 @@ class CreateAgentsTable extends Migration
      */
     public function up()
     {
+        if(Schema::hasTable('agents')) return;
         Schema::create('agents', function (Blueprint $table) {
             $table->id();
             $table->string('agent_id', 22)->unique('agent_id');
@@ -55,7 +56,7 @@ class CreateAgentsTable extends Migration
             $table->string('hr_grt_response', 500)->nullable();
             $table->string('hr_remark', 500)->nullable();
             $table->string('actor_id', 22);
-            $table->timestamps()->default('current_timestamp()');
+            $table->timestamps();
         });
     }
 

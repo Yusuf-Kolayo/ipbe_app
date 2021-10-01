@@ -10,7 +10,7 @@ use App\Http\Controllers\BrandController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\ExpenseController;
-
+use App\Http\Controllers\TargetSavingController;
 
 
 /*
@@ -120,7 +120,7 @@ Route::get('/company/expenses/print',[ExpenseController::class,'expensesPrint'])
 Route::get('/company/expenses/search_with_date',[ExpenseController::class,'searchDate'])->name('date_search');
 Route::get('/company/expenses/search_with_name',[ExpenseController::class,'searchName'])->name('name_search');
 Route::get('/company/expenses/search_with_category',[ExpenseController::class,'searchCategory'])->name('category_search');
-Route::get('/company/expenses/search_with_branch',[ExpenseController::class,'searchBranch'])->name('name_branch');
+Route::get('/company/expenses/search_with_branch',[ExpenseController::class,'searchBranch'])->name('branch_search');
 Route::get('/company/expenses/search_with_date_and_branch',[ExpenseController::class,'searchDateAndBranch'])->name('branch_date');
 Route::get('/company/expenses/search_with_date_and_name',[ExpenseController::class,'searchDateAndName'])->name('date_name');
 Route::get('/company/expenses/search_with_branch_and_name',[ExpenseController::class,'searchBranchAndName'])->name('branch_name');
@@ -128,8 +128,12 @@ Route::get('/company/expenses/search_with_category_and_name',[ExpenseController:
 Route::get('/company/expenses/search_with_category_and_date',[ExpenseController::class,'searchCategoryAndDate'])->name('category_date');
 Route::get('/company/expenses/search_with_category_and_branch',[ExpenseController::class,'searchCategoryAndBranch'])->name('category_branch');
 Route::get('/company/expenses/search_with_category_and_branch_and_date',[ExpenseController::class,'searchCategoryAndBranchAndDate'])->name('category_branch_date');
-Route::get('/company/expenses/search_with_category_and_branch_and_name',[ExpenseController::class,'searchCategoryAndBranchAndName'])->name('date_branch_name');
-Route::get('/company/expenses/search_with_date_and_branch_and_name',[ExpenseController::class,'searchDateAndBranchAndName'])->name('category_branch_name');
+Route::get('/company/expenses/search_with_category_and_branch_and_name',[ExpenseController::class,'searchCategoryAndBranchAndName'])->name('category_branch_name');
+Route::get('/company/expenses/search_with_date_and_branch_and_name',[ExpenseController::class,'searchDateAndBranchAndName'])->name('date_branch_name');
 Route::get('/company/expenses/search_with_date_and_category_and_name',[ExpenseController::class,'searchDateAndCategoryAndName'])->name('category_date_name');
 Route::get('/company/expenses/search_with_all',[ExpenseController::class,'searchWithAll'])->name('search_all');
 
+  //=========================      TARGET SAVING ROUTES      ==========================//
+Route::get('/agent/target_savings',[TargetSavingController::class,'allTargetAccount'])->name('target_saving');
+Route::post('/agent/checking_existing_client',[TargetSavingController::class,'searchClientUsingNumber'])->name('check_existing_client');
+Route::post('/agent/create_target_saving',[TargetSavingController::class,'createAndSaveTargetAccount'])->name('create_target_account');

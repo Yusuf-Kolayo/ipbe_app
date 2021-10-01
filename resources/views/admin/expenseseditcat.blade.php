@@ -28,14 +28,14 @@
             {{ $_GET['edited_successfully'] }}
         </div>
     @endisset
-    @isset ($_GET['deleted_successfully']))
+    @isset ($_GET['deleted_successfully'])
         <div class="alert alert-success col-md-6 offset-md-3 text-center mt-2">
             {{ $_GET['deleted_successfully'] }}
         </div>
     @endisset
 
     <div class="col-12 table-responsive text-nowrap">
-    <h5 class="mb-0 text-right btn btn-sm btn-primary mb-4" >EXPENSES CATEGORY</h5>
+    <h5 class="mb-0 text-right btn btn-sm btn-primary mb-4" id="expen_cat">EXPENSES CATEGORY</h5>
         <table class="table table-striped table-bordered table-hover">
             <thead>
                 <tr>
@@ -178,16 +178,18 @@
         $('#deleteButton').click(function(){
                 event.preventDefault();
                 let newId=$('#deleteModal #idInput').val();
-                
+                let url="{{route('delete_catname',':newId')}}";
+                url = url.replace(':newId',newId);
+                    
                 $.ajax({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name=csrf-token]').attr('content')
                     },
-                    url:"{{'/company/expenses/delete_catergory'}}"+newId,
+                    url:url,
                     type:'post',
                     dataType:'text',
                     success:function(success){
-                        $(window).attr('location','/company/expenses/add_or_delete_catergory?deleted_successfully='+success);
+                        $(window).attr('location',"{{route('expenses_cat')}}?deleted_successfully="+success);
                     },
                     error:function(error){
                         console.log(error);
@@ -213,12 +215,12 @@
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name=csrf-token]').attr('content')
                     },
-                    url:"{{'/company/expenses/edit_catergory'}}"+newId,
+                    url:"{{route('edit_catname',"+newId+")}}",
                     type:'post',
                     data:{'catName':newName,'id': newId },
                     dataType:'text',
                     success:function(success){
-                        $(window).attr('location','/company/expenses/add_or_delete_catergory?edited_successfully='+success);
+                        $(window).attr('location',"{{route('expenses_cat')}}?edited_successfully="+success);
                     },
                     error:function(error){
                         console.log(error);
@@ -231,7 +233,11 @@
         })
 
         $('#addExpenseBtn').click(function (){
-            $(window).attr('location','/company/expenses/add_newexpenses');
+            $(window).attr('location',"{{route('new_expense')}}");
+        })
+
+        $('#expen_cat').click(function(){
+            $(window).attr('location',"{{route('expenses_cat')}}");
         })
 
        

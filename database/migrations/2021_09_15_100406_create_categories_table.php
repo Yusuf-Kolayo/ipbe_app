@@ -13,6 +13,7 @@ class CreateCategoriesTable extends Migration
      */
     public function up()
     {
+        if(Schema::hasTable('categories')) return;
         Schema::create('categories', function (Blueprint $table) {
             $table->integer('id')->primary();
             $table->string('cat_name', 100);
