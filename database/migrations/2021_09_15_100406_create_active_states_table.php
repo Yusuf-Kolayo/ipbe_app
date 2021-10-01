@@ -11,6 +11,9 @@ class CreateActiveStatesTable extends Migration
      *
      * @return void
      */
+
+   
+
     public function up()
     {
         if(Schema::hasTable('active_states')) return;

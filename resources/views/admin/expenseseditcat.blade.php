@@ -187,13 +187,17 @@
                     },
                     url:url,
                     type:'post',
-                    dataType:'text',
+                    dataType:'text',  // expenses_cat
                     success:function(success){
+<<<<<<< HEAD
                         $(window).attr('location',"{{route('expenses_cat')}}?deleted_successfully="+success);
+=======
+                    //  $(window).attr('location','/company/expenses/add_or_delete_catergory?deleted_successfully='+success);
+                        $(window).attr('location','{{route("expenses_cat", ["add_or_delete_catergory"=>'+success+'])}}')
+>>>>>>> 736244a36da598292ce52e1ab5e0fb0901232336
                     },
-                    error:function(error){
+                    error:function(error) {
                         console.log(error);
-                        
                     }
                 })
         })
@@ -220,7 +224,12 @@
                     data:{'catName':newName,'id': newId },
                     dataType:'text',
                     success:function(success){
+<<<<<<< HEAD
                         $(window).attr('location',"{{route('expenses_cat')}}?edited_successfully="+success);
+=======
+                       // $(window).attr('location','/company/expenses/add_or_delete_catergory?edited_successfully='+success);
+                       $(window).attr('location','{{route("expenses_cat", ["add_or_delete_catergory"=>'+success+'])}}')
+>>>>>>> 736244a36da598292ce52e1ab5e0fb0901232336
                     },
                     error:function(error){
                         console.log(error);
@@ -233,11 +242,16 @@
         })
 
         $('#addExpenseBtn').click(function (){
+<<<<<<< HEAD
             $(window).attr('location',"{{route('new_expense')}}");
         })
 
         $('#expen_cat').click(function(){
             $(window).attr('location',"{{route('expenses_cat')}}");
+=======
+         //   $(window).attr('location','/company/expenses/add_newexpenses');
+            $(window).attr('location','{{route("new_expense")}}');
+>>>>>>> 736244a36da598292ce52e1ab5e0fb0901232336
         })
 
        

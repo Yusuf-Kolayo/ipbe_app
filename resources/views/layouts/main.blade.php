@@ -7,7 +7,7 @@
       <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', "ALUPI ITNL") }}</title>
+    <title>{{ config('app.name', "DAP_SOFTWARE") }}</title>
 
 
   <!-- Fonts -->
@@ -17,36 +17,76 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   
   
-    <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-      <!-- Font Awesome -->
-  <link rel="stylesheet" href="{{ asset('css/plugins/fontawesome-free/css/all.min.css') }}">
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-  <!-- Tempusdominus Bootstrap 4 -->
-  <link rel="stylesheet" href="{{ asset('css/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css') }}">
-  <!-- iCheck -->
-  <link rel="stylesheet" href="{{ asset('css/plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
-  <!-- JQVMap -->
-  <link rel="stylesheet" href="{{ asset('css/plugins/jqvmap/jqvmap.min.css') }}">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="{{ asset('css/dist/css/adminlte.min.css') }}">
-  <!-- overlayScrollbars -->
-  <link rel="stylesheet" href="{{ asset('css/plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
-  <!-- Daterange picker -->
-  <link rel="stylesheet" href="{{ asset('css/plugins/daterangepicker/daterangepicker.css') }}">
-  <!-- summernote -->
-  <link rel="stylesheet" href="{{ asset('css/plugins/summernote/summernote-bs4.min.css') }}"> 
+<link rel="shortcut icon" href="{{asset('global_assets/images/fav.png') }}">
+<link rel="stylesheet" href="{{asset('assets/css/dashlite.css?ver=2.2.0')}}">
+<link id="skin-default" rel="stylesheet" href="{{asset('assets/css/theme.css?ver=2.2.0')}}">
 
-  <link rel="stylesheet" href="{{ asset('css/dist/css/style.css') }}"> 
+ 
 
-    <!-- jQuery -->
-<script src="{{ asset('css/plugins/jquery/jquery.min.js') }}"></script>
-<!-- jQuery UI 1.11.4 -->
-<script src="{{ asset('css/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
-<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
 
-  <style> 
+
+<style>
+.loader {
+border: 16px solid #f3f3f3;
+border-radius: 50%;
+border-top: 16px solid blue;
+border-bottom: 16px solid blue;
+width: 120px;
+height: 120px;
+-webkit-animation: spin 2s linear infinite;
+animation: spin 2s linear infinite;
+}
+.badge {
+display: inline-block;  padding : 0.15rem;    font-size: 0.6rem;      font-weight: 500;
+line-height: 1;         text-align: center;   white-space: nowrap;    vertical-align: baseline;     border-radius: 50%;
+transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+.btn-sd {  width: 100%;  text-align: center;  display: block;  }
+.cpic {   width: 37px;   border-radius: 50%;   border: 2px solid #798bff;   margin-right: 6px; }
+.cpic_h {  width: 44px; border-radius: 50%;  border: 2px solid #798bff;  }
+.dropdown-head  {  padding: 0.25rem 0.25rem;  }
+.pnote { color: #798bff; }
+.mssg {  font-size: 13px; font-weight: 600; color: #636667; }
+.media_ch {  border-bottom: 1px solid rgb(22 173 241 / 27%);  margin-bottom: 5px; margin-top: 11px;  }
+.mtm {  float: right;  font-size: 10px;  font-style: italic; }
+.con-ovf { display: block;  width: 100%;   overflow-x: auto;  -webkit-overflow-scrolling: touch;  -ms-overflow-style: -ms-autohiding-scrollbar; }
+.modal-header {  padding: 1rem 1.5rem; background-color: #e7eaec; }
+.form-control:focus {  box-shadow: 0 0 0 3px rgba(101, 118, 255, 0); }
+.logo-img {  width: 195px;  margin: 0 auto;  }
+.dark-mode .modal-header {  background-color: #2f4258;  }
+.dark-mode .mssg { color: #b8d5fd; }
+.modal-header { display: block; }
+.user_avatar {
+background-color: #798bff;
+padding: 11px;
+border-radius: 50%;
+margin: 4px;
+color: #fff;
+}
+#spotlight .scene img {  background-color: #fff; }  
+.nk-menu-item         { text-align: left; }
+.alert.alert-icon     {    padding-left: 1.25rem; }
+
+.prd_lbl { 
+float: right;  background-color: #8895fd; padding-left: 11px; padding-right: 11px;
+color: #fff; border-radius: 12%;  font-size: 13px;
+} 
+.prd_lbl2 {
+color: #6c75bb; float: right;  padding-left: 11px; padding-right: 11px;   font-size: 13px;  font-weight: 600; 
+/* background-color: #fff; border: 2px solid #6c75bb;  border-radius: 12%; */
+} 
+.active_x { color: #6576ff!important; } .h_card { height:433px;  } .bg_dim_red { background-color:#ffeaea;}
+.nk-sidebar .nk-menu > li .nk-menu-sub .nk-menu-sub {  margin-left: 50px;  }
+.hover_bg_none:hover { background: none!important; }
+div.card-header .card-title {  color: #364a63!important;  font-size: 20px; }
+td, th { font-size: 13px!important; }
+</style>
+
+
+
+
+ 
+<style> 
       label { font-weight: 400!important; } .img-size-50 { width: 38px; }
       .table td, .table th { padding: .25rem; font-size: 14px;}
       #example1_filter { text-align: right;  font-size: 13px; }
@@ -55,7 +95,7 @@
       .page-link { padding: .3rem .55rem;  font-size: 12px; }
       #example1_wrapper { display: block;  width: 100%;   overflow-x: auto;  -webkit-overflow-scrolling: touch; }
 .profile-user-img {
-    border: 3px solid #2196f3;   margin: 0 auto;   padding: 2px;   color: #2196f3;   
+    border: 3px solid #2196f3;    border-radius:50%;   margin: 0 auto;   padding: 4%;     color: #2196f3;   
     width: 100px;   background: #f1fbff;  font-family: monospace;   font-size: 30px; display: block;
 }
 .box_sh {border-radius: 5px;   box-shadow: 0px 0px 14px 0px #bebebe, -20px -20px 60px #ffffff;    margin-bottom: 25px; }
@@ -94,11 +134,12 @@
   </style>
 
 </head>
-<body class="hold-transition sidebar-mini layout-fixed">
-<div class="wrapper" id="main">
 
 
- @php
+
+
+
+@php
 //  FETCH MAIN CATEGORIES HERE DUE TO COMMON INTEREST AMONG THE USER TYPES
  $main_categories = App\Models\Category::where('parent_id', 0)->get();
 
@@ -113,85 +154,123 @@
  @endphp
 
 
-  @include('components.top_nav') 
 
-  <!-- Decide Appropriate Navbars -->
-  @admin
-     @include('components.admin_sidebar') 
-  @endadmin 
 
-  @agent
-   @include('components.agent_sidebar') 
-  @endagent 
 
-  @client
-   @include('components.client_sidebar') 
-  @endclient
+<body class="nk-body bg-lighter npc-general has-sidebar dark-mode">
+    <div class="nk-app-root">
+
+        
+    <div class="nk-main ">
+        
+
+
+            <!-- Decide Appropriate Navbars -->
+            @admin
+               @include('components.admin_sidebar') 
+            @endadmin 
+        
+          
+            @agent
+                @include('components.agent_sidebar') 
+            @endagent   
+          
+         
+            @client
+                @include('components.client_sidebar') 
+            @endclient  
+
+             
+
+    <div class="nk-wrap ">
+
+    <!-- top nav -->
+    @include('components.top_nav') 
 
 
  
-  
-  <!-- Content Wrapper. Contains page content -->
-  <main class=""> 
-      <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <div class="content-header">
-      <div class="container-fluid"> 
-        <x-alerts />   
- 
-            @yield('content') 
 
-          </div><!-- /.container-fluid -->
-        </div>
-        <!-- /.content-header --> 
-      </div>
-</main>
+
+
+                <!-- main header  -->
+                <!-- content      -->
+                <div class="nk-content ">
+                    <div class="container-fluid">
+                        <div class="nk-content-inner">
+                            <div class="nk-content-body">
+
+                            
+                              
+                                <x-alerts />    
+                                @yield('content') 
+                          
+ 
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+ 
 
 
   <!-- /.content-wrapper -->
   @include('components.footer')
 
 
+
+
+  
+  @yield('page_scripts') 
+
    @if (auth()->user())
-          <script>
-     var patner_id = $('#patner_id').val(); 
- 
- function fetch_chat () { 
-         // after page loading or refresh
-         if ($('#msg_body').length > 0) { var data2send={"patner_id":patner_id};  }
-                                   else { var data2send={"patner_id":""};   }
-         $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': $("meta[name=csrf-token]").attr('content') }  });
-         $.ajax({
-             url:"{{route('fetch_chat')}}",
-             dataType:"text",
-             method:"GET",
-             data:data2send,
-             success:function(resp) { 
-               if ($('#msg_body').length > 0) {  
-                 $('#msg_body').html(JSON.parse(resp).chatboard_msg.replace(/\\/g, ""));    // console.warn(JSON.parse(resp).active_time);
-                 $('#active_time').html(JSON.parse(resp).active_time.replace(/\\/g, ""));    
-               }
-                 $('#topnav_msg').html(JSON.parse(resp).topnav_msg.replace(/\\/g, ""));
-                 var element = document.getElementById("msg_body");
-                 element.scrollTop = element.scrollHeight;  
-             }
-         });
-    }  
- var intervalId = window.setInterval(function() {
-  fetch_chat(); // fetch new chat data at 5 seconds interval
- }, 5000);
-          </script>
+        <script>
+        
+            var patner_id = $('#patner_id').val(); 
+        
+            function fetch_chat () { 
+                // after page loading or refresh
+                if ($('#msg_body').length > 0) { var data2send={"patner_id":patner_id};  }
+                                        else { var data2send={"patner_id":""};   }
+                $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': $("meta[name=csrf-token]").attr('content') }  });
+                $.ajax({
+                    url:"{{route('fetch_chat')}}",
+                    dataType:"text",
+                    method:"GET",
+                    data:data2send,
+                    success:function(resp) { 
+                    if ($('#msg_body').length > 0) {  
+                        $('#msg_body').html(JSON.parse(resp).chatboard_msg.replace(/\\/g, ""));    // console.warn(JSON.parse(resp).active_time);
+                        $('#active_time').html(JSON.parse(resp).active_time.replace(/\\/g, ""));  
+
+                         var element = document.getElementById("msg_body");
+                         element.scrollTop = element.scrollHeight;    
+                    }
+                        $('#topnav_msg').html(JSON.parse(resp).topnav_msg.replace(/\\/g, ""));
+            
+                    }
+                });
+            }
+             
+            var intervalId = window.setInterval(function() {
+            fetch_chat(); // fetch new chat data at 5 seconds interval
+            }, 5000);
+           
+        </script>
    @endif
 
-  <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
-  </aside>
-  <!-- /.control-sidebar -->
+
+        
+
+ 
 </div>
-<!-- ./wrapper -->
-
-
+ 
+            </div>
+            <!-- wrap  -->
+        </div>
+        <!-- main  -->
+    </div>
+ 
 </body>
-</html>

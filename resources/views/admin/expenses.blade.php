@@ -206,7 +206,12 @@
         })
 
         $('#addExpenseBtn').click(function (){
+<<<<<<< HEAD
             $(window).attr('location',"{{route('new_expense')}}");
+=======
+          //  $(window).attr('location','/company/expenses/add_newexpenses');
+          $(window).attr('location','{{route("new_expense")}}');
+>>>>>>> 736244a36da598292ce52e1ab5e0fb0901232336
         })
         $('#listExpenes').click(function(){
             location.reload();

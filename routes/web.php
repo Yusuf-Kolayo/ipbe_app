@@ -43,9 +43,15 @@ Route::get('/my_profile/', [DashboardController::class, 'my_profile'])->name('my
 Route::get('/access_denied', function () { return view('access_denied'); })->name('access_denied');
 Route::resource('client', ClientController::class);  
     
-    
+
+Route::get('/product/sub/{sub_category_id}', [ProductController::class, 'sub'])->name('product.sub');
+Route::resource('product', ProductController::class);
+
+
 //=========================      ADMIN ROUTES      ==========================//
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'is_admin']], function() {     
+    Route::get('/profile/{username}', [DashboardController::class, 'profile'])->name('admin.profile');
+ 
     Route::get('/catchment/ajax_fetch_lga', [CatchmentController::class, 'ajax_fetch_lga'])->name('catchment.ajax_fetch_lga');
     Route::get('/catchment/{catchment}/trash', [CatchmentController::class, 'trash'])->name('catchment.trash');
     Route::resource('catchment', CatchmentController::class);
@@ -56,12 +62,40 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'is_admin']], functi
     
     Route::get('/product/refresh_product_ajax_fetch', [ProductController::class, 'refresh_product_ajax_fetch'])->name('product.refresh_product_ajax_fetch');
     Route::get('/product/update_product_ajax_fetch', [ProductController::class, 'update_product_ajax_fetch'])->name('product.update_ajax_fetch');
-   
-   
-    
-    Route::resource('brand', BrandController::class);
-    
-   
+       
+    Route::resource('brand', BrandController::class); 
+
+
+ //=========================      EXPENSES ROUTES      ==========================//
+Route::get('/company/expenses/all',[ExpenseController::class,'allExpenses'])->name('expenses_list');
+//Route::get('/company_expenses','App\Http\Controllers\Admin\ExpenseController@allExpensesCatergories')->name('admin_expenses');
+Route::get('/company/expenses/add_or_delete_catergory',[ExpenseController::class,'allExpensesCatergories'])->name('expenses_cat');
+Route::post('/company/expenses/add_or_delete_catergory',[ExpenseController::class,'newExpensesCatgory'])->name('cat_newname');
+Route::post('/company/expenses/delete_catergory{id}',[ExpenseController::class,'deleteExpensesCatergory'])->name('delete_catname');
+Route::post('/company/expenses/edit_catergory{id}',[ExpenseController::class,'editExpensesCatergory'])->name('edit_catname');
+
+Route::post('/company/expenses/save_new_expense',[ExpenseController::class,'saveExpenses'])->name('save_new_expense');
+Route::get('/company/expenses/add_newexpenses',[ExpenseController::class,'addNewExpenses'])->name('new_expense');
+Route::post('/company/expenses/delete_expense{id}',[ExpenseController::class,'deleteExpenses'])->name('delete_expense');
+Route::get('/company/expenses/print',[ExpenseController::class,'expensesPrint'])->name('expenses_print');
+
+Route::get('/company/expenses/search_with_date',[ExpenseController::class,'searchDate'])->name('date_search');
+Route::get('/company/expenses/search_with_name',[ExpenseController::class,'searchName'])->name('name_search');
+Route::get('/company/expenses/search_with_category',[ExpenseController::class,'searchCategory'])->name('category_search');
+Route::get('/company/expenses/search_with_branch',[ExpenseController::class,'searchBranch'])->name('name_branch');
+Route::get('/company/expenses/search_with_date_and_branch',[ExpenseController::class,'searchDateAndBranch'])->name('branch_date');
+Route::get('/company/expenses/search_with_date_and_name',[ExpenseController::class,'searchDateAndName'])->name('date_name');
+Route::get('/company/expenses/search_with_branch_and_name',[ExpenseController::class,'searchBranchAndName'])->name('branch_name');
+Route::get('/company/expenses/search_with_category_and_name',[ExpenseController::class,'searchCategoryAndName'])->name('category_name');
+Route::get('/company/expenses/search_with_category_and_date',[ExpenseController::class,'searchCategoryAndDate'])->name('category_date');
+Route::get('/company/expenses/search_with_category_and_branch',[ExpenseController::class,'searchCategoryAndBranch'])->name('category_branch');
+Route::get('/company/expenses/search_with_category_and_branch_and_date',[ExpenseController::class,'searchCategoryAndBranchAndDate'])->name('category_branch_date');
+Route::get('/company/expenses/search_with_category_and_branch_and_name',[ExpenseController::class,'searchCategoryAndBranchAndName'])->name('date_branch_name');
+Route::get('/company/expenses/search_with_date_and_branch_and_name',[ExpenseController::class,'searchDateAndBranchAndName'])->name('category_branch_name');
+Route::get('/company/expenses/search_with_date_and_category_and_name',[ExpenseController::class,'searchDateAndCategoryAndName'])->name('category_date_name');
+Route::get('/company/expenses/search_with_all',[ExpenseController::class,'searchWithAll'])->name('search_all');
+
+
 });
 
 
@@ -80,9 +114,8 @@ Route::group (['prefix' => 'admin_agent', 'middleware' => ['auth', 'is_admin_age
     Route::get('/agent/ajax_fetch', [AgentController::class, 'ajax_fetch'])->name('agent.ajax_fetch');
     Route::resource('agent', AgentController::class);
 
+    
     Route::get('/product/show_details_ajax_fetch', [ProductController::class, 'show_details_ajax_fetch'])->name('product.show_details_ajax_fetch');
-    Route::get('/product/sub/{sub_category_id}', [ProductController::class, 'sub'])->name('product.sub');
-    Route::resource('product', ProductController::class);
     
     Route::get('/client/show_profile_ajax_fetch', [ClientController::class, 'show_profile_ajax_fetch'])->name('client.show_profile_ajax_fetch');
     Route::get('/client/{client}/delete', [ClientController::class, 'delete'])->name('client.delete');  
@@ -104,6 +137,7 @@ Route::group (['prefix' => 'admin_agent', 'middleware' => ['auth', 'is_admin_age
 });
 
 
+<<<<<<< HEAD
         //=========================      EXPENSES ROUTES      ==========================//
 Route::get('/company/expenses/all',[ExpenseController::class,'allExpenses'])->name('expenses_list');
 //Route::get('/company_expenses','App\Http\Controllers\Admin\ExpenseController@allExpensesCatergories')->name('admin_expenses');
@@ -137,3 +171,6 @@ Route::get('/company/expenses/search_with_all',[ExpenseController::class,'search
 Route::get('/agent/target_savings',[TargetSavingController::class,'allTargetAccount'])->name('target_saving');
 Route::post('/agent/checking_existing_client',[TargetSavingController::class,'searchClientUsingNumber'])->name('check_existing_client');
 Route::post('/agent/create_target_saving',[TargetSavingController::class,'createAndSaveTargetAccount'])->name('create_target_account');
+=======
+    
+>>>>>>> 736244a36da598292ce52e1ab5e0fb0901232336

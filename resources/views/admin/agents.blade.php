@@ -1,8 +1,9 @@
 @extends('layouts.main')
 
 @section('content')
-<link rel="stylesheet" href="{{ asset('css/dist/css/reset.css') }}">
-<link rel="stylesheet" href="{{ asset('css/dist/css/responsive.css') }}">
+<link rel="stylesheet" href="{{ asset('dist/css/style.css') }}">
+<link rel="stylesheet" href="{{ asset('dist/css/reset.css') }}">
+<link rel="stylesheet" href="{{ asset('dist/css/responsive.css') }}">
 <style>
     input.inp_decl { display: inline-block!important;  height: 21px;  width: 250px; font-size: 13px; }
     p.undertaken {  text-align: center;  font-weight: 600;   border-bottom: 1px solid; margin-bottom: 22px; }
@@ -547,12 +548,14 @@
 
 
 
-
+@section('page_scripts')
 <!-- jquery.steps js -->
 {{-- <script src='https://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.js'></script> --}}
-<script src="{{ asset('css/dist/js/jquery.validate.js') }}"></script>
-<script src="{{ asset('css/dist/js/jquery.steps.js') }}"></script>
-<script src="{{ asset('css/dist/js/particles.js') }}"></script>
+<script src="{{ asset('dist/js/jquery.validate.js') }}"></script>
+<script src="{{ asset('dist/js/jquery.steps.js') }}"></script>
+<script src="{{ asset('dist/js/particles.js') }}"></script>
+
+
 
 
 <script>
@@ -691,10 +694,8 @@ const subcat_id = urlParams.get('id')
 fetch_saved_data ();
 
 </script>
+@endsection
 
 
-
-
-  <x-datatables />    {{-- datatables js scripts --}}
-
+ 
 @endsection
