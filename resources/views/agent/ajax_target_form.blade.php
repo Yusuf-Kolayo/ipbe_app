@@ -1,5 +1,10 @@
 @isset($existingClient)
-    <div class="col-md-10 offset-md-1 card px-5 rounded">
+    @if($existingClient=='no record')
+        <div class="col-md-8 offset-md-2 card my-3 py-2 mr-1 text-center">
+            <h5 class="font-weight-bolder alert alert-danger">No client number match the provided number !<br> Update your client profile and Try again or Register your client as a New customer</h5>
+        </div>
+    @else
+    <div class="col-md-10 offset-md-1 card px-5 rounded" id="targetForm">
         <div class="row my-2 text-center">
             <div class="col-12" >
                 <h4>Target Saving Registration</h4>
@@ -8,14 +13,6 @@
         <div class="row">
             <div class="col-12">
                 <form action="" method="POST">
-                    <div class="row">
-                        <div class="col-12 card text-center alert alert-danger d-none" id="statusError">
-
-                        </div>
-                        <div class="col-12 card text-center alert alert-success d-none" id="statusSuccess">
-
-                        </div>
-                    </div>
                     <div class="row form-group">
                         <input type="text" class="form-control form-control-sm" name="clientId" hidden value="{{$existingClient->client_id}}">
                         <div class="col-md-6 pr-md-3">
@@ -25,14 +22,14 @@
                         </div>
                         <div class="col-md-6 pl-md-3">
                             <label for="email"><b>Email address</b></label>
-                            <input type="email" class="form-control form-control-sm" id="email" disabled
+                            <input type="email" class="form-control form-control-sm" id="email" name="clientEmail" disabled
                             value="{{$existingClient->user->email}}">
                         </div>
                     </div>
                     <div class="row form-group">
                         <div class="col-md-6 pr-md-3">
                             <label for="number"><b>Phone-Number</b></label>
-                            <input type="text" class="form-control form-control-sm" id="number" disabled
+                            <input type="text" class="form-control form-control-sm" id="number" name="clientNo"disabled
                             value="{{$existingClient->phone}}">
                         </div>
                         <div class="col-md-6 pl-md-3">
@@ -92,9 +89,18 @@
                             <input type="text" class="form-control form-control-sm" id="accname" name="accname">
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-12 card text-center alert alert-danger d-none" id="statusError">
+
+                        </div>
+                        <div class="col-12 card text-center alert alert-success d-none" id="statusSuccess">
+
+                        </div>
+                    </div>
                     <div class="row text-right">
                         <div class="col-12 mb-2">
-                            <button type="submit" class="btn btn-sm btn-primary font-weight-bold px-4" id="createAcc">CREATE</button>
+                            <button type="submit" class="btn btn-sm btn-primary font-weight-bold px-4"  id="createAcc">CREATE</button>
+                            <button type="button" data-dismiss="modal" class="btn btn-sm btn-danger font-weight-bold px-4"  id="closeModal">CLOSE</button>
                         </div>
                     </div>
                   </form>
@@ -115,6 +121,8 @@
             let accname=$('input[name=accname]').val();
             let bankname=$('input[name=bankname]').val();
             let routineamt=$('input[name=routineamt]').val();
+            let clientNo=$('input[name=clientNo]').val();
+            let clientEmail=$('input[name=clientEmail]').val();
             let targetroutine=$('#targetroutine').val();
             let targetreason=$('#targetreason').val();
             let targetplan=$('#targetplan').val();
@@ -128,15 +136,18 @@
                     type:'POST',
                     data:{'clientId': clientId, 'accno': accno, 'accname': accname, 'bankname': bankname, 'routineamt': routineamt,
                             'targetroutine': targetroutine, 'targetreason': targetreason,'targetplan': targetplan, 'targetvalue': targetvalue,
+                            'clientNo':clientNo,'clientEmail':clientEmail,
                         },
                     dataType:'text',
                     success:function(success){
                         if(success=='success'){
                             let successStatus='Target created successfully, Remember to always save !'
+                            $('#createAcc').attr("disabled","disabled");
                             if($('#statusError').is(':visible')){
                                $('#statusError').toggleClass("d-none");
                                $('#statusSuccess').toggleClass("d-none");
                                $('#statusSuccess').html(successStatus);
+                               
                             }else{
                                 $('#statusSuccess').toggleClass("d-none");
                                 $('#statusSuccess').html(successStatus);
@@ -165,7 +176,11 @@
                     }
             })
         })
+        $("#closeModal").click(function(){
+            $('#targetForm').hide()
+        })
 
     })
 </script>
+@endif
 @endisset

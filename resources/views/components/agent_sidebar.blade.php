@@ -46,119 +46,6 @@
                         </a>
                     </li><!-- .nk-menu-item -->
 
-<<<<<<< HEAD
-         
-
-        <li class="nav-item">
-          <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-shopping-cart"></i>
-              <p>Services<i class="right fas fa-angle-left"></i></p>
-          </a> 
-      
-          <ul class="nav nav-treeview"> 
-            <li class="nav-item">
-              <a href="{{ route('target_saving') }}" class="nav-link">
-                <p>Target Saving </p>
-              </a>
-            </li>
-
-            <li class="nav-item">
-              <a href="#" class="nav-link">
-                <p> Product Saving</p>
-              </a>
-
-              <ul class="nav nav-treeview">
-                <li class="nav-item">
-                  <a href="#" class="nav-link">
-                    <i class="nav-icon fas fa-shopping-cart"></i>
-                      <p>Catalog
-                    <i class="right fas fa-angle-left"></i>
-                    </p>
-                  </a> 
-              
-                  <ul class="nav nav-treeview"> 
-                    @foreach ($main_categories as $main_category)
-                    <li class="nav-item">
-                      <a href="#" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                          <p>
-                            {{$main_category->cat_name}}
-                            <i class="right fas fa-angle-left"></i>
-                          </p>
-                      </a>
-          
-                      <ul class="nav nav-treeview">
-                        @foreach ($main_category->children as $item)
-                        <li class="nav-item">
-                          <a href="{{route('product.sub',['sub_category_id'=>$item->id])}}" class="nav-link">
-                            <i class="far fa-dot-circle nav-icon"></i>
-                            <p> {{$item->cat_name}}</p>
-                          </a>
-                        </li> 
-                          @endforeach 
-                      </ul>
-                    </li> 
-                      @endforeach 
-                  </ul> 
-                </li>
-                <li class="nav-item">
-                  <a href="#" class="nav-link">
-                    <i class="nav-icon fas fa-shopping-cart"></i>
-                      <p>Food and Provision
-                        <i class="right fas fa-angle-left"></i>
-                      </p>
-                  </a> 
-              
-                  <ul class="nav nav-treeview"> 
-                    <li class="nav-item">
-                      <a href="#" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                          <p>
-                            <i class="right fas fa-angle-left"></i>Food-Stuff
-                          </p>
-                      </a>
-          
-                      <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                          <a href="" class="nav-link">
-                            <i class="far fa-dot-circle nav-icon"></i>
-                            <p> Rice</p>
-                          </a>
-                        </li> 
-                          
-                      </ul>
-                    </li>
-                    <li class="nav-item">
-                      <a href="#" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                          <p>
-                            <i class="right fas fa-angle-left"></i>Provisions
-                          </p>
-                      </a>
-          
-                      <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                          <a href="" class="nav-link">
-                            <i class="far fa-dot-circle nav-icon"></i>
-                            <p>Milk</p>
-                          </a>
-                        </li> 
-                          
-                      </ul>
-                    </li>     
-                  </ul> 
-                </li>
-              </ul>
-            </li> 
-          </ul>  
-        </li> 
-      </ul> 
-    </nav>
-    <!-- /.sidebar-menu -->
-  </div>
-  <!-- /.sidebar -->
-</aside>
-=======
                 
                   
                
@@ -175,18 +62,46 @@
                                 <ul class="nk-menu-sub">
                                     @foreach ($main_category->children as $item)
                                     <li class="nk-menu-item">
-                                        <a href="{{route('product.sub',['sub_category_id'=>$item->id])}}" class="nk-menu-link"><span class="nk-menu-text">{{$item->cat_name}}</span></a>
+                                        <a href="{{route('product.sub',['sub_category_id'=>$item->id])}}" 
+                                          class="nk-menu-link">
+                                          <span class="nk-menu-text">{{$item->cat_name}}</span>
+                                        </a>
                                     </li> 
                                     @endforeach
                                 </ul>
                             </li> 
                             @endforeach
                         </ul><!-- .nk-menu-sub -->
-                    </li><!-- .nk-menu-item -->
+                      </li><!-- .nk-menu-item -->
+                    <li class="nk-menu-item has-sub">
+                      <a href="#" class="nk-menu-link nk-menu-toggle ">
+                        <span class="nk-menu-icon"><i class="fas fa-cloud pr-2"></i></span>
+                        <span class="nk-menu-text"> Target Saving</span>
+                      </a> 
+                  
+                      <ul class="nk-menu-sub"> 
+                        <li class="nk-menu-item">
+                          <a href="{{ route('target_saving')}}" class="nk-menu-link">
+                            <span class="nk-menu-text">Targets </span>
+                          </a>
+                        </li>
+                        <li class="nk-menu-item">
+                          <a href="{{ route('target_transaction')}}" class="nk-menu-link">
+                            <span class="nk-menu-text">Save Transaction </span>
+                          </a>
+                        </li>
+                        <li class="nk-menu-item">
+                          <a href="{{ route('target_request')}}" class="nk-menu-link">
+                            <span class="nk-menu-text">Request Target</span>
+                          </a>
+                        </li>
+            
+                        
+                      </ul>  
+                    </li>
                   
                 </ul><!-- .nk-menu -->
             </div><!-- .nk-sidebar-menu -->
         </div><!-- .nk-sidebar-content -->
     </div><!-- .nk-sidebar-element -->
 </div>
->>>>>>> 736244a36da598292ce52e1ab5e0fb0901232336

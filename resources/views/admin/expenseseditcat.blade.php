@@ -12,15 +12,15 @@
 
 <div class="row">
     <div class="col-12">
-        <h5 class="mb-0 btn btn-sm mb-2 btn-danger" id="addExpenseBtn">ADD NEW EXPENSE</h5>
+        <h5 class="mb-0 btn btn-sm mb-2 btn-outline-primary" id="addExpenseBtn">ADD NEW EXPENSE</h5>
         <h5 class="mb-0 float-right btn btn-sm btn-primary" data-toggle="modal" data-target="#addmodal">ADD NEW CATEGORY</h5>
     </div>
 </div>
 
 <div class="row">
-    @if (session('status'))
+    @if(Session::has('status'))
         <div class="alert alert-success col-md-6 offset-md-3 text-center mt-2">
-            {{ session('status') }}
+            {{ Session::get('status') }}
         </div>
     @endif
     @isset ($_GET['edited_successfully'])
@@ -36,8 +36,8 @@
 
     <div class="col-12 table-responsive text-nowrap">
     <h5 class="mb-0 text-right btn btn-sm btn-primary mb-4" id="expen_cat">EXPENSES CATEGORY</h5>
-        <table class="table table-striped table-bordered table-hover">
-            <thead>
+        <table class="table table-striped table-bordered">
+            <thead class="thead-dark">
                 <tr>
                     <th class="text-md text-center">S/N</th>
                     <th class="text-md text-center">CATEGORY NAME</th>
@@ -50,11 +50,11 @@
                     <td class="">{{$no}}</td> 
                     <td class="text-left">{{$expensecategory['expense_catname']}}</td> 
                     <!-- Button trigger modal -->
-                    <td class="btn btn-sm btn-primary px-2 my-1" data-toggle="modal" data-target="#editModal"
-                        data-name="{{$expensecategory['expense_catname']}}" data-id="{{$expensecategory['id']}}">EDIT</td> 
-                    <td class="btn btn-sm btn-danger mx-2 float-right my-1" data-toggle="modal" data-target="#deleteModal" 
-                        data-name="{{$expensecategory['expense_catname']}}" data-id="{{$expensecategory['id']}}">DELETE</td>
-                    <p class="d-none">{{$no++}}</p>
+                    <td><button class="btn btn-sm btn-outline-primary px-2 my-1" data-toggle="modal" data-target="#editModal"
+                        data-name="{{$expensecategory['expense_catname']}}" data-id="{{$expensecategory['id']}}">EDIT</button></td> 
+                    <td><button class="btn btn-sm btn-outline-danger px-2 my-1" data-toggle="modal" data-target="#deleteModal" 
+                        data-name="{{$expensecategory['expense_catname']}}" data-id="{{$expensecategory['id']}}">DELETE</button></td>
+                    <?php $no++ ?>
                 </tr>
                
             @endforeach   
@@ -189,12 +189,7 @@
                     type:'post',
                     dataType:'text',  // expenses_cat
                     success:function(success){
-<<<<<<< HEAD
                         $(window).attr('location',"{{route('expenses_cat')}}?deleted_successfully="+success);
-=======
-                    //  $(window).attr('location','/company/expenses/add_or_delete_catergory?deleted_successfully='+success);
-                        $(window).attr('location','{{route("expenses_cat", ["add_or_delete_catergory"=>'+success+'])}}')
->>>>>>> 736244a36da598292ce52e1ab5e0fb0901232336
                     },
                     error:function(error) {
                         console.log(error);
@@ -224,12 +219,7 @@
                     data:{'catName':newName,'id': newId },
                     dataType:'text',
                     success:function(success){
-<<<<<<< HEAD
                         $(window).attr('location',"{{route('expenses_cat')}}?edited_successfully="+success);
-=======
-                       // $(window).attr('location','/company/expenses/add_or_delete_catergory?edited_successfully='+success);
-                       $(window).attr('location','{{route("expenses_cat", ["add_or_delete_catergory"=>'+success+'])}}')
->>>>>>> 736244a36da598292ce52e1ab5e0fb0901232336
                     },
                     error:function(error){
                         console.log(error);
@@ -242,16 +232,11 @@
         })
 
         $('#addExpenseBtn').click(function (){
-<<<<<<< HEAD
             $(window).attr('location',"{{route('new_expense')}}");
         })
 
         $('#expen_cat').click(function(){
             $(window).attr('location',"{{route('expenses_cat')}}");
-=======
-         //   $(window).attr('location','/company/expenses/add_newexpenses');
-            $(window).attr('location','{{route("new_expense")}}');
->>>>>>> 736244a36da598292ce52e1ab5e0fb0901232336
         })
 
        

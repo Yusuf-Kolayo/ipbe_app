@@ -17,6 +17,8 @@ class CreateTargetSavingsTable extends Migration
         Schema::create('target_savings', function (Blueprint $table) {
             $table->id();
             $table->string('client_id', 55);
+            $table->string('client_no');
+            $table->string('client_email');
             $table->string('overall_value');
             $table->enum('target_plan', ['monthly', '3-months', '6-months', 'not-specific']);
             $table->enum('target_routine', ['daily', 'weekly']);

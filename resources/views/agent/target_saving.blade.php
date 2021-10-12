@@ -3,8 +3,11 @@
 @section('content')
 
 <div class="row">
-    <div class="col-12">
-        <button type="button" class="btn btn-primary float-right btn-sm mb-3" data-toggle="modal" data-target="#new-target">CREATE NEW ACCOUNT</button>
+    <div class="col-md-6">
+        <button type="button" class="btn btn-primary btn-sm mb-3" id="newTransaction">RECORD NEW TRANSACTION</button>
+    </div>
+    <div class="col-md-6">
+        <button type="button" class="btn btn-primary float-right btn-sm mb-3" data-toggle="modal" data-target="#new-target">CREATE NEW TARGET</button>
     </div>
 </div>
 
@@ -12,28 +15,28 @@
 
 </div>
 
-<nav>
-    <div class=" row nav nav-tabs" id="nav-tab1" role="tablist">
-        <button class="nav-link active font-weight-bolder bg-secondary col-6" id="nav-daily-tab" data-toggle="tab" data-target="#nav-daily" type="button" role="tab" aria-controls="nav-daily" aria-selected="true">DAILY</button>
-        <button class="nav-link font-weight-bolder bg-secondary col-6" id="nav-weekly-tab" data-toggle="tab" data-target="#nav-weekly" type="button" role="tab" aria-controls="nav-weekly" aria-selected="false">WEEKLY</button>
+<nav class="">
+    <div class=" row nav nav-tabs text-center" id="nav-tab1" role="tablist"> 
+        <button class="nav-link active font-weight-bolder bg-secondary col-6 d-inline-block" id="nav-daily-tab" data-toggle="tab" data-target="#nav-daily" type="button" role="tab" aria-controls="nav-daily" aria-selected="true">DAILY</button>
+        <button class="nav-link font-weight-bolder bg-secondary col-6 d-inline-block" id="nav-weekly-tab" data-toggle="tab" data-target="#nav-weekly" type="button" role="tab" aria-controls="nav-weekly" aria-selected="false">WEEKLY</button>
     </div>
 </nav>
 
 <nav>
     <div class=" row nav nav-tabs" id="nav-tab2" role="tablist">
-        <button class="nav-link active font-weight-bolder bg-info col-3" id="nav-monthly-tab" data-toggle="tab" data-target="#nav-monthly" type="button" role="tab" aria-controls="nav-monthly" aria-selected="true">MONTHLY</button>
-        <button class="nav-link font-weight-bolder bg-info col-3" id="nav-quarterly-tab" data-toggle="tab" data-target="#nav-quarterly" type="button" role="tab" aria-controls="nav-quarterly" aria-selected="false">QUARTERLY</button>
-        <button class="nav-link font-weight-bolder bg-info col-3" id="nav-6month-tab" data-toggle="tab" data-target="#nav-6month" type="button" role="tab" aria-controls="nav-6month" aria-selected="false">6 MONTH</button>
-        <button class="nav-link font-weight-bolder bg-info col-3" id="nav-unfixed-tab" data-toggle="tab" data-target="#nav-unfixed" type="button" role="tab" aria-controls="nav-unfixed" aria-selected="false">UNFIXED</button>
+        <button class="nav-link active font-weight-bolder col-3 bg-secondary d-inline-block" id="nav-monthly-tab" data-toggle="tab" data-target="#nav-monthly" type="button" role="tab" aria-controls="nav-monthly" aria-selected="true">MONTHLY</button>
+        <button class="nav-link font-weight-bolder col-3 bg-secondary d-inline-block" id="nav-quarterly-tab" data-toggle="tab" data-target="#nav-quarterly" type="button" role="tab" aria-controls="nav-quarterly" aria-selected="false">QUARTERLY</button>
+        <button class="nav-link font-weight-bolder col-3 bg-secondary d-inline-block" id="nav-6month-tab" data-toggle="tab" data-target="#nav-6month" type="button" role="tab" aria-controls="nav-6month" aria-selected="false">6 MONTH</button>
+        <button class="nav-link font-weight-bolder col-3 bg-secondary d-inline-block" id="nav-unfixed-tab" data-toggle="tab" data-target="#nav-unfixed" type="button" role="tab" aria-controls="nav-unfixed" aria-selected="false">UNFIXED</button>
     </div>
 </nav>
 
 <nav>
     <div class=" row nav nav-tabs" id="nav-tab3" role="tablist" style="display: none">
-        <button class="nav-link active font-weight-bolder bg-info col-3" id="nav-wmonthly-tab" data-toggle="tab" data-target="#nav-wmonthly" type="button" role="tab" aria-controls="nav-wmonthly" aria-selected="true">MONTHLY</button>
-        <button class="nav-link font-weight-bolder bg-info col-3" id="nav-wquarterly-tab" data-toggle="tab" data-target="#nav-wquarterly" type="button" role="tab" aria-controls="nav-wquarterly" aria-selected="false">QUARTERLY</button>
-        <button class="nav-link font-weight-bolder bg-info col-3" id="nav-w6month-tab" data-toggle="tab" data-target="#nav-w6month" type="button" role="tab" aria-controls="nav-w6month" aria-selected="false">6 MONTH</button>
-        <button class="nav-link font-weight-bolder bg-info col-3" id="nav-wunfixed" data-toggle="tab" data-target="#nav-wunfixed" type="button" role="tab" aria-controls="nav-wunfixed" aria-selected="false">UNFIXED</button>
+        <button class="nav-link active font-weight-bolder bg-secondary col-3 d-inline-block" id="nav-wmonthly-tab" data-toggle="tab" data-target="#nav-wmonthly" type="button" role="tab" aria-controls="nav-wmonthly" aria-selected="true">MONTHLY</button>
+        <button class="nav-link font-weight-bolder bg-secondary col-3 d-inline-block" id="nav-wquarterly-tab" data-toggle="tab" data-target="#nav-wquarterly" type="button" role="tab" aria-controls="nav-wquarterly" aria-selected="false">QUARTERLY</button>
+        <button class="nav-link font-weight-bolder bg-secondary  col-3 d-inline-block" id="nav-w6month-tab" data-toggle="tab" data-target="#nav-w6month" type="button" role="tab" aria-controls="nav-w6month" aria-selected="false">6 MONTH</button>
+        <button class="nav-link font-weight-bolder bg-secondary col-3 d-inline-block" id="nav-wunfixed" data-toggle="tab" data-target="#nav-wunfixed" type="button" role="tab" aria-controls="nav-wunfixed" aria-selected="false">UNFIXED</button>
     </div>
 </nav>
 
@@ -48,16 +51,32 @@
                     </div>
                     <div class="col-12 table-responsive">
                         <table class="table table-bordered table-hover table-sm">
-                            <thead>
+                            <thead class="thead-dark">
                                 <tr>
-                                    <th>NAME</th><th>PHONE-NO</th><th>TARGET-VALUE</th><th>ROUTINE-AMOUNT</th><th>DETAILS</th>
+                                    <th>NAME</th><th>PHONE-NO</th><th>TARGET-VALUE</th><th>ROUTINE-AMOUNT</th><th>STATUS</th><th>TRANSACTION</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($data as $clientData)
-                                <tr>
-                                    <td>{{$clientData->client->first_name}}</td><td>jkhljkl</td><td>{{$clientData->overall_value}}</td><td>jkhljkl</td><td><button class="btn btn-sm btn-block"><i class="fas fa-chevron-circle-right"></i></button></td>
-                                </tr>
+                                    @if($clientData->target_routine=='daily')
+                                        @if($clientData->target_plan=='monthly')
+                                            <tr>
+                                                <td>{{ucfirst($clientData->client->last_name)}}{{' '}}
+                                                    {{ucfirst($clientData->client->first_name)}}{{' '}}
+                                                    {{ucfirst($clientData->client->other_name)}}</td>
+                                                <td>{{$clientData->client->phone}}</td>
+                                                <td>{{$clientData->overall_value}}</td>
+                                                <td>{{$clientData->routine_amount}}</td>
+                                                <td>On-going</td>
+                                                <td data-id="{{$clientData->id}}">
+                                                    <?php $id=$clientData->id; $client_id=$clientData->client_id?>
+                                                    <a href="{{route('target_owner',['id'=>$id,'client_id'=>$client_id])}}" 
+                                                        class="btn btn-sm btn-block btn-primary m-1 p-0 text-white">Transaction Record
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        @endif
+                                    @endif
                                 @endforeach
                             </tbody>
                         </table>
@@ -71,15 +90,33 @@
                     </div>
                     <div class="col-12 table">
                         <table class="table table-bordered">
-                            <thead>
+                            <thead class="thead-dark">
                                 <tr>
-                                    <th>NAME</th><th>ADDRESS</th><th>PHONE-NO</th><th>EMAIL</th><th>TARGET-TYPE</th><th>TARGET-METHOD</th><th>MORE</th>
+                                    <th>NAME</th><th>PHONE-NO</th><th>TARGET-VALUE</th><th>ROUTINE-AMOUNT</th><th>STATUS</th><th>DETAILS</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>jkhljkl</td><td>jkhljkl</td><td>jkhljkl</td><td>jkhljkl</td><td>jkhljkl</td><td>jkhljkl</td><td>jkhljkl</td>
-                                </tr>
+                                @foreach ($data as $clientData)
+                                    @if($clientData->target_routine=='daily')
+                                        @if($clientData->target_plan=='3-months')
+                                            <tr>
+                                                <td>{{ucfirst($clientData->client->last_name) }}{{' '}}
+                                                    {{ucfirst($clientData->client->first_name)}}{{' '}}
+                                                    {{ucfirst($clientData->client->other_name)}}</td>
+                                                <td>{{$clientData->client->phone}}</td>
+                                                <td>{{$clientData->overall_value}}</td>
+                                                <td>{{$clientData->routine_amount}}</td>
+                                                <td>On-going</td>
+                                                <td data-id="{{$clientData->id}}">
+                                                    <?php $id=$clientData->id; $client_id=$clientData->client_id?>
+                                                    <a href="{{route('target_owner',['id'=>$id,'client_id'=>$client_id])}}" 
+                                                        class="btn btn-sm btn-block btn-primary m-1 p-0 text-white">Transaction Record
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        @endif
+                                    @endif
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -92,15 +129,33 @@
                     </div>
                     <div class="col-12 table">
                         <table class="table table-bordered">
-                            <thead>
+                            <thead class="thead-dark">
                                 <tr>
-                                    <th>NAME</th><th>ADDRESS</th><th>PHONE-NO</th><th>EMAIL</th><th>TARGET-TYPE</th><th>TARGET-METHOD</th><th>MORE</th>
+                                    <th>NAME</th><th>PHONE-NO</th><th>TARGET-VALUE</th><th>ROUTINE-AMOUNT</th><th>STATUS</th><th>DETAILS</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>jkhljkl</td><td>jkhljkl</td><td>jkhljkl</td><td>jkhljkl</td><td>jkhljkl</td><td>jkhljkl</td><td>jkhljkl</td>
-                                </tr>
+                                @foreach ($data as $clientData)
+                                    @if($clientData->target_routine=='daily')
+                                        @if($clientData->target_plan=='6-months')
+                                            <tr>
+                                                <td>{{ucfirst($clientData->client->last_name) }}{{' '}}
+                                                    {{ucfirst($clientData->client->first_name)}}{{' '}}
+                                                    {{ucfirst($clientData->client->other_name)}}</td>
+                                                <td>{{$clientData->client->phone}}</td>
+                                                <td>{{$clientData->overall_value}}</td>
+                                                <td>On-going</td>
+                                                <td>{{$clientData->routine_amount}}</td>
+                                                <td data-id="{{$clientData->id}}">
+                                                    <?php $id=$clientData->id; $client_id=$clientData->client_id?>
+                                                    <a href="{{route('target_owner',['id'=>$id,'client_id'=>$client_id])}}" 
+                                                        class="btn btn-sm btn-block btn-primary m-1 p-0 text-white">Transaction Record
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        @endif
+                                    @endif
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -113,15 +168,33 @@
                     </div>
                     <div class="col-12 table">
                         <table class="table table-bordered">
-                            <thead>
+                            <thead class="thead-dark">
                                 <tr>
-                                    <th>NAME</th><th>ADDRESS</th><th>PHONE-NO</th><th>EMAIL</th><th>TARGET-TYPE</th><th>TARGET-METHOD</th><th>MORE</th>
+                                    <th>NAME</th><th>PHONE-NO</th><th>TARGET-VALUE</th><th>ROUTINE-AMOUNT</th><th>STATUS</th><th>DETAILS</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>jkhljkl</td><td>jkhljkl</td><td>jkhljkl</td><td>jkhljkl</td><td>jkhljkl</td><td>jkhljkl</td><td>jkhljkl</td>
-                                </tr>
+                                @foreach ($data as $clientData)
+                                    @if($clientData->target_routine=='daily')
+                                        @if($clientData->target_plan=='not-specific')
+                                            <tr>
+                                                <td>{{ucfirst($clientData->client->last_name) }}{{' '}}
+                                                    {{ucfirst($clientData->client->first_name)}}{{' '}}
+                                                    {{ucfirst($clientData->client->other_name)}}</td>
+                                                <td>{{$clientData->client->phone}}</td>
+                                                <td>{{$clientData->overall_value}}</td>
+                                                <td>{{$clientData->routine_amount}}</td>
+                                                <td>On-going</td>
+                                                <td data-id="{{$clientData->id}}">
+                                                    <?php $id=$clientData->id; $client_id=$clientData->client_id?>
+                                                    <a href="{{route('target_owner',['id'=>$id,'client_id'=>$client_id])}}" 
+                                                        class="btn btn-sm btn-block btn-primary m-1 p-0 text-white">Transaction Record
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        @endif
+                                    @endif
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -140,15 +213,33 @@
                     </div>
                     <div class="col-12 table-responsive">
                         <table class="table table-bordered table-hover table-sm">
-                            <thead>
+                            <thead class="thead-dark">
                                 <tr>
-                                    <th>NAME</th><th>ADDRESS</th><th>PHONE-NO</th><th>EMAIL</th><th>TARGET-TYPE</th><th>TARGET-METHOD</th><th>MORE</th>
+                                    <th>NAME</th><th>PHONE-NO</th><th>TARGET-VALUE</th><th>ROUTINE-AMOUNT</th><th>STATUS</th><th>DETAILS</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>jkhljkl</td><td>jkhljkl</td><td>jkhljkl</td><td>jkhljkl</td><td>jkhljkl</td><td>jkhljkl</td><td>jkhljkl</td>
-                                </tr>
+                                @foreach ($data as $clientData)
+                                    @if($clientData->target_routine=='weekly')
+                                        @if($clientData->target_plan=='monthly')
+                                            <tr>
+                                                <td>{{ucfirst($clientData->client->last_name) }}{{' '}}
+                                                    {{ucfirst($clientData->client->first_name)}}{{' '}}
+                                                    {{ucfirst($clientData->client->other_name)}}</td>
+                                                <td>{{$clientData->client->phone}}</td>
+                                                <td>{{$clientData->overall_value}}</td>
+                                                <td>{{$clientData->routine_amount}}</td>
+                                                <td>On-going</td>
+                                                <td data-id="{{$clientData->id}}">
+                                                    <?php $id=$clientData->id; $client_id=$clientData->client_id?>
+                                                    <a href="{{route('target_owner',['id'=>$id,'client_id'=>$client_id])}}" 
+                                                        class="btn btn-sm btn-block btn-primary m-1 p-0 text-white">Transaction Record
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        @endif
+                                    @endif
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -161,15 +252,33 @@
                     </div>
                     <div class="col-12 table">
                         <table class="table table-bordered">
-                            <thead>
+                            <thead class="thead-dark">
                                 <tr>
-                                    <th>NAME</th><th>ADDRESS</th><th>PHONE-NO</th><th>EMAIL</th><th>TARGET-TYPE</th><th>TARGET-METHOD</th><th>MORE</th>
+                                    <th>NAME</th><th>PHONE-NO</th><th>TARGET-VALUE</th><th>ROUTINE-AMOUNT</th><th>STATUS</th><th>DETAILS</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>jkhljkl</td><td>jkhljkl</td><td>jkhljkl</td><td>jkhljkl</td><td>jkhljkl</td><td>jkhljkl</td><td>jkhljkl</td>
-                                </tr>
+                                @foreach ($data as $clientData)
+                                    @if($clientData->target_routine=='weekly')
+                                        @if($clientData->target_plan=='3-months')
+                                            <tr>
+                                                <td>{{ucfirst($clientData->client->last_name) }}{{' '}}
+                                                    {{ucfirst($clientData->client->first_name)}}{{' '}}
+                                                    {{ucfirst($clientData->client->other_name)}}</td>
+                                                <td>{{$clientData->client->phone}}</td>
+                                                <td>{{$clientData->overall_value}}</td>
+                                                <td>{{$clientData->routine_amount}}</td>
+                                                <td>On-going</td>
+                                                <td data-id="{{$clientData->id}}">
+                                                    <?php $id=$clientData->id; $client_id=$clientData->client_id?>
+                                                    <a href="{{route('target_owner',['id'=>$id,'client_id'=>$client_id])}}" 
+                                                        class="btn btn-sm btn-block btn-primary m-1 p-0 text-white">Transaction Record
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        @endif
+                                    @endif
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -182,15 +291,32 @@
                     </div>
                     <div class="col-12 table">
                         <table class="table table-bordered">
-                            <thead>
+                            <thead class="thead-dark">
                                 <tr>
-                                    <th>NAME</th><th>ADDRESS</th><th>PHONE-NO</th><th>EMAIL</th><th>TARGET-TYPE</th><th>TARGET-METHOD</th><th>MORE</th>
+                                    <th>NAME</th><th>PHONE-NO</th><th>TARGET-VALUE</th><th>ROUTINE-AMOUNT</th><th>STATUS</th><th>DETAILS</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>jkhljkl</td><td>jkhljkl</td><td>jkhljkl</td><td>jkhljkl</td><td>jkhljkl</td><td>jkhljkl</td><td>jkhljkl</td>
-                                </tr>
+                                @foreach ($data as $clientData)
+                                    @if($clientData->target_routine=='weekly')
+                                        @if($clientData->target_plan=='6-months')
+                                            <tr>
+                                                <td>{{ucfirst($clientData->client->last_name) }}{{' '}}
+                                                    {{ucfirst($clientData->client->first_name)}}{{' '}}
+                                                    {{ucfirst($clientData->client->other_name)}}</td>
+                                                <td>{{$clientData->client->phone}}</td>
+                                                <td>{{$clientData->overall_value}}</td>
+                                                <td>{{$clientData->routine_amount}}</td>
+                                                <td data-id="{{$clientData->id}}">
+                                                    <?php $id=$clientData->id; $client_id=$clientData->client_id?>
+                                                    <a href="{{route('target_owner',['id'=>$id,'client_id'=>$client_id])}}" 
+                                                        class="btn btn-sm btn-block btn-primary m-1 p-0 text-white">Transaction Record
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        @endif
+                                    @endif
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -203,15 +329,32 @@
                     </div>
                     <div class="col-12 table">
                         <table class="table table-bordered">
-                            <thead>
+                            <thead class="thead-dark">
                                 <tr>
-                                    <th>NAME</th><th>ADDRESS</th><th>PHONE-NO</th><th>EMAIL</th><th>TARGET-TYPE</th><th>TARGET-METHOD</th><th>MORE</th>
+                                    <th>NAME</th><th>PHONE-NO</th><th>TARGET-VALUE</th><th>ROUTINE-AMOUNT</th><th>STATUS</th><th>DETAILS</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>jkhljkl</td><td>jkhljkl</td><td>jkhljkl</td><td>jkhljkl</td><td>jkhljkl</td><td>jkhljkl</td><td>jkhljkl</td>
-                                </tr>
+                                @foreach ($data as $clientData)
+                                    @if($clientData->target_routine=='weekly')
+                                        @if($clientData->target_plan=='not-specific')
+                                            <tr>
+                                                <td>{{ucfirst($clientData->client->last_name) }}{{' '}}
+                                                    {{ucfirst($clientData->client->first_name)}}{{' '}}
+                                                    {{ucfirst($clientData->client->other_name)}}</td>
+                                                <td>{{$clientData->client->phone}}</td>
+                                                <td>{{$clientData->overall_value}}</td>
+                                                <td>{{$clientData->routine_amount}}</td>
+                                                <td data-id="{{$clientData->id}}">
+                                                    <?php $id=$clientData->id; $client_id=$clientData->client_id?>
+                                                    <a href="{{route('target_owner',['id'=>$id,'client_id'=>$client_id])}}" 
+                                                        class="btn btn-sm btn-block btn-primary m-1 p-0 text-white">Transaction Record
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        @endif
+                                    @endif
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -427,13 +570,12 @@
                         console.log(error);
                     }
             })
-        }) 
-
-
-        // $('#createAcc').click(function(){
-        //     event.preventDefault();
-        //     alert('I am clicked');
-        // })
+        })
+        
+        $('#newTransaction').click(function(){
+            $(window).attr('location',"{{route('target_transaction')}}");
+        })
+        
 
 
         $('#nav-tab1 #nav-daily-tab').on('click', function () {

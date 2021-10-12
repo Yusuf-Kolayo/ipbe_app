@@ -32,7 +32,7 @@ class ExpenseController extends Controller
         $catname->save();
         $name=$cat->cat_name;
     
-        return redirect()->back()->with('status',$name.' Added Successfully');
+        return redirect()->back()->with('status',$name.' added Successfully');
     }
 
    public function editExpensesCatergory(Request $req){
@@ -42,15 +42,13 @@ class ExpenseController extends Controller
         $data=Expenses_category::find($id);
         $data->expense_catname=$catName;
         $data->save();
-        echo('Category name changed successfully');
-        //return redirect()->back();   
+        echo('Category name changed successfully'); 
     }
     
         //this category function deletes expenses category name
     public function deleteExpensesCatergory($id){
         $data=Expenses_category::find($id);
         $data->delete();
-        //return redirect()->back()->with('status','Deleted Successfully');
         echo('Deleted Successfully');
 
     }
@@ -90,7 +88,7 @@ class ExpenseController extends Controller
                 $expenseSave->evidence = $proofName;
                 $expenseSave->description = $exp->input('desc');
                 $expenseSave->save();
-                return redirect('/company/expenses/all');
+                return redirect('admin/company/expenses/all');
             }
     }
         return redirect()->back();

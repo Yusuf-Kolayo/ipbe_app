@@ -8,7 +8,7 @@
         <div class="col-12 text-center ">
             <table class="table">
                 @if($sum!==0)
-                <thead>
+                <thead class="thead-dark">
                     <tr>
                         <th>S/N</th><th>DATE</th><th>NAME</th><th>BRANCH</th><th>CATEGORY</th><th>DESCRIPTION</th><th>PROOF</th><th>AMOUNT</th>
                     </tr>
@@ -41,13 +41,14 @@
                     @endforeach
                     @if($sum !==0)
                         <tr class="totsavprin">
-                        <th colspan="2">TOTAL (N)</th><th colspan="6" class="text-right ">{{$sum}}</th>
+                        <th colspan="2">TOTAL</th><th colspan="6" class="text-right "><span class="font-weight-bold">NGN</span>{{' '}}{{$sum}}</th>
                     </tr>
 
                     <tr class="totsavprin">
                         <th colspan="8">
-                            <button class="btn-sm btn-warning font-weight-bolder my-3 ">SAVE</button>
-                            <button class="btn-sm btn-primary btnprint my-3 font-weight-bolder ">PRINT</button> </th>
+                            <button class="btn btn-sm btn-outline-warning font-weight-bolder my-3 ">SAVE</button>
+                            <button class="btn btn-sm btn-outline-primary btnprint my-3 font-weight-bolder ">PRINT</button> 
+                        </th>
                     </tr>
                     @endif
                 @endif
@@ -384,7 +385,7 @@
                     </tr>
                     @endforeach
                     @if($sum !==0)
-                        <tr class="totsavprin">
+                    <tr class="totsavprin">
                         <th colspan="2">TOTAL (N)</th><th colspan="6" class="text-right ">{{$sum}}</th>
                     </tr>
 
@@ -494,3 +495,29 @@
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function(){
+        $('.btnprint').on('click',function(){
+            let printsection = $(this).closest('table').html();
+            let printpreview=window.open('', 'PRINT', 'height=600,width=1000');
+           // let printpreview=window.open('', '', 'left=0,top=0,width=1000,height=900,toolbar=0,scrollbars=0,status=0');
+            printpreview.document.write('<body >');
+            printpreview.document.write('<h1 style="text-align:center"> EXPENSES INVENTORY </h1>');
+            printpreview.document.write(printsection);
+            printpreview.document.write('</body></html>');
+           
+            printpreview.document.close();
+            printpreview.focus();
+            printpreview.print();
+            printpreview.close();
+            })
+        });
+
+        // $(function () {
+        //     $(".btnprint").DataTable({
+        //     "responsive": true, "lengthChange": false, "autoWidth": false,
+        //     "buttons": ["copy", "csv", "excel", "pdf", "print"]
+        //  }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+   
+        // });
+</script>

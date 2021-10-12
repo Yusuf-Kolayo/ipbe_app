@@ -122,12 +122,7 @@
         $('#expcat').change(function () {
             let valueSelected =$("#expcat option:selected").val();
                 if(valueSelected=='New-Category'){
-<<<<<<< HEAD
                     $(window).attr('location',"{{route('cat_newname')}}")
-=======
-                 //  $(window).attr('location','/company/expenses/add_or_delete_catergory')
-                 $(window).attr('location','{{route("expenses_cat")}}');
->>>>>>> 736244a36da598292ce52e1ab5e0fb0901232336
             }
         });
     })

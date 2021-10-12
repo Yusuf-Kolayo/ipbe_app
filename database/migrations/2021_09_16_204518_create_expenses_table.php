@@ -13,10 +13,6 @@ class CreateExpensesTable extends Migration
      */
     public function up()
     {
-<<<<<<< HEAD
-        
-=======
->>>>>>> 736244a36da598292ce52e1ab5e0fb0901232336
         if(Schema::hasTable('expenses')) return;
         Schema::create('expenses', function (Blueprint $table) {
             $table->bigIncrements('expense_id');

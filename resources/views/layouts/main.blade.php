@@ -20,6 +20,8 @@
 <link rel="shortcut icon" href="{{asset('global_assets/images/fav.png') }}">
 <link rel="stylesheet" href="{{asset('assets/css/dashlite.css?ver=2.2.0')}}">
 <link id="skin-default" rel="stylesheet" href="{{asset('assets/css/theme.css?ver=2.2.0')}}">
+<!-- fontawesome icons -->
+<link rel="stylesheet" href="{{ asset('icons/css/all.min.css') }}">
 
  
 

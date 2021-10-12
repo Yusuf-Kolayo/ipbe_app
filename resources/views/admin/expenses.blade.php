@@ -13,8 +13,8 @@
 <div class="row">
     <div class="col-12">
         <h5 class="mb-0 text-right btn btn-sm btn-primary px-5 mb-2" id="listExpenes" >ALL RECORDED EXPENSES</h5>
-        <button class="btn btn-lg btn-primary py-0 float-right" id="showsearch"><i class="fas fa-search"></i></button>
-        <h5 class="mb-0 text-right btn btn-sm btn-danger float-right mx-3" id="addExpenseBtn">ADD NEW EXPENSE</h5>
+        <button class="btn btn-lg btn-primary py-1 float-right" id="showsearch"><i class="fas fa-search"></i></button>
+        <h5 class="mb-0 text-right btn btn-sm btn-outline-primary float-right mx-3" id="addExpenseBtn">ADD NEW EXPENSE</h5>
     </div>
 </div>
 
@@ -105,7 +105,7 @@
 <div class="row card table-responsive text-wrap">
     <div col="12" id="printitem">
         <table id="table" class="table-bordered table-hover table">
-            <thead>
+            <thead class="thead-dark">
                 <tr>
                     <th><input type="checkbox" id="selectBox"/></th>
                     <th>ExpID</th>
@@ -134,14 +134,13 @@
                     <td>{{$allExpense['branch']}}</td>
                 	<td>{{$allExpense['description']}}</td>
                 	<td><p id="#holdProof"><a href="{{ asset("expenseproof/{$allExpense['evidence']}") }}" target="blank" id="reciept">
-                    view   
+                    Reciept   
                     </a></p></td>
                 	<td><button type="button" class="btn btn-primary btn-sm btnprint"> <i class="far fa-file-powerpoint pr-1"></i> Print</button></td>
-                    <td>
-                            <button type="button" class="btn btn-danger btn-sm deleteExpense" data-id="{{$allExpense['expense_id']}}"> 
-                                <i class="fas fa-trash-alt pr-1"></i>  Delete
-                            </button>
-                        
+                    <td class="text-center">
+                        <button type="button" class="btn mx-1 btn-outline-danger btn-sm deleteExpense" data-id="{{$allExpense['expense_id']}}"> 
+                            <i class="fas fa-trash-alt pr-1"></i>  Delete
+                        </button>  
                     </td>
                 </tr> 
                 <p class="d-none">{{$no++}}</p>
@@ -206,12 +205,7 @@
         })
 
         $('#addExpenseBtn').click(function (){
-<<<<<<< HEAD
             $(window).attr('location',"{{route('new_expense')}}");
-=======
-          //  $(window).attr('location','/company/expenses/add_newexpenses');
-          $(window).attr('location','{{route("new_expense")}}');
->>>>>>> 736244a36da598292ce52e1ab5e0fb0901232336
         })
         $('#listExpenes').click(function(){
             location.reload();
