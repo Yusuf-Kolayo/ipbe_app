@@ -15,7 +15,7 @@ class ExpenseController extends BaseController
     // EXPENSES CATEGORY FUNCTION 
 
 
-    public $middleware_except;   public $title = 'expenses';
+    public $middleware_except;   public $title = 'expense';
 
 
     public function __construct() {
