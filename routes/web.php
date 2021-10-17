@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DevController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\BrandController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\StaffController;
 
 
 
@@ -48,10 +50,14 @@ Route::get('/product/sub/{sub_category_id}', [ProductController::class, 'sub'])-
 Route::resource('product', ProductController::class);
 
 
-//=========================      ADMIN ROUTES      ==========================//
+// =========================      ADMIN ROUTES      ========================= //
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'is_admin']], function() {     
+    Route::resource('staff', StaffController::class);
+    Route::post('/grant_user_permission', [DevController::class, 'grant_user_permission'])->name('grant_user_permission');
+    Route::post('/update_user_permission', [StaffController::class, 'update_user_permission'])->name('update_user_permission');
+    Route::get('/refresh_permissions_ajax_fetch', [StaffController::class, 'refresh_permissions_ajax_fetch'])->name('refresh_permissions_ajax_fetch');
     Route::get('/profile/{username}', [DashboardController::class, 'profile'])->name('admin.profile');
- 
+    
     Route::get('/catchment/ajax_fetch_lga', [CatchmentController::class, 'ajax_fetch_lga'])->name('catchment.ajax_fetch_lga');
     Route::get('/catchment/{catchment}/trash', [CatchmentController::class, 'trash'])->name('catchment.trash');
     Route::resource('catchment', CatchmentController::class);
@@ -62,8 +68,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'is_admin']], functi
     
     Route::get('/product/refresh_product_ajax_fetch', [ProductController::class, 'refresh_product_ajax_fetch'])->name('product.refresh_product_ajax_fetch');
     Route::get('/product/update_product_ajax_fetch', [ProductController::class, 'update_product_ajax_fetch'])->name('product.update_ajax_fetch');
-       
+    
     Route::resource('brand', BrandController::class); 
+
+    Route::get('/dev', [DevController::class, 'index'])->name('dev');   
+    Route::post('/update_all_permission', [DevController::class, 'update_all_permission'])->name('update_all_permission');
 
 
  //=========================      EXPENSES ROUTES      ==========================//

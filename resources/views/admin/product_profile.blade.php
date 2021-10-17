@@ -82,10 +82,10 @@
                             <tr><td>Product ID</td>  <td><b>{{$product->product_id}}</b></td></tr>
                             <tr><td>Name</td>        <td><b>{{$product->prd_name}}</b></td></tr>
                             <tr><td>Price</td>       <td><b class="NPP"> {{number_format($product->price)}} </b></td></tr>
-                            <tr><td>Description</td> <td>{!!$product->description!!}</td></tr>
+                            <tr><td>Description</td> <td>{!!substr($product->description,0,200)!!} ...</td></tr>
                         </table> 
                     </div>
-                    <div class="tab-pane" id="purchase_sessions">
+                    <div class="tab-pane table-responsive" id="purchase_sessions">
                         <table id="t1" class="table table-bordered table-striped" style="">
                             <thead>
                             <tr>
