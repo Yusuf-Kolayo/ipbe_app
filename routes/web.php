@@ -29,9 +29,6 @@ use App\Http\Controllers\StaffController;
 // Route::get('/', function () {  return view('welcome'); });
 
 Route::get('/', function () { return redirect()->route('login'); });
-Route::get('/agent/referrer/{agent_id}', [ReferringController::class, 'show_referring_form'])->name('agent.show_referring_form');
-Route::post('/agent/send_referee_mail/', [ReferringController::class, 'send_referee_mail'])->name('agent.send_referee_mail');
-Route::get('/agent/check_referee_code/', [ReferringController::class, 'check_referee_code'])->name('agent.check_referee_code');
 
 //=========================      PUBLIC ROUTES      ==========================//
 Auth::routes();
