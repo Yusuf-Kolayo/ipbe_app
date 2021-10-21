@@ -161,8 +161,9 @@
     </div><!-- /.container-fluid -->
   </section>
 
-   @else
-      <section class="content">
+
+    @else
+        <section class="content">
         <div class="container-fluid">
           
         <div class="card">

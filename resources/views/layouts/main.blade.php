@@ -216,7 +216,7 @@ a.btn { white-space: nowrap; }   button.btn { white-space: nowrap; }
                 $.ajax({
                     url:"{{route('fetch_chat')}}",
                     dataType:"text",
-                    method:"GET",
+                    method:"POST",
                     data:data2send,
                     success:function(resp) { 
                     if ($('#msg_body').length > 0) {  

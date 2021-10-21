@@ -86,30 +86,66 @@ class BrandController extends BaseController
 
     
     
+    public function update_brand_fetch (Request $request)     {   
+        $section = 'update_brand_fetch';   // dd($this->middleware_except);  
+        if (auth()->user()->usr_type=='usr_admin') {
+            if (in_array($section, $this->middleware_except)) {
+
+
+         $brand_id = $request['brand_id'];
+         $brand = Brand::where('id', $brand_id)->firstOrFail();
+         return view('admin.brand_update_ajax_fetch', compact('brand'));
+
+            } else {  return redirect()->route('access_denied'); }
+        } 
+        
+    }
+
+
+
+
+    public function delete_brand_fetch (Request $request)     {   
+        $section = 'delete_brand_fetch';   // dd($this->middleware_except);  
+        if (auth()->user()->usr_type=='usr_admin') {
+            if (in_array($section, $this->middleware_except)) {
+
+
+         $brand_id = $request['brand_id'];
+         $brand = Brand::where('id', $brand_id)->firstOrFail();
+         return view('admin.brand_delete_ajax_fetch', compact('brand'));
+
+            } else {  return redirect()->route('access_denied'); }
+        } 
+        
+    }
+
+
 
    
-    public function update(Request $request, $id)
+
+   
+    public function update(Request $request, $brand_id)
     {
         $section = 'update';   // dd($this->middleware_except);  
         if (auth()->user()->usr_type=='usr_admin') {
             if (in_array($section, $this->middleware_except)) {
         
         $data = request()->validate([
-            'brand_name' => ['required', 'string', 'max:55', 'unique:brands,brand_name,'. $id . 'id'],
-            'description' => ['required', 'string', 'max:100'],
-            'state' => ['required', 'string', 'max:22'],
-            'lga' => ['required', 'string', 'max:55']
+            'brd_name' => ['required', 'string', 'max:100', 'unique:brands,brd_name,'.$brand_id.',id'],
+            'abbr' => ['required', 'string', 'max:3', 'unique:brands,abbr,'.$brand_id.',id'],
+            'description' => ['required', 'string', 'max:1000'],    
+            'position' => ['required', 'string', 'max:55']
         ]); 
 
-         Brand::where('id', $id)
+         Brand::where('id', $brand_id)
          ->update([  
-            'brand_name' => $data['brand_name'],
-            'description' => $data['description'],
-            'state' => $data['state'],
-            'lga' => $data['lga']
+            'brd_name' => $data['brd_name'],
+            'abbr' => strtoupper($data['abbr']),
+            'description' => $data['description'],  
+            'position' => $data['position']
         ]); 
 
-        return redirect()->route('brand.show', ['brand'=>$id])->with('success', 'brand updated Successfully.');
+        return redirect()->route('brand.index')->with('success', 'brand updated Successfully.');
         } else {  return redirect()->route('access_denied'); }
         }
     }
@@ -120,13 +156,17 @@ class BrandController extends BaseController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($brand_id)
     {
-        $section = 'store';   // dd($this->middleware_except);  
+        $section = 'destroy';   // dd($this->middleware_except);  
         if (auth()->user()->usr_type=='usr_admin') {
             if (in_array($section, $this->middleware_except)) {
 
-
+                $brand = Brand::where('id', $brand_id)->firstOrFail(); 
+                $brand->delete();    
+        
+                $brands = Brand::all();
+               return redirect()->route('brand.index', compact('brands'))->with('success', 'Brand deleted successfully');
 
             } else {  return redirect()->route('access_denied'); }
         }

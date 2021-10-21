@@ -455,7 +455,7 @@
 
 
 
-
+@section('page_scripts')
 
   <script>
     // SELECT PRODUCT MODAL
@@ -474,7 +474,7 @@
             $('#pps_ready_div').html(data);  
           }
         }); 
-     }
+    }
 
 
 
@@ -564,5 +564,6 @@
         }); 
      }
   </script> 
+  @endsection
 
 @endsection
