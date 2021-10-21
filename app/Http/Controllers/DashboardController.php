@@ -8,6 +8,7 @@ use App\Models\Notification;
 use App\Models\User;  
 use App\Models\Message;  
 use App\Models\Active_state;  
+use App\Models\Target_saving; 
 
 
 class DashboardController extends BaseController
@@ -32,11 +33,14 @@ class DashboardController extends BaseController
     public function index()
     {
         $curr_user = auth()->user();  // get user data
-        
-        if ($curr_user->usr_type=='usr_admin')       { $view = 'admin.dashboard'; } 
+        $target_saving = Target_saving::first();
+        // dd($target_saving->client);
+
+        if (($curr_user->usr_type=='usr_admin')||(($curr_user->usr_type=='usr_staff') ))      
+                                                     { $view = 'admin.dashboard'; } 
         else if ($curr_user->usr_type=='usr_agent')  { $view='agent.dashboard';   }
         else if ($curr_user->usr_type=='usr_client') { $view='client.dashboard';  }
-     
+        
         return view($view,   [  'curr_user'=>$curr_user  ]);  
     }
 
@@ -124,7 +128,7 @@ class DashboardController extends BaseController
     
     
     public function post_chat (Request $request)
-    { // dd($request);   
+    { // dd($request);  
       $receiver_id = $request['patner_id'];         $message = $request['message'];
       $sender_id = auth()->user()->user_id;       $status  = 'sent';
       $channel = auth()->user()->user_id.'_'.$receiver_id;   $timestamp = time();

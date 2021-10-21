@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DevController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\BrandController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\StaffController;
 
 
 
@@ -27,16 +29,24 @@ use App\Http\Controllers\ExpenseController;
 // Route::get('/', function () {  return view('welcome'); });
 
 Route::get('/', function () { return redirect()->route('login'); });
-Route::get('/agent/referrer/{agent_id}', [ReferringController::class, 'show_referring_form'])->name('agent.show_referring_form');
-Route::post('/agent/send_referee_mail/', [ReferringController::class, 'send_referee_mail'])->name('agent.send_referee_mail');
-Route::get('/agent/check_referee_code/', [ReferringController::class, 'check_referee_code'])->name('agent.check_referee_code');
+
+
+
+//============================  DEV PUBLIC PASSWORD PROTECTED ROUTES  ================================//
+Route::post('/register_an_admin', [DevController::class, 'register_an_admin'])->name('register_an_admin');
+Route::post('/grant_user_permission', [DevController::class, 'grant_user_permission'])->name('grant_user_permission');
+Route::get('/dev', [DevController::class, 'index'])->name('dev');
+Route::post('/update_all_permission', [DevController::class, 'update_all_permission'])->name('update_all_permission');
+
+
 
 //=========================      PUBLIC ROUTES      ==========================//
 Auth::routes();
+
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 Route::get('/chat_board/{user_id?}', [DashboardController::class, 'chat_board'])->name('chat_board');
 Route::post('/post_chat/', [DashboardController::class, 'post_chat'])->name('post_chat');
-Route::get('/fetch_chat/', [DashboardController::class, 'fetch_chat'])->name('fetch_chat');
+Route::post('/fetch_chat/', [DashboardController::class, 'fetch_chat'])->name('fetch_chat');
 Route::get('/resolve_notification/{id}', [DashboardController::class, 'resolve_notification'])->name('resolve_notification');
 Route::get('/all_notifications/', [DashboardController::class, 'all_notifications'])->name('all_notifications');
 Route::get('/my_profile/', [DashboardController::class, 'my_profile'])->name('my_profile');
@@ -48,10 +58,16 @@ Route::get('/product/sub/{sub_category_id}', [ProductController::class, 'sub'])-
 Route::resource('product', ProductController::class);
 
 
-//=========================      ADMIN ROUTES      ==========================//
-Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'is_admin']], function() {     
+// =========================      ADMIN ROUTES      ========================= //
+Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'is_admin']], function() {  
+    
+    Route::post('/update_user_permission', [StaffController::class, 'update_user_permission'])->name('update_user_permission');
+  
+    Route::get('/refresh_permissions_ajax_fetch', [StaffController::class, 'refresh_permissions_ajax_fetch'])->name('refresh_permissions_ajax_fetch');
+    Route::resource('staff', StaffController::class);
+
     Route::get('/profile/{username}', [DashboardController::class, 'profile'])->name('admin.profile');
- 
+    
     Route::get('/catchment/ajax_fetch_lga', [CatchmentController::class, 'ajax_fetch_lga'])->name('catchment.ajax_fetch_lga');
     Route::get('/catchment/{catchment}/trash', [CatchmentController::class, 'trash'])->name('catchment.trash');
     Route::resource('catchment', CatchmentController::class);
@@ -62,8 +78,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'is_admin']], functi
     
     Route::get('/product/refresh_product_ajax_fetch', [ProductController::class, 'refresh_product_ajax_fetch'])->name('product.refresh_product_ajax_fetch');
     Route::get('/product/update_product_ajax_fetch', [ProductController::class, 'update_product_ajax_fetch'])->name('product.update_ajax_fetch');
-       
+    
+    Route::post('/update_brand_fetch', [BrandController::class, 'update_brand_fetch'])->name('update_brand_fetch');
+    Route::post('/delete_brand_fetch', [BrandController::class, 'delete_brand_fetch'])->name('delete_brand_fetch');
     Route::resource('brand', BrandController::class); 
+
 
 
  //=========================      EXPENSES ROUTES      ==========================//
