@@ -74,13 +74,9 @@ class ExpenseController extends BaseController
         $catname->save();
         $name=$cat->cat_name;
     
-<<<<<<< HEAD
-        return redirect()->back()->with('status',$name.' added Successfully');
-=======
         return redirect()->back()->with('status',$name.' Added Successfully');
         } else {  return redirect()->route('access_denied'); }
         }
->>>>>>> 69208214d7e57e44837c74e6ba0a0cde8c3805e9
     }
 
     public function editExpensesCatergory(Request $req) {
@@ -95,14 +91,10 @@ class ExpenseController extends BaseController
         $data=Expenses_category::find($id);
         $data->expense_catname=$catName;
         $data->save();
-<<<<<<< HEAD
-        echo('Category name changed successfully'); 
-=======
         echo('Category name changed successfully');
         //return redirect()->back();   
             } else {  return redirect()->route('access_denied');  }
         }
->>>>>>> 69208214d7e57e44837c74e6ba0a0cde8c3805e9
     }
     
     //this category function deletes expenses category name
@@ -114,15 +106,10 @@ class ExpenseController extends BaseController
 
         $data=Expenses_category::find($id);
         $data->delete();
-<<<<<<< HEAD
-        echo('Deleted Successfully');
-
-=======
         //return redirect()->back()->with('status','Deleted Successfully');
         echo('Deleted Successfully'); 
         } else {  return redirect()->route('access_denied'); }
         }
->>>>>>> 69208214d7e57e44837c74e6ba0a0cde8c3805e9
     }
 
      // EXPENSES  FUNCTION 
@@ -139,34 +126,6 @@ class ExpenseController extends BaseController
     }
      
 
-<<<<<<< HEAD
-    public function saveExpenses(Request $exp){
-        //this will save any new expenses inputed
-        $this->validate($exp,[
-            'date'=>'required',
-            'name'=>'required',
-            'cat_name'=>'required',
-            'branch'=>'required',
-            'amount'=>'required',
-            'proof'=>'required',
-            'desc'=>'required',
-
-        ]);
-    if($proofOfExpense=$exp->file('proof')){
-        $proofName=$proofOfExpense->getClientOriginalName();
-            if($proofOfExpense->move('expenseproof',$proofName)){
-                $expenseSave = new Expense();
-                //On left field name in DB and on right field name in Form/view
-                $expenseSave->date = $exp->input('date');
-                $expenseSave->initiator = $exp->input('name');
-                $expenseSave->cat_id = $exp->input('cat_name');
-                $expenseSave->branch = $exp->input('branch');
-                $expenseSave->amount = $exp->input('amount');
-                $expenseSave->evidence = $proofName;
-                $expenseSave->description = $exp->input('desc');
-                $expenseSave->save();
-                return redirect('admin/company/expenses/all');
-=======
     public function saveExpenses(Request $exp) {
 
         $section = 'saveExpenses';   // dd($this->middleware_except);  
@@ -199,7 +158,6 @@ class ExpenseController extends BaseController
                         $expenseSave->save();
                         return redirect('/company/expenses/all');
                     }
->>>>>>> 69208214d7e57e44837c74e6ba0a0cde8c3805e9
             }
             return redirect()->back();
        } else { return redirect()->route('access_denied'); }
