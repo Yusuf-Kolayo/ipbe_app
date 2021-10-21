@@ -66,7 +66,7 @@ class StaffController extends BaseController
 
         $app_sections = $this->app_sections; 
         $user = User::Where('user_id', $staff_id)->firstOrFail();  // dd($user);
-        $user_permissions = Access_permission::Where('user_id', $staff_id)->get();  //dd($user_permissions);
+        $user_permissions = Access_permission::Where('user_id', $staff_id)->get();   $permitted_sections = [];   //dd($user_permissions);
         foreach ($user_permissions as $key => $permission) {
             $permitted_sections[] = $permission->title.'_'.$permission->section;
            // $permitted_sections[1] = $permission->title.'_'.$permission->section;
@@ -276,7 +276,7 @@ class StaffController extends BaseController
 
         $staff_id = $request['staff_id']; // dd($request['product_id']);  
         $app_sections = $this->app_sections;  
-        $user_permissions = Access_permission::Where('user_id', $staff_id)->get();  //dd($user_permissions);
+        $user_permissions = Access_permission::Where('user_id', $staff_id)->get();   $permitted_sections = [];  //dd($user_permissions);
         foreach ($user_permissions as $key => $permission) {
             $permitted_sections[] = $permission->title.'_'.$permission->section;
            // $permitted_sections[1] = $permission->title.'_'.$permission->section;

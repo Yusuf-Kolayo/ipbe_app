@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateStaffsTable extends Migration
+class CreateAccess_permissions extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateStaffsTable extends Migration
      */
     public function up()
     {
-        if(Schema::hasTable('staffs')) return;
+        if(Schema::hasTable('access_permissions')) return;
         Schema::create('staffs', function (Blueprint $table) {
             $table->id();
             $table->string('staff_id', 22)->unique('agent_id');
@@ -27,7 +27,7 @@ class CreateStaffsTable extends Migration
             $table->string('state', 22)->nullable();
             $table->date('birth_date')->nullable();
             $table->string('actor_id', 22);
-            $table->timestamps()->default('current_timestamp()');
+            $table->timestamps();
         });
     }
 

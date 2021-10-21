@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DevController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
@@ -40,6 +41,7 @@ Route::get('/', function () { return redirect()->route('login'); });
 Route::post('/register_an_admin', [DevController::class, 'register_an_admin'])->name('register_an_admin');
 Route::post('/grant_user_permission', [DevController::class, 'grant_user_permission'])->name('grant_user_permission');
 Route::get('/dev', [DevController::class, 'index'])->name('dev');
+
 Route::post('/update_all_permission', [DevController::class, 'update_all_permission'])->name('update_all_permission');
 
 
@@ -59,12 +61,13 @@ Route::resource('client', ClientController::class);
     
 
 Route::get('/product/sub/{sub_category_id}', [ProductController::class, 'sub'])->name('product.sub');
-Route::resource('product', ProductController::class);
+// Route::resource('product', AdminController::class);
 
 
 // =========================      ADMIN ROUTES      ========================= //
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'is_admin']], function() {  
-    
+    Route::get('/super', [AdminController::class, 'index'])->name('dev');
+
     Route::post('/update_user_permission', [StaffController::class, 'update_user_permission'])->name('update_user_permission');
   
     Route::get('/refresh_permissions_ajax_fetch', [StaffController::class, 'refresh_permissions_ajax_fetch'])->name('refresh_permissions_ajax_fetch');
