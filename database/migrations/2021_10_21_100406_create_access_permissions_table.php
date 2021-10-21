@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAccess_permissions extends Migration
+class CreateAccessPermissionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,19 +14,11 @@ class CreateAccess_permissions extends Migration
     public function up()
     {
         if(Schema::hasTable('access_permissions')) return;
-        Schema::create('staffs', function (Blueprint $table) {
+        Schema::create('access_permissions', function (Blueprint $table) {
             $table->id();
-            $table->string('staff_id', 22)->unique('agent_id');
-            $table->string('first_name', 55);
-            $table->string('last_name', 55);
-            $table->string('other_name', 55);
-            $table->string('phone', 22);
-            $table->string('gender', 11);
-            $table->string('address', 100);
-            $table->string('city', 22)->nullable();
-            $table->string('state', 22)->nullable();
-            $table->date('birth_date')->nullable();
-            $table->string('actor_id', 22);
+            $table->string('user_id', 22)->unique('user_id');
+            $table->string('title', 22);
+            $table->string('section', 22); 
             $table->timestamps();
         });
     }
