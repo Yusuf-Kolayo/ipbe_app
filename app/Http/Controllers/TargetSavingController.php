@@ -159,9 +159,13 @@ class TargetSavingController extends Controller
     }
 
     public function allRequestedTarget(){
-        $requestTargets=Target_saving::join('target_requests','target_requests.request_id','=','target_savings.id')
-        ->orderBy('request_date', 'DESC')
-        ->get();
+        // $requestTargets=Target_saving::join('target_requests','target_requests.request_id','=','target_savings.id')
+        // ->orderBy('request_date', 'DESC')
+        // ->get();
+        $requestTargets=Target_request::all();
+        // foreach ($requestTargets as $key => $value) { echo $value->target_saving;
+        //     # code...
+        // }  die();
         //dd($requestTargets);
         return view ('Agent\target_request',['requests'=>$requestTargets]);
     }
@@ -221,9 +225,8 @@ class TargetSavingController extends Controller
             
     }
 
-    public function changeRequestStatus(Request $req){
-        $target_saving_id=$req['targetId'];
-        $status=Target_request::find($target_saving_id);
+    public function changeRequestStatus($id){
+        $status=Target_request::find($id);
         $status->request_status='Completed';
         $status->save();
     }

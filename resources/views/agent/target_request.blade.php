@@ -23,7 +23,7 @@
 </div>
 <div class="row">
     <div class="col-12 table-responsive">
-        <table class="table table-bordered table-hover table-sm">
+        <table class="table table-bordered table-sm">
             <thead class="thead-dark">
                 <tr>
                     <th>S/N</th><th>NAME</th><th>PHONE-NO</th><th>AMOUNT-SAVED</th><th>PAYMENT-METHOD</th>
@@ -36,10 +36,10 @@
                 @foreach($requests as $request)
                 <tr>
                     <td>{{$no}}</td>
-                    <td>{{ucfirst($request->client->last_name) }}{{' '}}
-                        {{ucfirst($request->client->first_name) }}{{' '}}
-                        {{ucfirst($request->client->other_name )}}</td>
-                        <td>{{$request->client_no}}</td>
+                    <td>{{ucfirst($request->target_saving->client->last_name) }}{{' '}}
+                        {{ucfirst($request->target_saving->client->first_name) }}{{' '}}
+                        {{ucfirst($request->target_saving->client->other_name )}}</td>
+                        <td>{{$request->target_saving->client_no}}</td>
                         <td>{{$request->amount_saved}}</td>
                         <td>{{$request->payment_method}}</td>
                         @if($request->payment_method !=='cash')
@@ -54,12 +54,12 @@
                         @if($request->request_status=='Approved')
                         <td><span class="badge badge-dot badge-success font-weight-bold">Completed</span></td>
                         @else
-                        <td><span class="badge badge-dot badge-warning pl-3 font-weight-bold">Pending</span> 
-                            <button class="btn-sm btn btn-outline-warning ml-2"><i class="fas fa-edit"></i></button>
+                        <td><span class="badge badge-dot badge-warning pl-3 font-weight-bold">Pending{{$request->request_id}}</span> 
+                            <button class="btn-sm btn btn-outline-warning ml-2 reqStatus" data-reqid="{{$request->request_id}}"
+                            type="button" data-toggle="modal" data-target="#approveReq" ><i class="fas fa-edit"></i></button>
                         </td>
                         @endif
                 </tr>
-                <tr>{{$request}}</tr>
                 <?php $no++?>
                 @endforeach
             </tbody>
@@ -241,13 +241,13 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-body">
-                <p>Are you sure you want to set this request to be approved and paid ?</p>
+                <p class="font-weight-bold alert alert-warning"> <i class="fas fa-exclamation-triangle mr-2"></i> Are you sure this Request has been Approved and Paid ?</p>
             </div>
             <div class="modal-footer">
                 <div class="row">
                     <div class="col-12 text-right">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">NO</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">YES</button>
+                        <button type="button" class="btn btn-outline-dark" data-dismiss="modal">NO</button>
+                        <a href="" id="statusBtn"><button type="button" class="btn btn-outline-warning" data-dismiss="modal">YES</button></a>
                     </div>
                 </div>
             </div>
@@ -297,7 +297,7 @@
                 $(".modal-body #refundMethod").val( reqMethod );  
                 $(".modal-body #refundMethod").addClass('text-capitalize');
 
-                if(reqMethod !=='cash'){
+                if(reqMethod =='transfer'){
                     $('#bank').removeClass('d-none');
                 }
                       
@@ -310,9 +310,18 @@
             $('#accNo').removeAttr('readonly');
         })
 
-        $('.updateStatus').click(function(){
+        $('.reqStatus').click(function(){
+            let reqId= $(this).data('reqid');
+            $('#approveReq').on('shown.bs.modal', function (event) {
+                var link = '{{ route("change_status", ":id") }}';
+                    link = link.replace(':id',reqId);
 
+                    $('#statusBtn').attr("href", link);      
+            });
         })
+        
+        
+
 
 
          

@@ -151,4 +151,4 @@ Route::get('/agent/target_reimbursement',[TargetSavingController::class,'allRequ
 Route::post('/agent/mini_transaction_report',[TargetSavingController::class,'miniTransactionReport'])->name('mini_trans_report');
 Route::post('/agent/client_bank_details',[TargetSavingController::class,'clientBankDetails'])->name('bank_details');
 Route::post('/agent/target_reimbursement',[TargetSavingController::class,'requestTarget'])->name('requestATarget');
-Route::post('/agent/target_status',[TargetSavingController::class,'changeRequestStatus'])->name('changeStatus');
+Route::post('/agent/target_status{id}',[TargetSavingController::class,'changeRequestStatus'])->name('change_status');

@@ -8,96 +8,100 @@
    
 </style>
 
-<form class="form card" enctype="multipart/form-data" action="{{route('save_new_expense')}}" method="POST">
-    @csrf
-    <div class="row">
-        <div class="col-12">
-            <h5 class="mb-0 text-right btn btn-sm btn-primary mt-4 mb-4 ml-md-5" >NEW EXPENSES</h5>
-        </div>
-    </div>
-    <div class="row form-group">
-        <div class="col-md-2 offset-md-9 mb-3">
+<div class="row px-2">
+    <div class="col-12 card">
+        <form class="form" enctype="multipart/form-data" action="{{route('save_new_expense')}}" method="POST">
+            @csrf
             <div class="row">
-                <label for="date" class="col-12">Expenses Date</label>
-                <input type="date" id="date" name="date" class="col-12 form-control form-control-sm" required>
+                <div class="col-12">
+                    <h5 class="mb-0 text-right btn btn-sm btn-primary mt-4 mb-4 ml-md-5" >NEW EXPENSES</h5>
+                </div>
             </div>
-        </div>
-    </div>
-    <div class="row form-group justify-content-center">
-        <div class="col-md-5 mx-md-3 mb-3">
-            <div class="row">
-                <label for="name" class="col-12 mb-1">Expenses Initiator</label>
-                <input type="text" id="name" name="name" class="col-12 form-control form-control-sm" required>
-            </div>
-        </div>
-
-        <div class="col-md-5 mx-md-3 mb-3">
-            <div class="row">
-                <label for="expcat" class="col-12 mb-1">Expenses Category</label>
-                <select id="expcat" name="cat_name" class="col-12 form-control form-control-sm" required>
-                    <option value="" class="text-center">--SELECT--</option>
-                    @foreach($category as $category)
-                        <option value="{{$category['id']}}">{{$category['expense_catname']}}</option>
-                    @endforeach
-                    <option value="New-Category" class="text-center text-danger">Add New Category</option>
-                </select>
-            </div>
-        </div>
-        
-    </div>
-    <div class="row form-group justify-content-center">
-        <div class="col-md-5 mx-md-3 mb-3">
-            <div class="row">
-                <label for="branch" class="col-12 mb-1">Branch</label>
-                <select name="branch" class="col-12 form-control form-control-sm" required>
-                    <option value="" class="text-center">--SELECT--</option>
-                    <option value="Maryland"> Lagos State-Maryland</option>
-                    <option value="Adekoya,Square-Anthony"> Lagos State- 9, Adekoya Square, Anthony</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="col-md-5 mx-md-3 mb-3">
-            <div class="row">
-                <label for="amt" class="col-12 mb-1">Expenses Amount</label>
-                <input type="number" id="amt" name="amount" class="col-12 form-control form-control-sm" required onchange="loadFile(event)">
-            </div>
-        </div>
-        
-    </div>
-    
-    <div class="row form-group justify-content-center">
-        <div class="col-md-5 mx-md-3 mb-3">
-            <div class="row">
-                <div class="col-7">
+            <div class="row form-group">
+                <div class="col-md-2 offset-md-9">
                     <div class="row">
-                        <label for="amt" class="col-12 mb-1"><i class="fas fa-photo-video"></i>Expenses Reciept</label>
-                        <input type="file" id="proof" name="proof"class="form-control-file col-12 form-control form-control-sm "required>
-                    </div>
-                </div>
-                <div class="col-5">
-                    <div class="row float-right">
-                        <img alt="Evidence" class="col-12" id="output" >
+                        <label for="date" class="col-12">Expenses Date</label>
+                        <input type="date" id="date" name="date" class="col-12 form-control form-control-sm" required>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-5 mx-md-3 mb-3">
+            <div class="row form-group justify-content-center">
+                <div class="col-md-5 mx-md-3 mb-1">
+                    <div class="row">
+                        <label for="name" class="col-12 mb-1">Expenses Initiator</label>
+                        <input type="text" id="name" name="name" class="col-12 form-control form-control-sm" required>
+                    </div>
+                </div>
+        
+                <div class="col-md-5 mx-md-3 mb-1">
+                    <div class="row">
+                        <label for="expcat" class="col-12 mb-1">Expenses Category</label>
+                        <select id="expcat" name="cat_name" class="col-12 form-control form-control-sm" required>
+                            <option value="" class="text-center">--SELECT--</option>
+                            @foreach($category as $category)
+                                <option value="{{$category['id']}}">{{$category['expense_catname']}}</option>
+                            @endforeach
+                            <option value="New-Category" class="text-center text-danger">Add New Category</option>
+                        </select>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="row form-group justify-content-center">
+                <div class="col-md-5 mx-md-3 mb-1">
+                    <div class="row">
+                        <label for="branch" class="col-12 mb-1">Branch</label>
+                        <select name="branch" class="col-12 form-control form-control-sm" required>
+                            <option value="" class="text-center">--SELECT--</option>
+                            <option value="Maryland"> Lagos State-Maryland</option>
+                            <option value="Adekoya,Square-Anthony"> Lagos State- 9, Adekoya Square, Anthony</option>
+                        </select>
+                    </div>
+                </div>
+        
+                <div class="col-md-5 mx-md-3 mb-1">
+                    <div class="row">
+                        <label for="amt" class="col-12 mb-1">Expenses Amount</label>
+                        <input type="number" id="amt" name="amount" class="col-12 form-control form-control-sm" required onchange="loadFile(event)">
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="row form-group justify-content-center">
+                <div class="col-md-5 mx-md-3 mb-1">
+                    <div class="row">
+                        <div class="col-7">
+                            <div class="row">
+                                <label for="amt" class="col-12 mb-1"><i class="fas fa-photo-video"></i>Expenses Reciept</label>
+                                <input type="file" id="proof" name="proof"class="form-control-file col-12 form-control form-control-sm "required>
+                            </div>
+                        </div>
+                        <div class="col-5">
+                            <div class="row float-right">
+                                <img src="{{url('images/evidence.jfif')}}" alt="Evidence" class="col-12" id="output" >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5 mx-md-3 mb-1">
+                    <div class="row">
+                        <label for="name" class="col-12 mb-1">Expenses Description</label>
+                        <textarea id="desc" name="desc" class="col-12 form-control form-control-sm"required row="2"></textarea>
+                    </div>
+                </div>
+                
+                
+            </div>
+        
             <div class="row">
-                <label for="name" class="col-12 mb-1">Expenses Description</label>
-                <textarea id="desc" name="desc" class="col-12 form-control form-control-sm"required row="2"></textarea>
+                <div class="col-12">
+                    <button class="btn btn-primary btn-sm btn-block mb-2">SAVE</button>
+                </div>
             </div>
-        </div>
-        
-        
+        </form>
     </div>
-
-    <div class="row">
-        <div class="col-12">
-            <button class="btn btn-primary btn-sm float-right mr-2 mb-2">SAVE</button>
-        </div>
-    </div>
-</form>
+</div>
 
  
 
