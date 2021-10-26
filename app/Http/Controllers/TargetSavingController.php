@@ -12,12 +12,13 @@ use App\Models\Target_request;
 
 class TargetSavingController extends Controller
 {
-    //
+    //this returns all targets created from database
     public function allTargetAccount(){
         $allTargets=Target_saving::orderBy('created_at', 'DESC')->get();
         return view ('Agent\target_saving',['data'=>$allTargets]);
     }
 
+    //this is use check if client's information exist on database before creating target
     public function searchClientUsingNumber(Request $req){      
         $phoneNo=$req['phone'];
         $client = Client::where('phone',$phoneNo)->first();
@@ -33,6 +34,7 @@ class TargetSavingController extends Controller
         
     }
 
+    //this will save created target to database
     public function createAndSaveTargetAccount(Request $req){
         $attributes = [
             'targetvalue'=>'Target overall value',
@@ -79,12 +81,12 @@ class TargetSavingController extends Controller
 
    
 
-
+    //return view of the page you can check a client target saving history
     public function targetSavingTransaction(){
         return view('agent.target_saving_transaction');
     }
 
-
+    //return target saving(s) a client started
     public function retrieveTargetRecord(Request $req){
         $clientInfo=$req['clientInfo'];
         $clientTarget = Target_saving::where('client_no','=', $clientInfo)
@@ -104,13 +106,14 @@ class TargetSavingController extends Controller
         }
     }
 
+    //return total amount a client has saved towards the created target
     public function totalAmountPaid(Request $req){
         $targetSavingId=$req['targetSavingId'];
         $totalPaid=Target_transaction::where('target_saving_id',$targetSavingId)->sum('amount_paid');
         return $totalPaid;
     }
 
-
+    //this saves any target-saving transaction that happens
     public function saveTargetTransaction(Request $req){
         $attributes = [
             'transMethod'=>'Transaction Method',
@@ -149,6 +152,7 @@ class TargetSavingController extends Controller
         }
     }
 
+    //this returns all the target-saving transaction history
     public function clientTransactionDetails($id,$client_id){
         $clientTargetTransaction=Target_transaction::where('target_saving_id',$id)->get();
         $clientInfo = Client::where('client_id',$client_id)->get();
@@ -158,6 +162,7 @@ class TargetSavingController extends Controller
         'targetDetail'=>$targetDetail,'totalPaid'=>$totalPaid]);
     }
 
+    //this return all the target-saving that has been requested for by the client, I'm not done with this function too
     public function allRequestedTarget(){
         // $requestTargets=Target_saving::join('target_requests','target_requests.request_id','=','target_savings.id')
         // ->orderBy('request_date', 'DESC')
@@ -170,6 +175,7 @@ class TargetSavingController extends Controller
         return view ('Agent\target_request',['requests'=>$requestTargets]);
     }
 
+    //this will show a mini report of a client's target-saving history before requesting
     public function miniTransactionReport(Request $req){
         $clientInfo=$req['clientInfo'];
         $clientTarget = Target_saving::where('client_no','=', $clientInfo)
@@ -189,12 +195,14 @@ class TargetSavingController extends Controller
         }
     }
 
+    //return the client bank details from the database
     public function clientBankDetails(Request $req){
         $idForBankDetails=$req['targetIdBank'];
         $bankDetails=Target_saving::find($idForBankDetails,['bank_name','acc_no','acc_name']);
         return $bankDetails;
     }
 
+    //saves all requested target saving to database
     public function requestTarget(Request $req){
         $this->validate($req,[
             'targetId'=>'required',
@@ -225,6 +233,7 @@ class TargetSavingController extends Controller
             
     }
 
+    //this will change the status of the requested target depending on if it has been processed but I'm not done with it
     public function changeRequestStatus($id){
         $status=Target_request::find($id);
         $status->request_status='Completed';

@@ -74,13 +74,9 @@ class ExpenseController extends BaseController
         $catname->save();
         $name=$cat->cat_name;
     
-<<<<<<< HEAD
-        return redirect()->back()->with('status',$name.' added Successfully');
-=======
         return redirect()->back()->with('status',$name.' Added Successfully');
         } else {  return redirect()->route('access_denied'); }
         }
->>>>>>> 69208214d7e57e44837c74e6ba0a0cde8c3805e9
     }
 
     public function editExpensesCatergory(Request $req) {
@@ -95,14 +91,12 @@ class ExpenseController extends BaseController
         $data=Expenses_category::find($id);
         $data->expense_catname=$catName;
         $data->save();
-<<<<<<< HEAD
-        echo('Category name changed successfully'); 
-=======
         echo('Category name changed successfully');
         //return redirect()->back();   
-            } else {  return redirect()->route('access_denied');  }
+            } else { 
+                return redirect()->route('access_denied'); 
+            }
         }
->>>>>>> 69208214d7e57e44837c74e6ba0a0cde8c3805e9
     }
     
     //this category function deletes expenses category name
@@ -114,15 +108,10 @@ class ExpenseController extends BaseController
 
         $data=Expenses_category::find($id);
         $data->delete();
-<<<<<<< HEAD
-        echo('Deleted Successfully');
-
-=======
         //return redirect()->back()->with('status','Deleted Successfully');
         echo('Deleted Successfully'); 
         } else {  return redirect()->route('access_denied'); }
         }
->>>>>>> 69208214d7e57e44837c74e6ba0a0cde8c3805e9
     }
 
      // EXPENSES  FUNCTION 
@@ -131,7 +120,7 @@ class ExpenseController extends BaseController
         if (auth()->user()->usr_type=='usr_admin') {
             if (in_array($section, $this->middleware_except)) {
 
-        //this will return saved expenses category into the select option
+        //this will return expenses category into the select option and view the add new expenses page
         $data= Expenses_category::orderBy('expense_catname', 'ASC')->get();
         return view ('Admin\expensesnew',['category'=>$data]);
         } else {  return redirect()->route('access_denied');  }
@@ -139,41 +128,13 @@ class ExpenseController extends BaseController
     }
      
 
-<<<<<<< HEAD
-    public function saveExpenses(Request $exp){
-        //this will save any new expenses inputed
-        $this->validate($exp,[
-            'date'=>'required',
-            'name'=>'required',
-            'cat_name'=>'required',
-            'branch'=>'required',
-            'amount'=>'required',
-            'proof'=>'required',
-            'desc'=>'required',
-
-        ]);
-    if($proofOfExpense=$exp->file('proof')){
-        $proofName=$proofOfExpense->getClientOriginalName();
-            if($proofOfExpense->move('expenseproof',$proofName)){
-                $expenseSave = new Expense();
-                //On left field name in DB and on right field name in Form/view
-                $expenseSave->date = $exp->input('date');
-                $expenseSave->initiator = $exp->input('name');
-                $expenseSave->cat_id = $exp->input('cat_name');
-                $expenseSave->branch = $exp->input('branch');
-                $expenseSave->amount = $exp->input('amount');
-                $expenseSave->evidence = $proofName;
-                $expenseSave->description = $exp->input('desc');
-                $expenseSave->save();
-                return redirect('admin/company/expenses/all');
-=======
     public function saveExpenses(Request $exp) {
 
         $section = 'saveExpenses';   // dd($this->middleware_except);  
         if (auth()->user()->usr_type=='usr_admin') {
             if (in_array($section, $this->middleware_except)) {
 
-            //this will save any new expenses inputed
+            //this will saves new expenses created to database
             $this->validate($exp,[
                 'date'=>'required',
                 'name'=>'required',
@@ -199,7 +160,6 @@ class ExpenseController extends BaseController
                         $expenseSave->save();
                         return redirect('/company/expenses/all');
                     }
->>>>>>> 69208214d7e57e44837c74e6ba0a0cde8c3805e9
             }
             return redirect()->back();
        } else { return redirect()->route('access_denied'); }
@@ -211,7 +171,7 @@ class ExpenseController extends BaseController
         $section = 'expensesPrint';   // dd($this->middleware_except);  
         if (auth()->user()->usr_type=='usr_admin') {
             if (in_array($section, $this->middleware_except)) {
-
+        //this returns all expenses category to a search by category option and view the search page
         $category=Expenses_category::orderBy('expense_catname', 'ASC')->get();
         return view ('Admin\expensesprint',['category'=>$category]);
         } else {  return redirect()->route('access_denied'); }
@@ -258,7 +218,7 @@ class ExpenseController extends BaseController
         if (auth()->user()->usr_type=='usr_admin') {
             if (in_array($section, $this->middleware_except)) {
 
-        //this function will search for expenses with a particular name
+        //this function will search for expenses using name
         $no=1;
         $initiator=$req['initiator'];
         
@@ -286,7 +246,7 @@ class ExpenseController extends BaseController
         if (auth()->user()->usr_type=='usr_admin') {
             if (in_array($section, $this->middleware_except)) {
 
-        //this function will search for expenses with a particular name
+        //this function will search for expenses using branch
         $no=1;
         $branch=$req['branch'];
        
@@ -308,7 +268,7 @@ class ExpenseController extends BaseController
     }
 
     public function searchDate(Request $req) {
-
+        //this function will search for expenses with date
         $section = 'searchDate';   // dd($this->middleware_except);  
         if (auth()->user()->usr_type=='usr_admin') {
             if (in_array($section, $this->middleware_except)) {
@@ -336,7 +296,7 @@ class ExpenseController extends BaseController
     }
 
     public function searchCategory(request $req) {    
-    
+        //this function will search for expenses using category
         $section = 'searchCategory';   // dd($this->middleware_except);  
         if (auth()->user()->usr_type=='usr_admin') {
             if (in_array($section, $this->middleware_except)) {
@@ -363,6 +323,7 @@ class ExpenseController extends BaseController
 
     public function searchCategoryAndName(request $req){
 
+        //this function will search for expenses using name and category
         $section = 'searchCategoryAndName';   // dd($this->middleware_except);  
         if (auth()->user()->usr_type=='usr_admin') {
             if (in_array($section, $this->middleware_except)) {
@@ -391,7 +352,7 @@ class ExpenseController extends BaseController
     }
 
     public function searchCategoryAndDate(request $req){
-
+        //this function will search for expenses using category and date
         $section = 'searchCategoryAndDate';   // dd($this->middleware_except);  
         if (auth()->user()->usr_type=='usr_admin') {
             if (in_array($section, $this->middleware_except)) {
@@ -422,7 +383,7 @@ class ExpenseController extends BaseController
     }
 
     public function searchCategoryAndBranch(request $req){
-
+        //this function will search for expenses using category and branch
         $section = 'searchCategoryAndBranch';   // dd($this->middleware_except);  
         if (auth()->user()->usr_type=='usr_admin') {
             if (in_array($section, $this->middleware_except)) {
@@ -451,7 +412,7 @@ class ExpenseController extends BaseController
     }
 
     public function searchDateAndBranch(Request $req){
-
+        //this function will search for expenses using date and branch
         $section = 'searchDateAndBranch';   // dd($this->middleware_except);  
         if (auth()->user()->usr_type=='usr_admin') {
             if (in_array($section, $this->middleware_except)) {
@@ -481,7 +442,7 @@ class ExpenseController extends BaseController
     }
 
     public function searchCategoryAndBranchAndDate(Request $req){
-
+        //this function will search for expenses using category,branch and date
         $section = 'searchCategoryAndBranchAndDate';   // dd($this->middleware_except);  
         if (auth()->user()->usr_type=='usr_admin') {
             if (in_array($section, $this->middleware_except)) {
@@ -515,7 +476,7 @@ class ExpenseController extends BaseController
     }
 
     public function searchCategoryAndBranchAndName(Request $req){
-
+        //this function will search for expenses using category,branch and name
         $section = 'searchCategoryAndBranchAndName';   // dd($this->middleware_except);  
         if (auth()->user()->usr_type=='usr_admin') {
             if (in_array($section, $this->middleware_except)) {
@@ -548,7 +509,7 @@ class ExpenseController extends BaseController
     }
 
     public function searchDateAndName(Request $req){
-
+        //this function will search for expenses using date and name
         $section = 'searchDateAndName';   // dd($this->middleware_except);  
         if (auth()->user()->usr_type=='usr_admin') {
             if (in_array($section, $this->middleware_except)) {
@@ -578,7 +539,7 @@ class ExpenseController extends BaseController
     }
 
     public function searchBranchAndName(Request $req){
-
+        //this function will search for expenses using name and branch
         $section = 'searchBranchAndName';   // dd($this->middleware_except);  
         if (auth()->user()->usr_type=='usr_admin') {
             if (in_array($section, $this->middleware_except)) { 
@@ -607,7 +568,7 @@ class ExpenseController extends BaseController
     }
 
     public function searchDateAndBranchAndName(Request $req){
-
+        //this function will search for expenses using name,date and branch
         $section = 'searchDateAndBranchAndName';   // dd($this->middleware_except);  
         if (auth()->user()->usr_type=='usr_admin') {
             if (in_array($section, $this->middleware_except)) { 
@@ -640,7 +601,7 @@ class ExpenseController extends BaseController
     }
 
     public function searchDateAndCategoryAndName(Request $req){
-
+        //this function will search for expenses using name,category and date
         $section = 'searchDateAndCategoryAndName';   // dd($this->middleware_except);  
         if (auth()->user()->usr_type=='usr_admin') {
             if (in_array($section, $this->middleware_except)) { 
@@ -673,7 +634,7 @@ class ExpenseController extends BaseController
     }
 
     public function searchWithAll(Request $req){
-
+        //this function will search for expenses using all filter options
         $section = 'searchWithAll';   // dd($this->middleware_except);  
         if (auth()->user()->usr_type=='usr_admin') {
             if (in_array($section, $this->middleware_except)) { 

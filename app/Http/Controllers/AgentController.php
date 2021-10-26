@@ -401,7 +401,7 @@ class AgentController extends BaseController
             'hr_remark' => ['required', 'string', 'max:500'],
             ]);
             
-        $validator-> setAttributeNames($custom_error_messages);
+        $validator->setAttributeNames($custom_error_messages);
 
         if ($validator->fails()) {
             return response()->json($validator->messages(),200);

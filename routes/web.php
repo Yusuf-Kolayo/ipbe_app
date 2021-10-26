@@ -11,12 +11,9 @@ use App\Http\Controllers\BrandController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\ExpenseController;
-<<<<<<< HEAD
 use App\Http\Controllers\TargetSavingController;
-=======
 use App\Http\Controllers\StaffController;
 
->>>>>>> 69208214d7e57e44837c74e6ba0a0cde8c3805e9
 
 
 /*
