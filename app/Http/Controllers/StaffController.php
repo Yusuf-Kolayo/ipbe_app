@@ -17,38 +17,26 @@ class StaffController extends BaseController
 { 
     
     
-    public $middleware_except;   public $title = 'staff';
+    public $title = 'staff';
 
 
     public function __construct() {
        $this->middleware('auth');
-       parent::__construct();
-       
-       $this->middleware(function ($request, $next) {    
-        $user_id= Auth::user()->user_id;   $usr_type = Auth::user()->usr_type;
-        if ($usr_type=='usr_admin') { $permitted_sections = array(); // dd('here');
+       parent::__construct('staff');     
         
-        $user_permissions = Access_permission::Where(['user_id'=>$user_id, 'title'=>$this->title])->get();  //dd($user_permissions);
-        foreach ($user_permissions as $key => $permission) {
-            $permitted_sections[]  = $permission->section; 
-        }    
-
-        // $permitted_sections = substr($permitted_sections,0,-1);
-        $this->middleware_except = $permitted_sections;
-     
-        }
-        
-        return $next($request);
-       });
-
     }
 
 
+   // loads up a page to list out all staffs
    public function index () {
 
-    $section = 'index';   // dd($this->middleware_except);  
+    if (!in_array($this->title, parent::app_sections_only())) {    
+        return redirect()->route('access_denied'); 
+    }
+
+    $section = 'index';   // dd(parent::middleware_except());  
     if (auth()->user()->usr_type=='usr_admin') {
-        if (in_array($section, $this->middleware_except)) {
+        if (in_array($section, parent::middleware_except())) {
 
         $staffs = Staffs::all(); 
         return view('admin.staffs', compact('staffs')); 
@@ -58,11 +46,16 @@ class StaffController extends BaseController
    }
    
 
+   // show profile for a staff
    public function show ($staff_id) {
 
-    $section = 'show';   // dd($this->middleware_except);  
+    if (!in_array($this->title, parent::app_sections_only())) {    
+        return redirect()->route('access_denied'); 
+    }
+
+    $section = 'show';   // dd(parent::middleware_except());  
     if (auth()->user()->usr_type=='usr_admin') {
-        if (in_array($section, $this->middleware_except)) {
+        if (in_array($section, parent::middleware_except())) {
 
         $app_sections = $this->app_sections; 
         $user = User::Where('user_id', $staff_id)->firstOrFail();  // dd($user);
@@ -85,8 +78,12 @@ class StaffController extends BaseController
 
 
 
+    // store a new staff
     public function store (Request $request) 
     {
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
 
 
         DB::transaction(function () {
@@ -156,11 +153,17 @@ class StaffController extends BaseController
     }
 
  
+
+    // update a staff data
     public function update (Request $request, $staff_id) 
     {  
-        $section = 'update';   // dd($this->middleware_except);  
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
+        $section = 'update';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) {
+            if (in_array($section, parent::middleware_except())) {
          
         DB::transaction(function() use ($request, $staff_id) {
 
@@ -241,11 +244,16 @@ class StaffController extends BaseController
 
 
 
+    // update access permissions for a staff
     public function update_user_permission (Request $request)
     {  
-        $section = 'update_user_permission';   // dd($this->middleware_except);  
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
+        $section = 'update_user_permission';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) {
+            if (in_array($section, parent::middleware_except())) {
 
         $action = $request['action'];    $staff_id = $request['staff_id'];
         $title = $request['title'];        $section = $request['section'];
@@ -268,11 +276,16 @@ class StaffController extends BaseController
 
 
 
+    // re-fetch for the permissions div after permissions update
     public function refresh_permissions_ajax_fetch (Request $request) {
      
-        $section = 'refresh_permissions_ajax_fetch';   // dd($this->middleware_except);  
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
+        $section = 'refresh_permissions_ajax_fetch';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) {
+            if (in_array($section, parent::middleware_except())) {
 
         $staff_id = $request['staff_id']; // dd($request['product_id']);  
         $app_sections = $this->app_sections;  
@@ -289,11 +302,16 @@ class StaffController extends BaseController
 
 
 
+    // delete a staff from db
     public function destroy ($staff_id)
     { 
-        $section = 'destroy';   // dd($this->middleware_except);  
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
+        $section = 'destroy';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) {
+            if (in_array($section, parent::middleware_except())) {
 
         $staffs = Staffs::where('staff_id', $staff_id)->firstOrFail(); 
         $staffs->delete();      

@@ -15,38 +15,24 @@ class ExpenseController extends BaseController
     // EXPENSES CATEGORY FUNCTION 
 
 
-    public $middleware_except;   public $title = 'expense';
+     public $title = 'expense';
 
 
     public function __construct() {
        $this->middleware('auth');
-       parent::__construct();
-       
-       $this->middleware(function ($request, $next) {    
-        $user_id= Auth::user()->user_id;   $usr_type = Auth::user()->usr_type;
-        if ($usr_type=='usr_admin') { $permitted_sections = array(); // dd('here');
-        
-        $user_permissions = Access_permission::Where(['user_id'=>$user_id, 'title'=>$this->title])->get();  //dd($user_permissions);
-        foreach ($user_permissions as $key => $permission) {
-            $permitted_sections[]  = $permission->section; 
-        }    
-
-        // $permitted_sections = substr($permitted_sections,0,-1);
-        $this->middleware_except = $permitted_sections;
-     
-        }
-        
-        return $next($request);
-       });
-
+       parent::__construct(); 
     }
 
      
     public function allExpensesCatergories() {
 
-        $section = 'allExpensesCatergories';   // dd($this->middleware_except);  
+         if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
+        $section = 'allExpensesCatergories';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) {
+            if (in_array($section, parent::middleware_except())) {
 
         // this category function loads all expenses category created
         $data=Expenses_category::orderBy('expense_catname', 'ASC')->get();   $no=1;
@@ -57,9 +43,13 @@ class ExpenseController extends BaseController
         
     public function newExpensesCatgory(Request $cat){
 
-        $section = 'newExpensesCatgory';   // dd($this->middleware_except);  
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
+        $section = 'newExpensesCatgory';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) {
+            if (in_array($section, parent::middleware_except())) {
 
 
        //this category function saves any new category created
@@ -81,9 +71,13 @@ class ExpenseController extends BaseController
 
     public function editExpensesCatergory(Request $req) {
 
-        $section = 'editExpensesCatergory';   // dd($this->middleware_except);  
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
+        $section = 'editExpensesCatergory';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) {
+            if (in_array($section, parent::middleware_except())) {
 
         //this category edits any category name already created
         $id = $req['id'];
@@ -102,9 +96,13 @@ class ExpenseController extends BaseController
     //this category function deletes expenses category name
     public function deleteExpensesCatergory($id) {
 
-        $section = 'deleteExpensesCatergory';   // dd($this->middleware_except);  
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
+        $section = 'deleteExpensesCatergory';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) {
+            if (in_array($section, parent::middleware_except())) {
 
         $data=Expenses_category::find($id);
         $data->delete();
@@ -116,9 +114,14 @@ class ExpenseController extends BaseController
 
      // EXPENSES  FUNCTION 
     public function addNewExpenses() {
-        $section = 'addNewExpenses';   // dd($this->middleware_except);  
+
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
+        $section = 'addNewExpenses';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) {
+            if (in_array($section, parent::middleware_except())) {
 
         //this will return expenses category into the select option and view the add new expenses page
         $data= Expenses_category::orderBy('expense_catname', 'ASC')->get();
@@ -130,9 +133,13 @@ class ExpenseController extends BaseController
 
     public function saveExpenses(Request $exp) {
 
-        $section = 'saveExpenses';   // dd($this->middleware_except);  
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
+        $section = 'saveExpenses';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) {
+            if (in_array($section, parent::middleware_except())) {
 
             //this will saves new expenses created to database
             $this->validate($exp,[
@@ -168,10 +175,14 @@ class ExpenseController extends BaseController
     }
 
     public function expensesPrint() {
-        $section = 'expensesPrint';   // dd($this->middleware_except);  
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
+        $section = 'expensesPrint';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) {
-        //this returns all expenses category to a search by category option and view the search page
+            if (in_array($section, parent::middleware_except())) {
+
         $category=Expenses_category::orderBy('expense_catname', 'ASC')->get();
         return view ('Admin\expensesprint',['category'=>$category]);
         } else {  return redirect()->route('access_denied'); }
@@ -180,9 +191,13 @@ class ExpenseController extends BaseController
 
 
     public function allExpenses(){
-        $section = 'allExpenses';   // dd($this->middleware_except);  
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
+        $section = 'allExpenses';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) {
+            if (in_array($section, parent::middleware_except())) {
 
         //this will return all list of expenses
         $allExpense=Expense::join('expenses_categories','expenses.cat_id','=','expenses_categories.id')
@@ -199,9 +214,13 @@ class ExpenseController extends BaseController
 
     public function deleteExpenses(Request $req){
 
-        $section = 'deleteExpenses';   // dd($this->middleware_except);  
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
+        $section = 'deleteExpenses';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) {
+            if (in_array($section, parent::middleware_except())) {
 
         //this will delete a particular expenses
         $expense_id=$req['expense_id'];
@@ -214,9 +233,13 @@ class ExpenseController extends BaseController
 
     public function searchName(Request $req) {
 
-        $section = 'searchName';   // dd($this->middleware_except);  
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
+        $section = 'searchName';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) {
+            if (in_array($section, parent::middleware_except())) {
 
         //this function will search for expenses using name
         $no=1;
@@ -242,9 +265,13 @@ class ExpenseController extends BaseController
 
     public function searchBranch(Request $req) {
 
-        $section = 'searchBranch';   // dd($this->middleware_except);  
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
+        $section = 'searchBranch';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) {
+            if (in_array($section, parent::middleware_except())) {
 
         //this function will search for expenses using branch
         $no=1;
@@ -268,10 +295,14 @@ class ExpenseController extends BaseController
     }
 
     public function searchDate(Request $req) {
-        //this function will search for expenses with date
-        $section = 'searchDate';   // dd($this->middleware_except);  
+
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
+        $section = 'searchDate';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) {
+            if (in_array($section, parent::middleware_except())) {
 
         $no=1;
         $from=$req['fromDate'];
@@ -296,10 +327,14 @@ class ExpenseController extends BaseController
     }
 
     public function searchCategory(request $req) {    
-        //this function will search for expenses using category
-        $section = 'searchCategory';   // dd($this->middleware_except);  
+    
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
+        $section = 'searchCategory';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) {
+            if (in_array($section, parent::middleware_except())) {
 
         $no=1;
         $category=$req['category'];
@@ -323,10 +358,13 @@ class ExpenseController extends BaseController
 
     public function searchCategoryAndName(request $req){
 
-        //this function will search for expenses using name and category
-        $section = 'searchCategoryAndName';   // dd($this->middleware_except);  
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
+        $section = 'searchCategoryAndName';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) {
+            if (in_array($section, parent::middleware_except())) {
 
         $no=1;
         $category=$req['category'];
@@ -352,10 +390,14 @@ class ExpenseController extends BaseController
     }
 
     public function searchCategoryAndDate(request $req){
-        //this function will search for expenses using category and date
-        $section = 'searchCategoryAndDate';   // dd($this->middleware_except);  
+
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
+        $section = 'searchCategoryAndDate';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) {
+            if (in_array($section, parent::middleware_except())) {
 
         $no=1;
         $category=$req['category'];
@@ -383,10 +425,14 @@ class ExpenseController extends BaseController
     }
 
     public function searchCategoryAndBranch(request $req){
-        //this function will search for expenses using category and branch
-        $section = 'searchCategoryAndBranch';   // dd($this->middleware_except);  
+
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
+        $section = 'searchCategoryAndBranch';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) {
+            if (in_array($section, parent::middleware_except())) {
 
         $no=1;
         $category=$req['category'];
@@ -412,10 +458,14 @@ class ExpenseController extends BaseController
     }
 
     public function searchDateAndBranch(Request $req){
-        //this function will search for expenses using date and branch
-        $section = 'searchDateAndBranch';   // dd($this->middleware_except);  
+
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
+        $section = 'searchDateAndBranch';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) {
+            if (in_array($section, parent::middleware_except())) {
 
         $no=1;
         $from=$req['fromDate'];
@@ -442,10 +492,14 @@ class ExpenseController extends BaseController
     }
 
     public function searchCategoryAndBranchAndDate(Request $req){
-        //this function will search for expenses using category,branch and date
-        $section = 'searchCategoryAndBranchAndDate';   // dd($this->middleware_except);  
+
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
+        $section = 'searchCategoryAndBranchAndDate';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) {
+            if (in_array($section, parent::middleware_except())) {
 
         $no=1;
         $from=$req['fromDate'];
@@ -476,10 +530,14 @@ class ExpenseController extends BaseController
     }
 
     public function searchCategoryAndBranchAndName(Request $req){
-        //this function will search for expenses using category,branch and name
-        $section = 'searchCategoryAndBranchAndName';   // dd($this->middleware_except);  
+
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
+        $section = 'searchCategoryAndBranchAndName';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) {
+            if (in_array($section, parent::middleware_except())) {
 
         $no=1;
         $initiator=$req['initiator'];
@@ -509,10 +567,14 @@ class ExpenseController extends BaseController
     }
 
     public function searchDateAndName(Request $req){
-        //this function will search for expenses using date and name
-        $section = 'searchDateAndName';   // dd($this->middleware_except);  
+
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
+        $section = 'searchDateAndName';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) {
+            if (in_array($section, parent::middleware_except())) {
 
         $no=1;
         $from=$req['fromDate'];
@@ -539,10 +601,13 @@ class ExpenseController extends BaseController
     }
 
     public function searchBranchAndName(Request $req){
-        //this function will search for expenses using name and branch
-        $section = 'searchBranchAndName';   // dd($this->middleware_except);  
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
+        $section = 'searchBranchAndName';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) { 
+            if (in_array($section, parent::middleware_except())) { 
 
         $no=1;
         $branch=$req['branch'];
@@ -568,10 +633,13 @@ class ExpenseController extends BaseController
     }
 
     public function searchDateAndBranchAndName(Request $req){
-        //this function will search for expenses using name,date and branch
-        $section = 'searchDateAndBranchAndName';   // dd($this->middleware_except);  
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
+        $section = 'searchDateAndBranchAndName';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) { 
+            if (in_array($section, parent::middleware_except())) { 
 
         $no=1;
         $from=$req['fromDate'];
@@ -601,10 +669,13 @@ class ExpenseController extends BaseController
     }
 
     public function searchDateAndCategoryAndName(Request $req){
-        //this function will search for expenses using name,category and date
-        $section = 'searchDateAndCategoryAndName';   // dd($this->middleware_except);  
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
+        $section = 'searchDateAndCategoryAndName';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) { 
+            if (in_array($section, parent::middleware_except())) { 
     
             $from=$req['fromDate'];   $no=1;
             $to=$req['toDate'];
@@ -634,10 +705,13 @@ class ExpenseController extends BaseController
     }
 
     public function searchWithAll(Request $req){
-        //this function will search for expenses using all filter options
-        $section = 'searchWithAll';   // dd($this->middleware_except);  
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
+        $section = 'searchWithAll';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) { 
+            if (in_array($section, parent::middleware_except())) { 
 
         $no=1;
         $from=$req['fromDate'];

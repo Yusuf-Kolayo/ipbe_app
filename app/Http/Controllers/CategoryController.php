@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth; 
 use App\Models\Access_permission;  
 use App\Models\Category;
+use App\Models\Brand;
 
 
 class CategoryController extends BaseController
@@ -18,39 +19,27 @@ class CategoryController extends BaseController
      */
 
      
-    public $middleware_except;   public $title = 'category';
+     public $title = 'category';
 
 
     public function __construct() {
        $this->middleware('auth');
-       parent::__construct();
-       
-       $this->middleware(function ($request, $next) {    
-        $user_id= Auth::user()->user_id;   $usr_type = Auth::user()->usr_type;
-        if ($usr_type=='usr_admin') { $permitted_sections = array(); // dd('here');
-        
-        $user_permissions = Access_permission::Where(['user_id'=>$user_id, 'title'=>$this->title])->get();  //dd($user_permissions);
-        foreach ($user_permissions as $key => $permission) {
-            $permitted_sections[]  = $permission->section; 
-        }    
-
-        // $permitted_sections = substr($permitted_sections,0,-1);
-        $this->middleware_except = $permitted_sections;
-     
-        }
-        
-        return $next($request);
-       });
+       parent::__construct(); 
 
     }
 
 
+    // loads up the category default page listing out available categories
     public function index()
     { 
 
-        $section = 'index';   // dd($this->middleware_except);  
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
+        $section = 'index';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) {
+            if (in_array($section, parent::middleware_except())) {
 
                 $brands = Brand::all();
                 return view('admin.brands')->with('brands',$brands);
@@ -61,12 +50,17 @@ class CategoryController extends BaseController
 
 
 
+    // fetch out sub-categories under a main-category
     public function sub_cat_ajax_fetch(Request $request)
     {  
 
-        $section = 'sub_cat_ajax_fetch';       // dd($this->middleware_except);  
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
+        $section = 'sub_cat_ajax_fetch';       // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) {
+            if (in_array($section, parent::middleware_except())) {
 
                 $main_cat_id = $request['main_cat_id'];    $element = $request['element'];   // dd($request['cat_id']); 
                 $main_cat_name = DB::table('categories')->where('id', $main_cat_id)->value('cat_name');
@@ -82,12 +76,16 @@ class CategoryController extends BaseController
  
     
 
+    // store a new category
     public function store(Request $request)
     {
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
 
-        $section = 'store';       // dd($this->middleware_except);  
+        $section = 'store';       // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) {
+            if (in_array($section, parent::middleware_except())) {
 
         $data = request()->validate([
             'cat_name' => ['required', 'string', 'max:100', 'unique:categories'],
@@ -120,16 +118,19 @@ class CategoryController extends BaseController
     
     }
 
-   
-    
 
 
 
+    // loads up a page to seek confirmation to delete a category 
     public function trash($id)
     {
-        $section = 'trash';       // dd($this->middleware_except);  
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
+        $section = 'trash';       // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) {
+            if (in_array($section, parent::middleware_except())) {
 
         $category = Category::findOrFail($id);
         return view('admin.category_trash')->with('category',$category);
@@ -140,18 +141,18 @@ class CategoryController extends BaseController
     }
 
    
-    
+     
 
-
-
-
-
+    // update a category data
     public function update(Request $request, $id)
     {
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
         
-        $section = 'update';       // dd($this->middleware_except);  
+        $section = 'update';       // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) {
+            if (in_array($section, parent::middleware_except())) {
 
         $data = request()->validate([
             'category_name' => ['required', 'string', 'max:55', 'unique:categories,category_name,'. $id . 'id'],
@@ -177,11 +178,16 @@ class CategoryController extends BaseController
     
 
 
+    // destroy a category from db
     public function destroy($id)
     {
-        $section = 'destroy';       // dd($this->middleware_except);  
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
+        $section = 'destroy';       // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) {
+            if (in_array($section, parent::middleware_except())) {
 
             } else { return redirect()->route('access_denied'); }
         }

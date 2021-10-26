@@ -58,15 +58,16 @@ Route::resource('client', ClientController::class);
     
 
 Route::get('/product/sub/{sub_category_id}', [ProductController::class, 'sub'])->name('product.sub');
-// Route::resource('product', AdminController::class);
+Route::resource('product', AdminController::class);
 
 
 // =========================      ADMIN ROUTES      ========================= //
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'is_admin']], function() {  
-    Route::get('/super', [AdminController::class, 'index'])->name('dev');
+    Route::post('/update_app_permissions', [AdminController::class, 'update_app_permissions'])->name('update_app_permissions');
+    Route::get('/refresh_app_permissions_ajax_fetch', [AdminController::class, 'refresh_app_permissions_ajax_fetch'])->name('refresh_app_permissions_ajax_fetch');
+    Route::get('/super', [AdminController::class, 'index'])->name('super');
 
     Route::post('/update_user_permission', [StaffController::class, 'update_user_permission'])->name('update_user_permission');
-  
     Route::get('/refresh_permissions_ajax_fetch', [StaffController::class, 'refresh_permissions_ajax_fetch'])->name('refresh_permissions_ajax_fetch');
     Route::resource('staff', StaffController::class);
 
@@ -158,6 +159,13 @@ Route::group (['prefix' => 'admin_agent', 'middleware' => ['auth', 'is_admin_age
     Route::resource('category', CategoryController::class);
 });
 
+
+
+
+
+
+ 
+ 
 
   //=========================      TARGET SAVING ROUTES      ==========================//
 Route::get('/agent/target_savings',[TargetSavingController::class,'allTargetAccount'])->name('target_saving');

@@ -118,7 +118,14 @@
                            
                             <li class="nk-menu-item">
                                 <a href="{{ route('staff.index') }}" class="nk-menu-link"><span class="nk-menu-text"> Staffs</span></a>
+                            </li> 
+
+                           @super
+                            <li class="nk-menu-item">
+                                <a href="{{ route('super') }}" class="nk-menu-link"><span class="nk-menu-text"> Super Controls </span></a>
                             </li>  
+                           @endsuper
+                           
                         </ul><!-- .nk-menu-sub -->
                     </li><!-- .nk-menu-item -->
 

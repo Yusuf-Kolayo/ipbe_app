@@ -1,5 +1,5 @@
 <?php
- 
+
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB; 
@@ -20,43 +20,28 @@ use App\Models\Activity;
 class ClientController extends BaseController
 {
 
-     
-    public $middleware_except;   public $title = 'client';
+     public $title = 'client';
 
 
     public function __construct() {
        $this->middleware('auth');
-       parent::__construct();
-       
-       $this->middleware(function ($request, $next) {    
-        $user_id= Auth::user()->user_id;   $usr_type = Auth::user()->usr_type;
-        if ($usr_type=='usr_admin') { $permitted_sections = array(); // dd('here');
-        
-        $user_permissions = Access_permission::Where(['user_id'=>$user_id, 'title'=>$this->title])->get();  //dd($user_permissions);
-        foreach ($user_permissions as $key => $permission) {
-            $permitted_sections[]  = $permission->section; 
-        }    
-
-        // $permitted_sections = substr($permitted_sections,0,-1);
-        $this->middleware_except = $permitted_sections;
-     
-        }
-        
-        return $next($request);
-       });
+       parent::__construct(); 
 
     }
 
+ 
 
-    
 
-
+    // loads up a to list out all clients 
     public function index() 
-    {   
+    {   $section = 'index';   
 
-        $section = 'index';   // dd($this->middleware_except);  
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) {
+            if (in_array($section, parent::middleware_except())) {
 
 
         $usr_type = auth()->user()->usr_type;
@@ -84,19 +69,21 @@ class ClientController extends BaseController
              } 
            return view('agent.clients_list')->with('clients',$clients); 
            
-
-
-         }
+        }
    
     }
 
 
-        
+    // [agent specific] - loads up a page to select a client
     public function select_client (Request $request)
     {  
-        $section = 'select_client';   // dd($this->middleware_except);  
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
+        $section = 'select_client';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) {
+            if (in_array($section, parent::middleware_except())) {
 
         $product_id = $request['product_id_delete_form'];  
         $product = Product::where('product_id', $product_id)->firstOrFail();
@@ -124,14 +111,16 @@ class ClientController extends BaseController
     
 
 
-
-
-
+    // [agent specific] store a new client
     public function store(Request $request)
     {
-        $section = 'store';   // dd($this->middleware_except);  
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
+        $section = 'store';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) {
+            if (in_array($section, parent::middleware_except())) {
 
         $data = request()->validate([
             'first_name' => ['required', 'string', 'max:55'],
@@ -236,17 +225,18 @@ class ClientController extends BaseController
          }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+ 
+    
+    // show the profile of a client
     public function show($client_id)
     {
-        $section = 'show';   // dd($this->middleware_except);  
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
+        $section = 'show';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) {
+            if (in_array($section, parent::middleware_except())) {
 
         $client = Client::where('client_id', $client_id)->firstOrFail();
         $main_categories = Category::where('parent_id', 0)->get(); 
@@ -270,12 +260,16 @@ class ClientController extends BaseController
 
 
 
+    // show profile of client through ajax
     public function show_profile_ajax_fetch(Request $request)
     {   
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
 
-        $section = 'show_profile_ajax_fetch';   // dd($this->middleware_except);  
+        $section = 'show_profile_ajax_fetch';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) {
+            if (in_array($section, parent::middleware_except())) {
 
         $client_id = $request['client_id'];  $product_id = $request['product_id']; 
         $client = Client::where('client_id', $client_id)->firstOrFail(); // dd($client);   
@@ -305,15 +299,16 @@ class ClientController extends BaseController
    
     
 
-
-
-
+    // update a client data
     public function update(Request $request, $client_id)
     {  
-        
-        $section = 'update';   // dd($this->middleware_except);  
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
+        $section = 'update';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) {
+            if (in_array($section, parent::middleware_except())) {
 
         // dd($client_id);
         $data = request()->validate([
@@ -375,15 +370,17 @@ class ClientController extends BaseController
 
     
 
-
-
-
+    
+    // delete a client from database
     public function destroy($client_id)
     {  
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
         
-        $section = 'destroy';   // dd($this->middleware_except);  
+        $section = 'destroy';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) {
+            if (in_array($section, parent::middleware_except())) {
  
        $client = Client::where('client_id', $client_id)->firstOrFail(); 
        $client->delete();      
