@@ -39,6 +39,10 @@ class AppServiceProvider extends ServiceProvider
             return Auth::user() && auth()->user()->usr_type == 'usr_client' ;
         });
 
+        Blade::if('super', function () {
+            return Auth::user() && auth()->user()->usr_type == 'usr_admin' && auth()->user()->adm_type == 'super';
+        });
+
 
         Paginator::useBootstrap();
     }

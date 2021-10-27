@@ -19,30 +19,12 @@ class ProductController extends BaseController
   
     
     
-    public $middleware_except;   public $title = 'product';
+    public $title = 'product';
 
 
     public function __construct() {
        $this->middleware('auth');
-       parent::__construct();
-       
-       $this->middleware(function ($request, $next) {    
-        $user_id= Auth::user()->user_id;   $usr_type = Auth::user()->usr_type;
-        if ($usr_type=='usr_admin') { $permitted_sections = array(); // dd('here');
-        
-        $user_permissions = Access_permission::Where(['user_id'=>$user_id, 'title'=>$this->title])->get();  //dd($user_permissions);
-        foreach ($user_permissions as $key => $permission) {
-            $permitted_sections[]  = $permission->section; 
-        }    
-
-        // $permitted_sections = substr($permitted_sections,0,-1);
-        $this->middleware_except = $permitted_sections;
-     
-        }
-        
-        return $next($request);
-       });
-
+       parent::__construct(); 
     }
 
 
@@ -50,9 +32,14 @@ class ProductController extends BaseController
 
     // public function index()
     // { 
-    //     $section = 'index';   // dd($this->middleware_except);  
+
+        // if (!in_array($this->title, parent::app_sections_only())) {    
+        //     return redirect()->route('access_denied'); 
+        // }
+
+    //     $section = 'index';   // dd(parent::middleware_except());  
     //     if (auth()->user()->usr_type=='usr_admin') {
-    //         if (in_array($section, $this->middleware_except)) {
+    //         if (in_array($section, parent::middleware_except())) {
 
     //     $products = Product::all();                                          
     //     $main_categories = Category::where('parent_id', 0)->get();  
@@ -65,11 +52,16 @@ class ProductController extends BaseController
  
     
 
+    // store a new product
     public function store(Request $request)
     {
-        $section = 'store';   // dd($this->middleware_except);  
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
+        $section = 'store';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) {
+            if (in_array($section, parent::middleware_except())) {
 
         $data = request()->validate([
             'img_name' => ['required', 'image'],
@@ -116,15 +108,16 @@ class ProductController extends BaseController
 
 
 
-   
-    
-
-    
+    // show product catalog
     public function sub($sub_category_id)
-    {
-        $section = 'sub';   // dd($this->middleware_except);  
+    {   
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
+        $section = 'sub';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) {
+            if (in_array($section, parent::middleware_except())) {
 
         $brands = Brand::all();
         $main_categories = Category::where('parent_id', 0)->get();  
@@ -151,11 +144,16 @@ class ProductController extends BaseController
     
 
     
+    // update a product in database
     public function update_product_ajax_fetch(Request $request)
     {  
-        $section = 'update_product_ajax_fetch';   // dd($this->middleware_except);  
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
+        $section = 'update_product_ajax_fetch';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) {
+            if (in_array($section, parent::middleware_except())) {
 
         $brands = Brand::all();
         $main_categories = Category::where('parent_id', 0)->get(); 
@@ -178,11 +176,17 @@ class ProductController extends BaseController
     }
 
 
+
+    // show a product details
     public function show_details_ajax_fetch (Request $request)
     {  
-        $section = 'show_details_ajax_fetch';   // dd($this->middleware_except);  
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
+        $section = 'show_details_ajax_fetch';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) {
+            if (in_array($section, parent::middleware_except())) {
 
         $product_id = $request['product_id']; 
         $product = Product::where('product_id', $product_id)->firstOrFail(); // dd($product); 
@@ -202,11 +206,16 @@ class ProductController extends BaseController
 
 
 
+    // refresh a product div after update
     public function refresh_product_ajax_fetch(Request $request)
     {   
-        $section = 'refresh_product_ajax_fetch';   // dd($this->middleware_except);  
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
+        $section = 'refresh_product_ajax_fetch';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) {
+            if (in_array($section, parent::middleware_except())) {
 
         $product_id = $request['product_id']; // dd($request['product_id']);  
         $product = Product::where('product_id', $product_id)->firstOrFail();
@@ -225,11 +234,16 @@ class ProductController extends BaseController
 
 
 
+    // loads up a product profile   
     public function show($product_id)
     {
-        $section = 'show';   // dd($this->middleware_except);  
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
+        $section = 'show';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) {
+            if (in_array($section, parent::middleware_except())) {
 
         $product = Product::where('product_id', $product_id)->firstOrFail();
         return view('admin.product_profile')->with('product',$product);
@@ -243,36 +257,44 @@ class ProductController extends BaseController
         }
     }
 
-    public function trash($id)
-    {
-        $section = 'trash';   // dd($this->middleware_except);  
-        if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) {
 
-        $product = Product::findOrFail($id);
-        return view('admin.product_trash')->with('product',$product);
+    // 
+    // public function trash($id)
+    // {
+    //     if (!in_array($this->title, parent::app_sections_only())) {    
+    //         return redirect()->route('access_denied'); 
+    //     }
 
-        } else { return redirect()->route('access_denied'); }
-        } else {  // if not admin 
+    //     $section = 'trash';   // dd(parent::middleware_except());  
+    //     if (auth()->user()->usr_type=='usr_admin') {
+    //         if (in_array($section, parent::middleware_except())) {
 
-            $product = Product::findOrFail($id);
-            return view('admin.product_trash')->with('product',$product);
+    //     $product = Product::findOrFail($id);
+    //     return view('admin.product_trash')->with('product',$product);
 
-        }
-    }
+    //     } else { return redirect()->route('access_denied'); }
+    //     } else {  // if not admin 
+
+    //         $product = Product::findOrFail($id);
+    //         return view('admin.product_trash')->with('product',$product);
+
+    //     }
+    // }
 
   
     
 
-
-
+    // update a product data
     public function update(Request $request, $product_id)
     {
     
-        
-        $section = 'update';   // dd($this->middleware_except);  
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
+        $section = 'update';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) {
+            if (in_array($section, parent::middleware_except())) {
 
             $data = request()->validate([
                 'img_name' => ['nullable', 'image'],
@@ -396,18 +418,19 @@ class ProductController extends BaseController
         
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+   
+    
+    // delete a product from database
     public function destroy($product_id)
     {
 
-        $section = 'destroy';   // dd($this->middleware_except);  
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
+        $section = 'destroy';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) {
+            if (in_array($section, parent::middleware_except())) {
 
             $product = Product::where('product_id', $product_id)->firstOrFail();
             $product_img = $product->img_name;

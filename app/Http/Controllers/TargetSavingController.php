@@ -10,10 +10,19 @@ use App\Models\Target_saving;
 use App\Models\Target_transaction;
 use App\Models\Target_request;
 
-class TargetSavingController extends Controller
+class TargetSavingController extends BaseController
 {
-    //this returns all targets created from database
+    
+    
+    public $title = 'target_savings';
+
+
+
     public function allTargetAccount(){
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        } 
+
         $usr_type = Auth()->User()->usr_type;
         if($usr_type=='usr_admin'){
             $allTargets=Target_saving::orderBy('created_at', 'DESC')->get();
@@ -23,12 +32,13 @@ class TargetSavingController extends Controller
             $allTargets=Target_saving::where('agent_id',$agent_id)->orderBy('created_at', 'DESC')->get();
             return view ('Agent\target_saving',['data'=>$allTargets]);
         }
-        
-        
     }
 
-    //this is use check if client's information exist on database before creating target
-    public function searchClientUsingNumber(Request $req){      
+    public function searchClientUsingNumber(Request $req){  
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
         $phoneNo=$req['phone'];
         $client = Client::where('phone',$phoneNo)->first();
 
@@ -45,7 +55,11 @@ class TargetSavingController extends Controller
 
     //this will save created target to database
     public function createAndSaveTargetAccount(Request $req){
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
         $agent_id=Auth()->User()->user_id;
+
         $attributes = [
             'targetvalue'=>'Target overall value',
             'targetplan'=>'Target plan  [period of time] ',
@@ -89,17 +103,24 @@ class TargetSavingController extends Controller
         $targetSaving->save();
         return ('success');
     }
+    
 
-   
-
-    //return view of the page you can check a client target saving history
     public function targetSavingTransaction(){
+
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
         return view('agent.target_saving_transaction');
     }
 
     //return target saving(s) a particular client has 
     public function retrieveTargetRecord(Request $req){
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
         $agent_id=Auth()->User()->user_id;
+
         $clientInfo=$req['clientInfo'];
         $clientTarget = Target_saving::where('client_no','=', $clientInfo)
                     ->orWhere('client_email','=', $clientInfo)->where('agent_id',$agent_id)
@@ -120,6 +141,10 @@ class TargetSavingController extends Controller
 
     //return total amount a client has saved towards the created target
     public function totalAmountPaid(Request $req){
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
         $targetSavingId=$req['targetSavingId'];
         $totalPaid=Target_transaction::where('target_saving_id',$targetSavingId)->sum('amount_paid');
         return $totalPaid;
@@ -127,6 +152,10 @@ class TargetSavingController extends Controller
 
     //this saves any target-saving transaction that happens
     public function saveTargetTransaction(Request $req){
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
         $attributes = [
             'transMethod'=>'Transaction Method',
         ];
@@ -188,12 +217,19 @@ class TargetSavingController extends Controller
 
     //this return all the target-saving that has been requested for by the client, I'm not done with this function too
     public function allRequestedTarget(){
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
         $requestTargets=Target_request::orderBy('request_date', 'DESC')->get();
         return view ('Agent\target_request',['requests'=>$requestTargets]);
     }
 
     //this will show a mini report of a client's target-saving history before requesting
     public function miniTransactionReport(Request $req){
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
         $clientInfo=$req['clientInfo'];
         $clientTarget = Target_saving::where('client_no','=', $clientInfo)
                     ->orWhere('client_email','=', $clientInfo)
@@ -214,6 +250,10 @@ class TargetSavingController extends Controller
 
     //return the client bank details from the database
     public function clientBankDetails(Request $req){
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
         $idForBankDetails=$req['targetIdBank'];
         $bankDetails=Target_saving::find($idForBankDetails,['bank_name','acc_no','acc_name']);
         return $bankDetails;
@@ -221,6 +261,10 @@ class TargetSavingController extends Controller
 
     //saves all requested target saving to database
     public function requestTarget(Request $req){
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
         $this->validate($req,[
             'targetId'=>'required',
             'date'=>'required',
@@ -252,6 +296,10 @@ class TargetSavingController extends Controller
 
     //this will change the status of the requested target depending on if it has been processed but I'm not done with it
     public function changeRequestStatus($id){
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
         $status=Target_request::find($id);
         $status->request_status='Completed';
         $status->save();

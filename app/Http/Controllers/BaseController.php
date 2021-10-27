@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB; 
 use Illuminate\Support\Facades\Auth; 
+use App\Models\App_section;
 use App\Models\Active_state;    
 use App\Models\User; 
 use App\Models\Access_permission;
@@ -25,10 +26,12 @@ class BaseController extends Controller
         ['expense',     [['allExpensesCategories','expenses category'],['newExpensesCategory','create new category'],['editExpensesCatergory','edit expenses'],['deleteExpensesCatergory','delete expenses'],['addNewExpenses','new expenses form'],['saveExpenses','save new expenses'],['expensesPrint','print expenses'],['allExpenses','show all expenses'],['deleteExpenses','delete expenses'],['searchName','search by initiator '],['searchBranch','search by branch'],['searchDate','search by date'],['searchCategory','search by category'],['searchCategoryAndName','search by category'],['searchCategoryAndDate','search by date & category'],['searchCategoryAndBranch','search by category & branch'],['searchDateAndBranch','search by date & branch'],['searchCategoryAndBranchAndDate','search by category, branch & date'],['searchCategoryAndBranchAndName','search by category, branch & name'],['searchDateAndName','search by date & time'],['searchBranchAndName','serach by branch & name'],['searchDateAndBranchAndName','search by date, branch and name'],['searchDateAndCategoryAndName','search by date, category & name'],['searchWithAll','search ']]],
         ['category',    [['index','view product categories'],['sub_cat_ajax_fetch','fetch sub-category'],['store','save new category'],['trash','delete category'],['update','edit category'],['destroy','delete category']]],
         ['brand',       [['index','view brands'],['store','save new brand'],['update_brand_fetch', 'show brand update form'],['update','edit brand'],['delete_brand_fetch','show brand delete form'],['destroy','delete brand']]]
+        ,['target_savings', [[]]]
     );
     
-    
 
+    
+  
 
     public function __construct()
     {   
@@ -37,6 +40,17 @@ class BaseController extends Controller
             $user_id= Auth::user()->user_id;   $usr_type = Auth::user()->usr_type;
 
 
+            //  check if app section is permitted
+            // $db_app_sections = App_section::all();   $permitted_sections = [];    
+            // foreach ($db_app_sections as $key => $value) {  $permitted_sections[] = $value->section; }
+            // dd([$section, $permitted_sections]);
+            // if (in_array($section, $permitted_sections)) { 
+            //     return redirect()->route('access_denied');
+            // }
+
+
+
+            //  update active state of user
                 $active_state = Active_state::where('user_id', $user_id)->first();
                 if ($active_state) {
                     DB::table('active_states')->where('user_id', $user_id)
@@ -57,7 +71,30 @@ class BaseController extends Controller
     }
 
 
- 
+    public function middleware_except() { 
+            $user_id= Auth::user()->user_id;   $usr_type = Auth::user()->usr_type;
+            if ($usr_type=='usr_admin') { $permitted_sections = array();  // dd($this->title);
+            
+            $user_permissions = Access_permission::Where(['user_id'=>$user_id, 'title'=>$this->title])->get();  //dd($user_permissions);
+            foreach ($user_permissions as $key => $permission) {
+                $permitted_sections[]  = $permission->section; 
+            }     
+           }
+
+        return $permitted_sections;
+    }
+
+
+
+
+    public function app_sections_only() { 
+        $user_permissions = App_section::all();   $permitted_sections = [];  //dd($user_permissions);
+        foreach ($user_permissions as $key => $permission) {
+            $permitted_sections[] = $permission->section; 
+        }   return $permitted_sections;
+    }
+
+
 
 
     public function get_time($sec, $patner_username) {

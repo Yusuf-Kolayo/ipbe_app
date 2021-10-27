@@ -20,42 +20,29 @@ use Illuminate\Support\Facades\Session;
 class AgentController extends BaseController 
 {
 
-    public $middleware_except;   public $title = 'agent';
+    public $title = 'agent';
 
     public function __construct()
     {
         $this->middleware('auth');
-        parent::__construct();
-
-        $this->middleware(function ($request, $next) {    
-            $user_id= Auth::user()->user_id;   $usr_type = Auth::user()->usr_type;
-            if ($usr_type=='usr_admin') { $permitted_sections = array(); // dd('here');
-          
-            $user_permissions = Access_permission::Where(['user_id'=>$user_id, 'title'=>$this->title])->get();  //dd($user_permissions);
-            foreach ($user_permissions as $key => $permission) {
-                $permitted_sections[]  = $permission->section; 
-            }    
-
-            // $permitted_sections = substr($permitted_sections,0,-1);
-            $this->middleware_except = $permitted_sections;
-         
-            }
-            
-            return $next($request);
-        });
-
+        parent::__construct();  
      
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
+    
+
+    // load up the page that lists out all agents
     public function index()
-    {   $section = 'index';   // dd($this->middleware_except);  
+    {   
+        
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+        
+        $section = 'index';    
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) {
+            if (in_array($section, parent::middleware_except())) {
 
                 $catchments = Catchment::all();   
                 return view('admin.agents')->with('catchments', $catchments); 
@@ -65,11 +52,17 @@ class AgentController extends BaseController
     }
 
 
+
+    // an ajax call to fetch out all agents from db
     public function ajax_fetch()
     {    
-        $section = 'ajax_fetch';   // dd($this->middleware_except);  
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
+        $section = 'ajax_fetch';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) {
+            if (in_array($section, parent::middleware_except())) {
 
             $agents = Agent::all();   
             return view('admin.agents_ajax_fetch')->with('agents', $agents); 
@@ -81,28 +74,28 @@ class AgentController extends BaseController
         }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
+    
+
+
     public function create()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    
+
+    // store new agents to database
     public function store(Request $request)
     {  
 
-        $section = 'store';   // dd($this->middleware_except);  
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
+        $section = 'store';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) {
+            if (in_array($section, parent::middleware_except())) {
         
         $usr_type = 'usr_agent';  // dd($request['catchment_id']);
          $custom_error_messages = array (
@@ -269,17 +262,20 @@ class AgentController extends BaseController
 
     }
           
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
+    
+
+    // show an agent's profile
     public function show($id)
     {
-        $section = 'show';   // dd($this->middleware_except);  
+
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
+        $section = 'show';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) {
+            if (in_array($section, parent::middleware_except())) {
 
         $user = User::firstWhere('username', $id);  // dd($user);
         return view('admin.agent_profile')->with('user', $user);
@@ -293,31 +289,27 @@ class AgentController extends BaseController
         }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+   
+ 
     public function edit($id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+  
+    
 
+    // update an agent's data 
     public function update(Request $request, $username)
     {  
-        
-        $section = 'update';   // dd($this->middleware_except);  
+
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
+        $section = 'update';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) {
+            if (in_array($section, parent::middleware_except())) {
         
         $user_id = User::firstWhere('username', $username)->user_id;  // dd($user);
      
@@ -457,17 +449,18 @@ class AgentController extends BaseController
      }  
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+ 
+    
+    // delete an agent from database
     public function destroy($username)
     {
-        $section = 'destroy';   // dd($this->middleware_except);  
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
+        $section = 'destroy';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) {
+            if (in_array($section, parent::middleware_except())) {
 
         $user = User::firstWhere('username', $username);  // dd($user); 
         $user_id = $user->user_id;
@@ -479,10 +472,7 @@ class AgentController extends BaseController
         }
 
     }
-
  
- 
-
     //  ----------------------------------------------------------------------  //
 
 

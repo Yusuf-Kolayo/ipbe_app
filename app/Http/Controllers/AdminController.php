@@ -16,66 +16,56 @@ class AdminController extends BaseController
  
     public function __construct() {
        $this->middleware('auth');
-     //  $this->middleware('super');
+       $this->middleware('is_super');
        parent::__construct(); 
     }
 
 
+
+   // load up the page for super access controls
    public function index () {
     
         $app_sections = $this->app_sections;  
-        $permitted_sections = App_section::all();  // dd($user);
+        $db_app_sections = App_section::all();   $permitted_sections = [];   // dd($user);
+        foreach ($db_app_sections as $key => $value) {
+            $permitted_sections[] = $value->section;
+        }
         return view('admin.super', compact('app_sections','permitted_sections')); 
-    
    } 
 
 
 
+   // update app sections that should be allowed or dis-allowed
+   public function update_app_permissions (Request $request)
+   {   
 
-   public function update_user_permission (Request $request)
-   {  
-       $section = 'update_user_permission';   // dd($this->middleware_except);  
-       if (auth()->user()->usr_type=='usr_admin') {
-           if (in_array($section, $this->middleware_except)) {
+       $action = $request['action'];    $section = $request['section'];
 
-       $action = $request['action'];    $staff_id = $request['staff_id'];
-       $title = $request['title'];        $section = $request['section'];
-
-       if ($action=='add') {
-           $query_rs = Access_permission::updateOrCreate(
-               ['user_id'=>$staff_id, 'title'=>$title, 'section'=>$section],
+       if ($action=='add') {  
+           $query_rs = App_section::updateOrCreate(
+               ['section'=>$section, 'status'=>'active'],
                []
-           ); $msg = 'section permitted successfully for '.$staff_id;
-       } else { $msg = 'permission revoked successfully on this section for '.$staff_id;
-           $deleted_rows = Access_permission::where(['user_id'=>$staff_id, 'title'=>$title, 'section'=>$section])->delete();
+           ); $msg = 'section permitted successfully';
+       } else { 
+           $msg = 'permission revoked successfully on this section';
+           $deleted_rows = App_section::where(['section'=>$section])->delete();
        } 
 
-       return response()->json(['message'=>$msg, 'status'=>1]);
-
-       } else { return redirect()->route('access_denied'); }
-       }  
+       return response()->json(['message'=>$msg, 'status'=>1]); 
 
    }
 
 
-
-   public function refresh_permissions_ajax_fetch (Request $request) {
-    
-       $section = 'refresh_permissions_ajax_fetch';   // dd($this->middleware_except);  
-       if (auth()->user()->usr_type=='usr_admin') {
-           if (in_array($section, $this->middleware_except)) {
-
-       $staff_id = $request['staff_id']; // dd($request['product_id']);  
-       $app_sections = $this->app_sections;  
-       $user_permissions = Access_permission::Where('user_id', $staff_id)->get();   $permitted_sections = [];  //dd($user_permissions);
-       foreach ($user_permissions as $key => $permission) {
-           $permitted_sections[] = $permission->title.'_'.$permission->section;
-          // $permitted_sections[1] = $permission->title.'_'.$permission->section;
-       }   //dd($permitted_sections);
-
-       return view('admin.user_permissions_refresh_ajax_fetch', compact('staff_id','app_sections','permitted_sections')); 
-       } else { return redirect()->route('access_denied'); }
-       } 
+   // refresh div section where access to app sections are managed
+   public function refresh_app_permissions_ajax_fetch (Request $request) {
+     
+        $app_sections = $this->app_sections;  
+        $db_app_sections = App_section::all();   $permitted_sections = [];   // dd($user);
+        foreach ($db_app_sections as $key => $value) {
+            $permitted_sections[] = $value->section;
+        }
+        return view('admin.refresh_app_permissions_ajax_fetch', compact('app_sections','permitted_sections')); 
+      
    }
 
 

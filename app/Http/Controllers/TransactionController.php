@@ -22,29 +22,11 @@ class TransactionController extends BaseController
 
 
     
-    public $middleware_except;   public $title = 'transaction';
+    public $title = 'transaction';
 
     public function __construct() {
        $this->middleware('auth');
-       parent::__construct();
-       
-       $this->middleware(function ($request, $next) {    
-        $user_id= Auth::user()->user_id;   $usr_type = Auth::user()->usr_type;
-        if ($usr_type=='usr_admin') { $permitted_sections = array(); // dd('here');
-        
-        $user_permissions = Access_permission::Where(['user_id'=>$user_id, 'title'=>$this->title])->get();  //dd($user_permissions);
-        foreach ($user_permissions as $key => $permission) {
-            $permitted_sections[]  = $permission->section; 
-        }    
-
-        // $permitted_sections = substr($permitted_sections,0,-1);
-        $this->middleware_except = $permitted_sections;
-     
-        }
-        
-        return $next($request);
-       });
-
+       parent::__construct(); 
     }
 
 
@@ -57,12 +39,17 @@ class TransactionController extends BaseController
 
  
 
-
+ 
+    // fetch edit a transaction form
     public function edit_trans_ajax_fetch (Request $request)
     {   
-        $section = 'edit_trans_ajax_fetch';   // dd($this->middleware_except);  
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
+        $section = 'edit_trans_ajax_fetch';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) {
+            if (in_array($section, parent::middleware_except())) {
 
         $trans_id = $request['trans_id'];  
         $transaction = Transaction::where('trans_id', $trans_id)->firstOrFail();  // dd($transaction);  
@@ -79,11 +66,16 @@ class TransactionController extends BaseController
     }
 
 
+    // fetch delete transaction form
     public function delete_trans_ajax_fetch (Request $request)
     {   
-        $section = 'delete_trans_ajax_fetch';   // dd($this->middleware_except);  
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
+        $section = 'delete_trans_ajax_fetch';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) {
+            if (in_array($section, parent::middleware_except())) {
 
         $trans_id = $request['trans_id'];  
         $transaction = Transaction::where('trans_id', $trans_id)->firstOrFail();  // dd($transaction);  
@@ -100,22 +92,18 @@ class TransactionController extends BaseController
     }
  
   
-
-
-  
+ 
     
-
-
-
-
-
-
-    
+    // fetch product purchase session data 
     public function pps_details_ajax_fetch(Request $request)
     {   
-        $section = 'pps_details_ajax_fetch';   // dd($this->middleware_except);  
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
+        $section = 'pps_details_ajax_fetch';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) {
+            if (in_array($section, parent::middleware_except())) {
 
         $pps_id = $request['pps_id'];  //  dd($pps_id);
         $product_purchase_session = Product_purchase_session::where('pps_id', $pps_id)->firstOrFail(); 
@@ -132,11 +120,16 @@ class TransactionController extends BaseController
     } 
 
 
+    // fetch delete product purchase session form
     public function pps_delete_ajax_fetch(Request $request)
     {   
-        $section = 'pps_delete_ajax_fetch';   // dd($this->middleware_except);  
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
+        $section = 'pps_delete_ajax_fetch';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) {
+            if (in_array($section, parent::middleware_except())) {
 
         $pps_id = $request['pps_id'];  //  dd($pps_id);
         $product_purchase_session = Product_purchase_session::where('pps_id', $pps_id)->firstOrFail();   
@@ -147,11 +140,16 @@ class TransactionController extends BaseController
     } 
 
 
+    // fetch a transaction details
     public function trans_details_ajax_fetch(Request $request)
     {   
-        $section = 'trans_details_ajax_fetch';   // dd($this->middleware_except);  
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
+        $section = 'trans_details_ajax_fetch';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) {
+            if (in_array($section, parent::middleware_except())) {
 
         $pps_id = $request['pps_id'];   // dd($trans_id);
         $product_purchase_session = Product_purchase_session::where('pps_id', $pps_id)->firstOrFail();  
@@ -162,11 +160,17 @@ class TransactionController extends BaseController
     } 
 
 
+
+    // stores new product purchase session to database
     public function new_purchase_session(Request $request)
     {   
-        $section = 'new_purchase_session';   // dd($this->middleware_except);  
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
+        $section = 'new_purchase_session';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) {
+            if (in_array($section, parent::middleware_except())) {
 
         $client_id = $request['client_id'];  $product_id = $request['product_id'];  
         $sql = DB::select("show table status like 'product_purchase_sessions'");
@@ -267,11 +271,16 @@ class TransactionController extends BaseController
 
 
 
+    // approve a product purchase session
     public function approve_session(Request $request)
     {   
-        $section = 'approve_session';   // dd($this->middleware_except);  
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
+        $section = 'approve_session';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) {
+            if (in_array($section, parent::middleware_except())) {
 
         $pps_id = $request['pps_id'];   $client_id = $request['client_id'];  
         $client = Client::where('client_id', $client_id)->first();
@@ -347,11 +356,17 @@ class TransactionController extends BaseController
 
 
 
+
+    // pause a product purchase session
     public function pause_session(Request $request)
     {   
-        $section = 'pause_session';   // dd($this->middleware_except);  
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
+        $section = 'pause_session';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) {
+            if (in_array($section, parent::middleware_except())) {
 
         $pps_id = $request['pps_id'];   $client_id = $request['client_id'];   
         $new_status = 'paused'; //  dd($pps_id);
@@ -398,11 +413,17 @@ class TransactionController extends BaseController
 
 
 
+
+    // delete a product  product purchase session
     public function delete_product_session (Request $request)
     {   
-        $section = 'delete_product_session';   // dd($this->middleware_except);  
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
+        $section = 'delete_product_session';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) {
+            if (in_array($section, parent::middleware_except())) {
 
         $pps_id = $request['pps_id'];     // dd($pps_id);
         $product_purchase_session = Product_purchase_session::where('pps_id', $pps_id)->firstOrFail();
@@ -449,11 +470,17 @@ class TransactionController extends BaseController
 
 
 
+    // stores a new deposit/transaction
     public function create_deposit(Request $request)
     {   
-        $section = 'create_deposit';   // dd($this->middleware_except);  
+        
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
+        $section = 'create_deposit';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) {
+            if (in_array($section, parent::middleware_except())) {
                 
         $pps_id = $request['pps_id'];   $amount = $request['amount'];   $type = $request['type'];      
         $product_purchase_session = Product_purchase_session::where('pps_id', $pps_id)->firstOrFail();
@@ -544,23 +571,16 @@ class TransactionController extends BaseController
 
 
 
-
-
-
- 
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    // updates a transaction
     public function update(Request $request, $trans_id)
     {
-        $section = 'update';   // dd($this->middleware_except);  
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+ 
+        $section = 'update';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) {
+            if (in_array($section, parent::middleware_except())) {
             
         $data = request()->validate([ 
             'amount' => ['required', 'string', 'max:55'],
@@ -634,17 +654,18 @@ class TransactionController extends BaseController
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+   
+    
+    // deletes a transaction
     public function destroy ($trans_id)
     {
-        $section = 'destroy';   // dd($this->middleware_except);  
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
+        $section = 'destroy';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, $this->middleware_except)) {
+            if (in_array($section, parent::middleware_except())) {
 
         $transaction = Transaction::where('trans_id', $trans_id)->firstOrFail();
         $client_id = $transaction->client_id;
