@@ -16,6 +16,7 @@ class CreateTargetSavingsTable extends Migration
         if(Schema::hasTable('target_savings')) return;
         Schema::create('target_savings', function (Blueprint $table) {
             $table->id();
+            $table->string('agent_id');
             $table->string('client_id', 55);
             $table->string('client_no');
             $table->string('client_email');

@@ -107,7 +107,27 @@
                         </ul><!-- .nk-menu-sub -->
                     </li><!-- .nk-menu-item -->
 
-
+                    <li class="nk-menu-item has-sub">
+                        <a href="#" class="nk-menu-link nk-menu-toggle ">
+                          <span class="nk-menu-icon"><i class="fas fa-cloud pr-2"></i></span>
+                          <span class="nk-menu-text"> Target Saving</span>
+                        </a> 
+                    
+                        <ul class="nk-menu-sub"> 
+                          <li class="nk-menu-item">
+                            <a href="{{ route('target_saving')}}" class="nk-menu-link">
+                              <span class="nk-menu-text">Targets </span>
+                            </a>
+                          </li>
+                          <li class="nk-menu-item">
+                            <a href="{{ route('target_request')}}" class="nk-menu-link">
+                              <span class="nk-menu-text">Request Target</span>
+                            </a>
+                          </li>
+              
+                          
+                        </ul>  
+                      </li>
 
                     <li class="nk-menu-item has-sub">
                         <a href="#" class="nk-menu-link nk-menu-toggle">

@@ -56,9 +56,16 @@
         <div class="card">
             <div class="card-header py-3">
                 <div class="row d-flex justify-content-between">
-                    <div class="col-12 pl-4">
-                        <h5 class="text-muted card-title">TRANSACTION STATUS : <span id="statusVal"></span><//h5>
+                    <div class="col-md-9 pl-4">
+                        <h5 class="text-muted card-title">TRANSACTION STATUS : <span id="statusVal"></span></h5>
                     </div>
+                    <?php $usr_type = Auth()->User()->usr_type;?>
+                    @if($usr_type !=='usr_admin'){
+                        <<div class="col-md-3 mt-3 mt-md-0">
+                            <button class="btn btn-sm btn-primary float-right px-3" id="newPayment">NEW PAYMENT</button>
+                        </div>
+                    @endif
+                    
                 </div>
             </div>
 
@@ -121,6 +128,10 @@
         }else{
             $('#statusVal').html('PAYMENT ON-GOING')
         }
+
+        $('#newPayment').click(function(){
+            $(window).attr('location',"{{route('target_transaction')}}");
+        })
     })
 </script>
 @endsection

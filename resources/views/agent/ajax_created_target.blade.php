@@ -1,7 +1,11 @@
 @if($clientTarget=='no result')
     <div class="col-md-6 offset-md-3 card my-3 py-2 mr-1 text-center">
-        <h5 class="font-weight-bolder alert alert-danger">You cannot record payment because no Target was created with this Number or Email</h5>
+        <h5 class="font-weight-bolder alert alert-danger">Payment cannot be recorded because no target was found with the data provided or it was created by another Agent</h5>
     </div>
+    <div class="col-md-6 offset-md-3 card my-3 py-2 mr-1 text-center">
+        <button  class="font-weight-bolder alert alert-success" id="createTarget" data-toggle="modal" data-target="#new-target">CREATE NEW TARGET</button>
+    </div>
+    
 @else
 <div class="col-12 font-weight-bolder text-center alert alert-danger"><p>Please click on the NEW PAYMENT button under the target you are about to record</p></div>
 @foreach($clientTarget as $clientTarget)
@@ -112,8 +116,12 @@
 
 <script type="text/javascript">
     $(document).ready(function(){
-       // $("#transactionForm *").attr("disabled", "disabled").off('click');
-    
+        $('#createTarget').click(function(){
+            window.location.replace("{{ route('target_saving') }}");
+            //$('#new-target').trigger('click'); 
+            //jQuery('#new-target').click();
+        })
+
         $('.btnSave').click(function(){
             let targetId=($(this).data('id'));
             $('input[name=targetId]').val(targetId);

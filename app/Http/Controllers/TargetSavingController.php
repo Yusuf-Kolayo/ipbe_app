@@ -14,8 +14,17 @@ class TargetSavingController extends Controller
 {
     //this returns all targets created from database
     public function allTargetAccount(){
-        $allTargets=Target_saving::orderBy('created_at', 'DESC')->get();
-        return view ('Agent\target_saving',['data'=>$allTargets]);
+        $usr_type = Auth()->User()->usr_type;
+        if($usr_type=='usr_admin'){
+            $allTargets=Target_saving::orderBy('created_at', 'DESC')->get();
+            return view ('Agent\target_saving',['data'=>$allTargets]);
+        }else{
+            $agent_id=Auth()->User()->user_id;
+            $allTargets=Target_saving::where('agent_id',$agent_id)->orderBy('created_at', 'DESC')->get();
+            return view ('Agent\target_saving',['data'=>$allTargets]);
+        }
+        
+        
     }
 
     //this is use check if client's information exist on database before creating target
@@ -36,6 +45,7 @@ class TargetSavingController extends Controller
 
     //this will save created target to database
     public function createAndSaveTargetAccount(Request $req){
+        $agent_id=Auth()->User()->user_id;
         $attributes = [
             'targetvalue'=>'Target overall value',
             'targetplan'=>'Target plan  [period of time] ',
@@ -64,6 +74,7 @@ class TargetSavingController extends Controller
         }
         
         $targetSaving = new Target_saving();
+        $targetSaving->agent_id=$agent_id;
         $targetSaving->overall_value=$req['targetvalue'];
         $targetSaving->target_plan=$req['targetplan'];
         $targetSaving->target_reason=$req['targetreason'];
@@ -86,11 +97,12 @@ class TargetSavingController extends Controller
         return view('agent.target_saving_transaction');
     }
 
-    //return target saving(s) a client started
+    //return target saving(s) a particular client has 
     public function retrieveTargetRecord(Request $req){
+        $agent_id=Auth()->User()->user_id;
         $clientInfo=$req['clientInfo'];
         $clientTarget = Target_saving::where('client_no','=', $clientInfo)
-                    ->orWhere('client_email','=', $clientInfo)
+                    ->orWhere('client_email','=', $clientInfo)->where('agent_id',$agent_id)
                     ->get();
     
         $totalRecord=Target_saving::where('client_no','=', $clientInfo)
@@ -154,24 +166,29 @@ class TargetSavingController extends Controller
 
     //this returns all the target-saving transaction history
     public function clientTransactionDetails($id,$client_id){
-        $clientTargetTransaction=Target_transaction::where('target_saving_id',$id)->get();
-        $clientInfo = Client::where('client_id',$client_id)->get();
-        $targetDetail=Target_saving::where('id',$id)->get();
-        $totalPaid=Target_transaction::where('target_saving_id',$id)->sum('amount_paid');
-        return view ('agent.target_owner_profile',['clientTargetTransaction'=>$clientTargetTransaction,'clientInfo'=>$clientInfo,
-        'targetDetail'=>$targetDetail,'totalPaid'=>$totalPaid]);
+        $usr_type = Auth()->User()->usr_type;
+        if($usr_type=='usr_admin'){
+            $clientTargetTransaction=Target_transaction::where('target_saving_id',$id)->get();
+            $clientInfo = Client::where('client_id',$client_id)->get();
+            $targetDetail=Target_saving::where('id',$id)->get();
+            $totalPaid=Target_transaction::where('target_saving_id',$id)->sum('amount_paid');
+            return view ('agent.target_owner_profile',['clientTargetTransaction'=>$clientTargetTransaction,'clientInfo'=>$clientInfo,
+            'targetDetail'=>$targetDetail,'totalPaid'=>$totalPaid]);
+        }else{
+            $agent_id=Auth()->User()->user_id;
+            $clientTargetTransaction=Target_transaction::where('target_saving_id',$id)->where('agent_id',$agent_id)->get();
+            $clientInfo = Client::where('client_id',$client_id)->get();
+            $targetDetail=Target_saving::where('id',$id)->get();
+            $totalPaid=Target_transaction::where('target_saving_id',$id)->sum('amount_paid');
+            return view ('agent.target_owner_profile',['clientTargetTransaction'=>$clientTargetTransaction,'clientInfo'=>$clientInfo,
+            'targetDetail'=>$targetDetail,'totalPaid'=>$totalPaid]);
+        }
+        
     }
 
     //this return all the target-saving that has been requested for by the client, I'm not done with this function too
     public function allRequestedTarget(){
-        // $requestTargets=Target_saving::join('target_requests','target_requests.request_id','=','target_savings.id')
-        // ->orderBy('request_date', 'DESC')
-        // ->get();
-        $requestTargets=Target_request::all();
-        // foreach ($requestTargets as $key => $value) { echo $value->target_saving;
-        //     # code...
-        // }  die();
-        //dd($requestTargets);
+        $requestTargets=Target_request::orderBy('request_date', 'DESC')->get();
         return view ('Agent\target_request',['requests'=>$requestTargets]);
     }
 
@@ -238,6 +255,17 @@ class TargetSavingController extends Controller
         $status=Target_request::find($id);
         $status->request_status='Completed';
         $status->save();
+    }
+
+    //this function will get a mini update on each requested target
+    public function reqReport(Request $req){
+        $reqId=$req['reqId'];
+        $reqHistory = DB::table('target_requests')
+                ->select('request_date', 'authorized_approval','approval_date','authorized_complete','complete_date')
+                ->where('request_id', $reqId)
+                ->get();
+        return view('/agent.ajax_targetreq_history',['reqHistory'=>$reqHistory]);
+
     }
 
 }

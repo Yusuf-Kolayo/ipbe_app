@@ -47,8 +47,10 @@
     $(document).ready(function(){
         $('#chkData').click(function(){
             let clientInfo=$('input[name=numOrEmail]').val();
-
-            $.ajax({
+            if(clientInfo==''){
+                $('#recordTrans').html('<div class="col-md-6 offset-md-3 card my-3 py-2 mr-1 text-center"><h5 class="alert alert-danger">Provide the client\'s number or email you want to record new transaction for her target</h5></div>')
+            }else{
+                $.ajax({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name=csrf-token]').attr('content')
                         },
@@ -62,7 +64,8 @@
                     error:function(error){
                         console.log(error);
                     }
-            })
+                })
+            }
         })
 
     })

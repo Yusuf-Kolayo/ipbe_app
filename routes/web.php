@@ -160,10 +160,10 @@ Route::group (['prefix' => 'admin_agent', 'middleware' => ['auth', 'is_admin_age
 
 
   //=========================      TARGET SAVING ROUTES      ==========================//
-Route::get('/agent/target_savings',[TargetSavingController::class,'allTargetAccount'])->name('target_saving');
-Route::post('/agent/checking_existing_client',[TargetSavingController::class,'searchClientUsingNumber'])->name('check_existing_client');
-Route::post('/agent/create_target_saving',[TargetSavingController::class,'createAndSaveTargetAccount'])->name('create_target_account');
-Route::get('/agent/target_saving_transaction',[TargetSavingController::class,'targetSavingTransaction'])->name('target_transaction');
+Route::get('/target_savings',[TargetSavingController::class,'allTargetAccount'])->name('target_saving');
+Route::post('/checking_existing_client',[TargetSavingController::class,'searchClientUsingNumber'])->name('check_existing_client');
+Route::post('/create_target_saving',[TargetSavingController::class,'createAndSaveTargetAccount'])->name('create_target_account');
+Route::get('/target_saving_transaction',[TargetSavingController::class,'targetSavingTransaction'])->name('target_transaction');
 Route::post('/agent/target_saving_transaction',[TargetSavingController::class,'saveTargetTransaction'])->name('save_transaction');
 Route::post('/agent/check_existing_target',[TargetSavingController::class,'retrieveTargetRecord'])->name('target_existence');
 
@@ -175,3 +175,4 @@ Route::post('/agent/mini_transaction_report',[TargetSavingController::class,'min
 Route::post('/agent/client_bank_details',[TargetSavingController::class,'clientBankDetails'])->name('bank_details');
 Route::post('/agent/target_reimbursement',[TargetSavingController::class,'requestTarget'])->name('requestATarget');
 Route::post('/agent/target_status{id}',[TargetSavingController::class,'changeRequestStatus'])->name('change_status');
+Route::post('/agent/requested_target_history',[TargetSavingController::class,'reqReport'])->name('request_history');

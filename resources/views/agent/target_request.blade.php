@@ -18,8 +18,13 @@
         </div>
     @endif
     <div class="col-md-6">
+    @if(Auth()->User()->usr_type !=='usr_admin')
         <button type="button" class="btn btn-primary btn-sm mb-3" data-toggle="modal" data-target="#miniTransactionReport" id="newTransaction">REQUEST TARGET PAYBACK</button>
+    @else
+    <button type="button" class="btn btn-primary btn-sm mb-3">REQUESTED TARGET PAYBACKS</button>
+    @endif
     </div>
+    
 </div>
 <div class="row">
     <div class="col-12 table-responsive">
@@ -28,12 +33,17 @@
                 <tr>
                     <th>S/N</th><th>NAME</th><th>PHONE-NO</th><th>AMOUNT-SAVED</th><th>PAYMENT-METHOD</th>
                     <th>BANK</th><th>ACCOUNT-NUMBER</th><th>ACCOUNT-NAME</th>
-                    <th>REQUEST-STATUS</th>
+                    <th class="text-center">PROGRESS</th>
                 </tr>
             </thead>
             <tbody>
                 <?php $no=1;?>
                 @foreach($requests as $request)
+                <?php
+                    $agent_id=Auth()->User()->user_id;
+                    $usr_type = Auth()->User()->usr_type;
+                ?>
+                @if($usr_type=='usr_admin')
                 <tr>
                     <td>{{$no}}</td>
                     <td>{{ucfirst($request->target_saving->client->last_name) }}{{' '}}
@@ -52,14 +62,66 @@
                         <td>NULL</td>
                         @endif
                         @if($request->request_status=='Approved')
-                        <td><span class="badge badge-dot badge-success font-weight-bold">Completed</span></td>
+                        <td>
+                            <p class="d-inline">Completed</p> 
+                            <button class="btn-sm btn btn-outline-success ml-2 py-0 reqHistory"
+                            type="button" data-reqId="{{$request->request_id}}" data-toggle="modal" data-target="#statusRequest" >i</button>
+                        </td>
+                        @elseif($request->request_status=='Pending')
+                        <td>
+                            <p class="d-inline">Pending</p> 
+                            <button class="btn-sm btn btn-outline-primary ml-2 py-0 reqHistory"
+                            type="button" data-reqId="{{$request->request_id}}" data-toggle="modal" data-target="#statusRequest" >i</button>    
+                        </td>
                         @else
-                        <td><span class="badge badge-dot badge-warning pl-3 font-weight-bold">Pending{{$request->request_id}}</span> 
-                            <button class="btn-sm btn btn-outline-warning ml-2 reqStatus" data-reqid="{{$request->request_id}}"
-                            type="button" data-toggle="modal" data-target="#approveReq" ><i class="fas fa-edit"></i></button>
+                        <td class="px-1">
+                            <button class="btn btn-outline-primary px-1">Requested</button>
+                            <button class="btn-sm btn btn-outline-warning reqHistory text-black ml-1 px-1"
+                            type="button" data-reqId="{{$request->request_id}}" data-toggle="modal" data-target="#statusRequest" >Record</button>  
                         </td>
                         @endif
-                </tr>
+                    </tr>
+                @else
+                    @if($agent_id==$request->target_saving->agent_id)
+                        <tr>
+                            <td>{{$no}}</td>
+                            <td>{{ucfirst($request->target_saving->client->last_name) }}{{' '}}
+                                {{ucfirst($request->target_saving->client->first_name) }}{{' '}}
+                                {{ucfirst($request->target_saving->client->other_name )}}</td>
+                                <td>{{$request->target_saving->client_no}}</td>
+                                <td>{{$request->amount_saved}}</td>
+                                <td>{{$request->payment_method}}</td>
+                                @if($request->payment_method !=='cash')
+                                <td>{{$request->bank_name}}</td>
+                                <td>{{$request->acc_no}}</td>
+                                <td>{{$request->acc_name}}</td>
+                                @else
+                                <td>NULL</td>
+                                <td>NULL</td>
+                                <td>NULL</td>
+                                @endif
+                                @if($request->request_status=='Approved')
+                                <td>
+                                    <p class="d-inline">Completed</p> 
+                                    <button class="btn-sm btn btn-outline-success ml-2 py-0 reqHistory"
+                                    type="button" data-reqId="{{$request->request_id}}" data-toggle="modal" data-target="#statusRequest" >i</button>
+                                </td>
+                                @elseif($request->request_status=='Pending')
+                                <td>
+                                    <p class="d-inline">Pending</p> 
+                                    <button class="btn-sm btn btn-outline-primary ml-2 py-0 reqHistory"
+                                    type="button" data-reqId="{{$request->request_id}}" data-toggle="modal" data-target="#statusRequest" >i</button>    
+                                </td>
+                                @else
+                                <td>
+                                    <p class="d-inline">Requested</p> 
+                                    <button class="btn-sm btn btn-outline-warning ml-2 py-0 reqHistory"
+                                    type="button" data-reqId="{{$request->request_id}}" data-toggle="modal" data-target="#statusRequest" >i</button>
+                                </td>
+                                @endif
+                        </tr>
+                    @endif    
+                @endif
                 <?php $no++?>
                 @endforeach
             </tbody>
@@ -236,20 +298,12 @@
     </div>
 </div>
 
-<!-- Modal change request status -->
-<div class="modal fade in" id="approveReq"  role="dialog" aria-labelledby="approveReqLabel" aria-hidden="true" data-backdrop='static'>
+<!-- Modal show more detail request status -->
+<div class="modal fade in" id="statusRequest"  role="dialog" aria-labelledby="statusRequestLabel" aria-hidden="true" data-backdrop='static'>
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-body">
-                <p class="font-weight-bold alert alert-warning"> <i class="fas fa-exclamation-triangle mr-2"></i> Are you sure this Request has been Approved and Paid ?</p>
-            </div>
-            <div class="modal-footer">
-                <div class="row">
-                    <div class="col-12 text-right">
-                        <button type="button" class="btn btn-outline-dark" data-dismiss="modal">NO</button>
-                        <a href="" id="statusBtn"><button type="button" class="btn btn-outline-warning" data-dismiss="modal">YES</button></a>
-                    </div>
-                </div>
+                
             </div>
         </div>
     </div>
@@ -310,14 +364,23 @@
             $('#accNo').removeAttr('readonly');
         })
 
-        $('.reqStatus').click(function(){
-            let reqId= $(this).data('reqid');
-            $('#approveReq').on('shown.bs.modal', function (event) {
-                var link = '{{ route("change_status", ":id") }}';
-                    link = link.replace(':id',reqId);
-
-                    $('#statusBtn').attr("href", link);      
-            });
+        $('.reqHistory').click(function(){
+            let reqId=$(this).data('reqid');
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name=csrf-token]').attr('content')
+                    },
+                url:"{{ route('request_history') }}",
+                type:'POST',
+                data:{'reqId': reqId},
+                dataType:'text',
+                success:function(success){
+                    $("#statusRequest .modal-body").html(success);
+                },
+                error:function(error){
+                    console.log(error);
+                }
+            })
         })
         
         

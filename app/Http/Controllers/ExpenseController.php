@@ -22,7 +22,7 @@ class ExpenseController extends BaseController
        $this->middleware('auth');
        parent::__construct();
        
-       $this->middleware(function ($request, $next) {    
+        $this->middleware(function ($request, $next) {    
         $user_id= Auth::user()->user_id;   $usr_type = Auth::user()->usr_type;
         if ($usr_type=='usr_admin') { $permitted_sections = array(); // dd('here');
         

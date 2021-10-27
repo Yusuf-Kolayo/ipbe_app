@@ -15,5 +15,9 @@ class Target_saving extends Authenticatable
 
     public function client() {
         return $this->belongsTo('App\Models\Client', 'client_id', 'client_id');
-    }  
+    } 
+    
+    public function user(){
+        return $this->hasMany(User::class, 'id', 'target_saving_id');
+    }
 }

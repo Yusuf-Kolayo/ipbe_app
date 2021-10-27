@@ -23,7 +23,9 @@ class CreateTargetRequestsTable extends Migration
             $table->string('bank_name')->nullable();
             $table->string('acc_no')->nullable();
             $table->string('acc_name')->nullable();
-            $table->enum('request_status',['Pending','Completed'])->default('Pending');
+            $table->enum('request_status',['Requested','Pending','Completed'])->default('Requested');
+            $table->date('approval_date')->nullable();
+            $table->date('complete_date')->nullable();
             $table->timestamps();
 
             $table->foreign('target_saving_id')->references('id')->on('target_savings')->onDelete('cascade');
