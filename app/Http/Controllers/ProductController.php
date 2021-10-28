@@ -37,16 +37,16 @@ class ProductController extends BaseController
         //     return redirect()->route('access_denied'); 
         // }
 
-    //     $section = 'index';   // dd(parent::middleware_except());  
-    //     if (auth()->user()->usr_type=='usr_admin') {
-    //         if (in_array($section, parent::middleware_except())) {
-
-    //     $products = Product::all();                                          
+        // if (auth()->user()->usr_type=='usr_admin') {
+        //     if (!in_array(__FUNCTION__, parent::middleware_except())) {
+        //         return redirect()->route('access_denied'); 
+        //     }  
+        // }   
+ 
+        
+     //     $products = Product::all();                                          
     //     $main_categories = Category::where('parent_id', 0)->get();  
     //     return view('admin.products', compact('products','main_categories')); 
-
-    //     } else {  return redirect()->route('access_denied'); }
-    //     }
     // }
 
  
@@ -59,10 +59,14 @@ class ProductController extends BaseController
             return redirect()->route('access_denied'); 
         }
 
-        $section = 'store';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, parent::middleware_except())) {
+            if (!in_array(__FUNCTION__, parent::middleware_except())) {
+                return redirect()->route('access_denied'); 
+            }  
+        }   
 
+  
+        
         $data = request()->validate([
             'img_name' => ['required', 'image'],
             'prd_name' => ['required', 'string', 'max:100'],
@@ -100,8 +104,7 @@ class ProductController extends BaseController
         ]); 
         
         return redirect()->route('product.sub', ['sub_category_id'=>$data['sub_category_id']])->with('success', 'product updated Successfully.');
-        } else { return redirect()->route('access_denied'); }
-        }
+      
     
     }
  
@@ -115,10 +118,14 @@ class ProductController extends BaseController
             return redirect()->route('access_denied'); 
         }
 
-        $section = 'sub';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, parent::middleware_except())) {
+            if (!in_array(__FUNCTION__, parent::middleware_except())) {
+                return redirect()->route('access_denied'); 
+            }  
+        }   
 
+   
+        
         $brands = Brand::all();
         $main_categories = Category::where('parent_id', 0)->get();  
         $sub_category = Category::where('id', $sub_category_id)->firstOrFail();  
@@ -126,19 +133,6 @@ class ProductController extends BaseController
  
         return view('admin.products_catalog', 
         compact('products','main_categories','brands','sub_category_id','sub_category'));
-
-        } else {  return redirect()->route('access_denied');  }
-        } else { // if not admin
-
-            $brands = Brand::all();
-            $main_categories = Category::where('parent_id', 0)->get();  
-            $sub_category = Category::where('id', $sub_category_id)->firstOrFail();  
-            $products = Product::where('sub_category_id', $sub_category_id)->simplePaginate(12);
-     
-            return view('admin.products_catalog', 
-            compact('products','main_categories','brands','sub_category_id','sub_category'));
-
-        }
     }
 
     
@@ -151,10 +145,14 @@ class ProductController extends BaseController
             return redirect()->route('access_denied'); 
         }
 
-        $section = 'update_product_ajax_fetch';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, parent::middleware_except())) {
+            if (!in_array(__FUNCTION__, parent::middleware_except())) {
+                return redirect()->route('access_denied'); 
+            }  
+        }   
 
+      
+        
         $brands = Brand::all();
         $main_categories = Category::where('parent_id', 0)->get(); 
 
@@ -162,17 +160,6 @@ class ProductController extends BaseController
         $product = Product::where('product_id', $product_id)->firstOrFail();
         return view('admin.product_update_ajax_fetch', compact('product','brands','main_categories')); 
 
-        } else { return redirect()->route('access_denied'); }
-        } else {  // if not admin
-
-            $brands = Brand::all();
-            $main_categories = Category::where('parent_id', 0)->get(); 
-    
-            $product_id = $request['product_id']; // dd($request['product_id']); 
-            $product = Product::where('product_id', $product_id)->firstOrFail();
-            return view('admin.product_update_ajax_fetch', compact('product','brands','main_categories')); 
-
-         }
     }
 
 
@@ -184,22 +171,17 @@ class ProductController extends BaseController
             return redirect()->route('access_denied'); 
         }
 
-        $section = 'show_details_ajax_fetch';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, parent::middleware_except())) {
+            if (!in_array(__FUNCTION__, parent::middleware_except())) {
+                return redirect()->route('access_denied'); 
+            }  
+        }   
 
+     
+        
         $product_id = $request['product_id']; 
         $product = Product::where('product_id', $product_id)->firstOrFail(); // dd($product); 
         return view('admin.product_details_ajax_fetch', compact('product')); 
-
-        } else { return redirect()->route('access_denied'); }
-        } else {  // if not admin
-
-            $product_id = $request['product_id']; 
-            $product = Product::where('product_id', $product_id)->firstOrFail(); // dd($product); 
-            return view('admin.product_details_ajax_fetch', compact('product')); 
-
-        }
     }
 
 
@@ -213,22 +195,17 @@ class ProductController extends BaseController
             return redirect()->route('access_denied'); 
         }
 
-        $section = 'refresh_product_ajax_fetch';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, parent::middleware_except())) {
+            if (!in_array(__FUNCTION__, parent::middleware_except())) {
+                return redirect()->route('access_denied'); 
+            }  
+        }   
 
+    
+        
         $product_id = $request['product_id']; // dd($request['product_id']);  
         $product = Product::where('product_id', $product_id)->firstOrFail();
         return view('admin.product_refresh_ajax_fetch', compact('product')); 
-
-        } else { return redirect()->route('access_denied'); }
-        } else { // if not admin
-
-            $product_id = $request['product_id']; // dd($request['product_id']);  
-            $product = Product::where('product_id', $product_id)->firstOrFail();
-            return view('admin.product_refresh_ajax_fetch', compact('product')); 
-
-        }
         
     }
 
@@ -241,20 +218,16 @@ class ProductController extends BaseController
             return redirect()->route('access_denied'); 
         }
 
-        $section = 'show';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, parent::middleware_except())) {
+            if (!in_array(__FUNCTION__, parent::middleware_except())) {
+                return redirect()->route('access_denied'); 
+            }  
+        }   
+
+ 
 
         $product = Product::where('product_id', $product_id)->firstOrFail();
         return view('admin.product_profile')->with('product',$product);
-
-        } else { return redirect()->route('access_denied'); }
-        } else { // if not admin
-
-            $product = Product::where('product_id', $product_id)->firstOrFail();
-            return view('admin.product_profile')->with('product',$product);
-
-        }
     }
 
 
@@ -265,20 +238,16 @@ class ProductController extends BaseController
     //         return redirect()->route('access_denied'); 
     //     }
 
-    //     $section = 'trash';   // dd(parent::middleware_except());  
-    //     if (auth()->user()->usr_type=='usr_admin') {
-    //         if (in_array($section, parent::middleware_except())) {
+    // if (auth()->user()->usr_type=='usr_admin') {
+    //     if (!in_array(__FUNCTION__, parent::middleware_except())) {
+    //         return redirect()->route('access_denied'); 
+    //     }  
+    // }   
 
-    //     $product = Product::findOrFail($id);
+ 
+    
+     //     $product = Product::findOrFail($id);
     //     return view('admin.product_trash')->with('product',$product);
-
-    //     } else { return redirect()->route('access_denied'); }
-    //     } else {  // if not admin 
-
-    //         $product = Product::findOrFail($id);
-    //         return view('admin.product_trash')->with('product',$product);
-
-    //     }
     // }
 
   
@@ -292,129 +261,71 @@ class ProductController extends BaseController
             return redirect()->route('access_denied'); 
         }
 
-        $section = 'update';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, parent::middleware_except())) {
+            if (!in_array(__FUNCTION__, parent::middleware_except())) {
+                return redirect()->route('access_denied'); 
+            }  
+        }   
 
-            $data = request()->validate([
-                'img_name' => ['nullable', 'image'],
-                'prd_name' => ['required', 'string', 'max:100'],
-                'description' => ['required', 'string', 'max:1000'],
-                'brand_id' => ['required', 'string', 'max:55'],
-                'price' => ['required', 'string', 'max:55'],
-                'main_category_id' => ['required', 'string', 'max:55'],
-                'sub_category_id' => ['required', 'string', 'max:55']
-            ]); 
 
-            // $product = Product::find($product_id); 
-            $product = Product::where('product_id', $product_id)->firstOrFail();
-            $previous_image = DB::table('products')->where('product_id', $product_id)->value('img_name');
-
-            if ($product) {
-
-                if ($request->hasFile('img_name')) {  
-
-                    $file = $request->file('img_name');  $random_string = Str::random(20); 
-                    $ogImage = Image::make($file);
-                    $originalPath = 'app/public/uploads/products_img/'; 
-                    $filename = time().'-'. $random_string .'.'. $file->getClientOriginalExtension();
-                    $ogImage =  $ogImage->save(storage_path($originalPath.$filename));
-
-                    DB::table('products')->where('product_id', $product_id)
-                    ->update([
-                        'prd_name' => $data['prd_name'], 
-                        'description' => $data['description'],
-                        'brand_id' => $data['brand_id'],
-                        'price' => $data['price'],
-                        'main_category_id' => $data['main_category_id'],
-                        'sub_category_id' => $data['sub_category_id'],
-                        'img_name' => $filename
-                    ]); 
-                  
-                } else { 
-                    DB::table('products')->where('product_id', $product_id)
-                    ->update([
-                        'prd_name' => $data['prd_name'], 
-                        'description' => $data['description'],
-                         'brand_id' => $data['brand_id'],
-                         'price' => $data['price'],
-                         'main_category_id' => $data['main_category_id'],
-                         'sub_category_id' => $data['sub_category_id']
-                    ]); 
-                }
+      
         
-                if ($request->hasFile('img_name')) {  
-                   unlink(public_path().'/storage/uploads/products_img/'.$previous_image);
-                }
-                
-                return response()->json(['message'=>'Product ['.$product_id.'] updated successfully.','status'=>1]);
-            
-            } else {
-                return response()->json(['message'=>'An error occurred','status'=>0]);
+        $data = request()->validate([
+            'img_name' => ['nullable', 'image'],
+            'prd_name' => ['required', 'string', 'max:100'],
+            'description' => ['required', 'string', 'max:1000'],
+            'brand_id' => ['required', 'string', 'max:55'],
+            'price' => ['required', 'string', 'max:55'],
+            'main_category_id' => ['required', 'string', 'max:55'],
+            'sub_category_id' => ['required', 'string', 'max:55']
+        ]); 
+
+        // $product = Product::find($product_id); 
+        $product = Product::where('product_id', $product_id)->firstOrFail();
+        $previous_image = DB::table('products')->where('product_id', $product_id)->value('img_name');
+
+        if ($product) {
+
+            if ($request->hasFile('img_name')) {  
+
+                $file = $request->file('img_name');  $random_string = Str::random(20); 
+                $ogImage = Image::make($file);
+                $originalPath = 'app/public/uploads/products_img/'; 
+                $filename = time().'-'. $random_string .'.'. $file->getClientOriginalExtension();
+                $ogImage =  $ogImage->save(storage_path($originalPath.$filename));
+
+                DB::table('products')->where('product_id', $product_id)
+                ->update([
+                    'prd_name' => $data['prd_name'], 
+                    'description' => $data['description'],
+                    'brand_id' => $data['brand_id'],
+                    'price' => $data['price'],
+                    'main_category_id' => $data['main_category_id'],
+                    'sub_category_id' => $data['sub_category_id'],
+                    'img_name' => $filename
+                ]); 
+              
+            } else { 
+                DB::table('products')->where('product_id', $product_id)
+                ->update([
+                    'prd_name' => $data['prd_name'], 
+                    'description' => $data['description'],
+                     'brand_id' => $data['brand_id'],
+                     'price' => $data['price'],
+                     'main_category_id' => $data['main_category_id'],
+                     'sub_category_id' => $data['sub_category_id']
+                ]); 
             }
-
-        } else { return redirect()->route('access_denied'); }
-        } else {  // if not admin
-
-            $data = request()->validate([
-                'img_name' => ['nullable', 'image'],
-                'prd_name' => ['required', 'string', 'max:100'],
-                'description' => ['required', 'string', 'max:1000'],
-                'brand_id' => ['required', 'string', 'max:55'],
-                'price' => ['required', 'string', 'max:55'],
-                'main_category_id' => ['required', 'string', 'max:55'],
-                'sub_category_id' => ['required', 'string', 'max:55']
-            ]); 
-
-            // $product = Product::find($product_id); 
-            $product = Product::where('product_id', $product_id)->firstOrFail();
-            $previous_image = DB::table('products')->where('product_id', $product_id)->value('img_name');
-
-            if ($product) {
-
-                if ($request->hasFile('img_name')) {  
-
-                    $file = $request->file('img_name');  $random_string = Str::random(20); 
-                    $ogImage = Image::make($file);
-                    $originalPath = 'app/public/uploads/products_img/'; 
-                    $filename = time().'-'. $random_string .'.'. $file->getClientOriginalExtension();
-                    $ogImage =  $ogImage->save(storage_path($originalPath.$filename));
-
-                    DB::table('products')->where('product_id', $product_id)
-                    ->update([
-                        'prd_name' => $data['prd_name'], 
-                        'description' => $data['description'],
-                        'brand_id' => $data['brand_id'],
-                        'price' => $data['price'],
-                        'main_category_id' => $data['main_category_id'],
-                        'sub_category_id' => $data['sub_category_id'],
-                        'img_name' => $filename
-                    ]); 
-                  
-                } else { 
-                    DB::table('products')->where('product_id', $product_id)
-                    ->update([
-                        'prd_name' => $data['prd_name'], 
-                        'description' => $data['description'],
-                         'brand_id' => $data['brand_id'],
-                         'price' => $data['price'],
-                         'main_category_id' => $data['main_category_id'],
-                         'sub_category_id' => $data['sub_category_id']
-                    ]); 
-                }
+    
+            if ($request->hasFile('img_name')) {  
+               unlink(public_path().'/storage/uploads/products_img/'.$previous_image);
+            }
+            
+            return response()->json(['message'=>'Product ['.$product_id.'] updated successfully.','status'=>1]);
         
-                if ($request->hasFile('img_name')) {  
-                   unlink(public_path().'/storage/uploads/products_img/'.$previous_image);
-                }
-                
-                return response()->json(['message'=>'Product ['.$product_id.'] updated successfully.','status'=>1]);
-            
-            } else {
-                return response()->json(['message'=>'An error occurred','status'=>0]);
-            }
-
+        } else {
+            return response()->json(['message'=>'An error occurred','status'=>0]);
         }
-
         
     }
 
@@ -428,40 +339,26 @@ class ProductController extends BaseController
             return redirect()->route('access_denied'); 
         }
 
-        $section = 'destroy';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, parent::middleware_except())) {
+            if (!in_array(__FUNCTION__, parent::middleware_except())) {
+                return redirect()->route('access_denied'); 
+            }  
+        }   
 
-            $product = Product::where('product_id', $product_id)->firstOrFail();
-            $product_img = $product->img_name;
+   
         
-            if ($product) {
-            $deleted_rows = Product::where('product_id', $product_id)->delete();
-            if ($deleted_rows>0) {
-                unlink(public_path().'/storage/uploads/products_img/'.$product_img); 
-            }
-            return response()->json(['message'=>'Product ['.$product_id.'] deleted successfully.','status'=>1]);
-            }  else {
-            return response()->json(['message'=>'An error occurred, please try again','status'=>0]);
-            } 
-
-        } else { return redirect()->route('access_denied'); }
-        } else { // if not admin
-
-            $product = Product::where('product_id', $product_id)->firstOrFail();
-            $product_img = $product->img_name;
-        
-            if ($product) {
-            $deleted_rows = Product::where('product_id', $product_id)->delete();
-            if ($deleted_rows>0) {
-                unlink(public_path().'/storage/uploads/products_img/'.$product_img); 
-            }
-            return response()->json(['message'=>'Product ['.$product_id.'] deleted successfully.','status'=>1]);
-            }  else {
-            return response()->json(['message'=>'An error occurred, please try again','status'=>0]);
-            } 
-
+        $product = Product::where('product_id', $product_id)->firstOrFail();
+        $product_img = $product->img_name;
+    
+        if ($product) {
+        $deleted_rows = Product::where('product_id', $product_id)->delete();
+        if ($deleted_rows>0) {
+            unlink(public_path().'/storage/uploads/products_img/'.$product_img); 
         }
+        return response()->json(['message'=>'Product ['.$product_id.'] deleted successfully.','status'=>1]);
+        }  else {
+        return response()->json(['message'=>'An error occurred, please try again','status'=>0]);
+        } 
     }
 
 

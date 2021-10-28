@@ -21,7 +21,7 @@
                                <div class="row"> 
         
                                         <div class="col-md-4">
-                                            <button type="submit" class="btn btn-primary btn-block" data-toggle="modal" data-target="#register_an_admin">Register Super Admin</button>
+                                            <button type="submit" class="btn btn-primary btn-block" data-toggle="modal" data-target="#register_an_admin">Register Admin</button>
                                         </div>
         
 

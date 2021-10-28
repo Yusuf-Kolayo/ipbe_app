@@ -40,15 +40,16 @@ class AgentController extends BaseController
             return redirect()->route('access_denied'); 
         }
         
-        $section = 'index';    
+    
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, parent::middleware_except())) {
+            if (!in_array(__FUNCTION__, parent::middleware_except())) {
+                return redirect()->route('access_denied'); 
+            }  
+        }  
 
-                $catchments = Catchment::all();   
-                return view('admin.agents')->with('catchments', $catchments); 
 
-                } else {  return redirect()->route('access_denied');  }
-        } else { }
+        $catchments = Catchment::all();   
+        return view('admin.agents')->with('catchments', $catchments); 
     }
 
 
@@ -60,18 +61,15 @@ class AgentController extends BaseController
             return redirect()->route('access_denied'); 
         }
 
-        $section = 'ajax_fetch';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, parent::middleware_except())) {
+            if (!in_array(__FUNCTION__, parent::middleware_except())) {
+                return redirect()->route('access_denied'); 
+            }  
+        }  
 
-            $agents = Agent::all();   
-            return view('admin.agents_ajax_fetch')->with('agents', $agents); 
-
-          } else {  return redirect()->route('access_denied');  }
-          } else {  // not admin
-            $agents = Agent::all();   
-            return view('admin.agents_ajax_fetch')->with('agents', $agents); 
-        }
+      
+        $agents = Agent::all();   
+        return view('admin.agents_ajax_fetch')->with('agents', $agents); 
     }
 
 
@@ -93,171 +91,172 @@ class AgentController extends BaseController
             return redirect()->route('access_denied'); 
         }
 
-        $section = 'store';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, parent::middleware_except())) {
+            if (!in_array(__FUNCTION__, parent::middleware_except())) {
+                return redirect()->route('access_denied'); 
+            }  
+        }  
+
+     
         
         $usr_type = 'usr_agent';  // dd($request['catchment_id']);
-         $custom_error_messages = array (
-                'agt_first_name' => 'Agent first name',
-                'agt_last_name' => 'Agent last name', 
-                'agt_other_name' => 'Agent other name',
-                'agt_email' => 'Agent email',
-                'agt_phone_number' => 'Agent phone number',
-                'agt_chat_number' => 'Agent chat number',
-                'agt_gender' => 'Agent gender',
-                'agt_res_address' => 'Agent residential address',
-                'agt_res_city' => 'Agent current city',
-                'agt_res_state' => 'Agent current state',
-                'agt_state_origin' => 'Agent state of origin',
-                'agt_lga_origin' => 'Agent LGA of origin',
-                'agt_home_town' => 'Agent home town',
-                'agt_birth_date' => 'Agent birth date',
-                'agt_birth_place' => 'Agent birth place',
-                'agt_username' => 'Agent username',
-                'agt_password' => 'Agent password',
-                'nok_fullname' => 'Next of kin fullname',
-                'nok_res_address' => 'Next of kin address',
-                'nok_res_city' => 'Next of kin city',
-                'nok_res_state' => 'Next of kin current state',
-                'nok_phone_number' => 'Next of kin phone number',
-                'nok_relationship' => 'Next of kin relationship',
-                'grt_first_name' => 'Guarantor firstname',
-                'grt_last_name' => 'Guarantor lastname',
-                'grt_other_name' => 'Guarantor othername',
-                'grt_age' => 'Guarantor age', 
-                'grt_phone_number'=> 'Guarantor Phone number',
-                'grt_res_address' => 'Guarantor residential address',
-                'grt_res_city' => 'Guarantor current city',
-                'grt_res_state' => 'Guarantor current state',
-                'grt_occupation' => 'Guarantor occupation',
-                'grt_bis_name' => 'Guarantor business name',
-                'grt_bis_address' => 'Guarantor business address',
-                'grt_relationship' => 'Guarantor relationship',
-                'ut_grt_fullname' => 'Guarantor fullname at undertaken section',
-                'ut_agt_fullname' => 'Agent fullname at undertaken section', 
-                'ut_agt_location' => 'Agent location at undertaken section',
-                'ut_agt_position' => 'Agent work position at undertaken section'
-         );
-        $validator = Validator::make($request->all(),
-           [
-            'agt_first_name' => ['required', 'string', 'max:55'],
-            'agt_last_name' => ['required', 'string', 'max:55'], 
-            'agt_other_name' => ['required', 'string', 'max:55'],
-            'agt_email' => ['required', 'string', 'email', 'max:100', 'unique:users,email'],
-            'agt_phone_number' => ['required', 'string', 'max:22', 'unique:agents,agt_phone_number'],
-            'agt_chat_number' => ['required', 'string', 'max:22', 'unique:agents,agt_chat_number'],
-            'agt_gender' => ['required', 'string', 'max:11'],
-            'agt_res_address' => ['required', 'string', 'max:100'],
-            'agt_res_city' => ['required', 'string', 'max:22'],
-            'agt_res_state' => ['required', 'string', 'max:22'],
-            'agt_state_origin' => ['required', 'string', 'max:22'],
-            'agt_lga_origin' => ['required', 'string', 'max:22'],
-            'agt_home_town' => ['required', 'string', 'max:22'],
-            'agt_birth_date' => ['required', 'string'],
-            'agt_birth_place' => ['required', 'string', 'max:55'],
-            'agt_referrer_id' =>  ['string', 'nullable'],
-            'agt_username' =>  ['required', 'string', 'max:22', 'unique:users,username'],
-            'agt_password' =>  ['required', 'string', 'min:6', 'same:agt_password_rpt'],
-            'agt_password' =>  ['required', 'string', 'min:6'], 
-            'catchment_id' =>  ['required', 'string'],
-            'nok_fullname' => ['required', 'string', 'max:100'],
-            'nok_res_address' => ['required', 'string', 'max:100'],
-            'nok_res_city' => ['required', 'string', 'max:22'],
-            'nok_res_state' => ['required', 'string', 'max:22'],
-            'nok_phone_number' => ['required', 'string', 'max:22'],
-            'nok_relationship' => ['required', 'string', 'max:22'],
-            'grt_first_name' => ['required', 'string', 'max:55'],
-            'grt_last_name' => ['required', 'string', 'max:55'],
-            'grt_other_name' => ['required', 'string', 'max:55'],  
-            'grt_phone_number' => ['required', 'string', 'max:55'],
-            'grt_age' => ['required', 'integer', 'before:-40 years'], 
-            'grt_res_address' => ['required', 'string', 'max:100'],
-            'grt_res_city' => ['required', 'string', 'max:22'],
-            'grt_res_state' => ['required', 'string', 'max:22'],
-            'grt_occupation' => ['required', 'string', 'max:55'],
-            'grt_bis_name' => ['required', 'string', 'max:100'],
-            'grt_bis_address' => ['required', 'string', 'max:100'],
-            'grt_relationship' => ['required', 'string', 'max:22'],
-            'ut_grt_fullname' => ['required', 'string', 'max:55'],
-            'ut_agt_fullname' => ['required', 'string', 'max:55'], 
-            'ut_agt_location' => ['required', 'string', 'max:100'],
-            'ut_agt_position' => ['required', 'string', 'max:22'],
- 
-            'hr_staff_id' => ['required', 'string', 'max:55'],
-            'hr_grt_response' => ['required', 'string', 'max:500'],
-            'hr_remark' => ['required', 'string', 'max:500'],
+        $custom_error_messages = array (
+               'agt_first_name' => 'Agent first name',
+               'agt_last_name' => 'Agent last name', 
+               'agt_other_name' => 'Agent other name',
+               'agt_email' => 'Agent email',
+               'agt_phone_number' => 'Agent phone number',
+               'agt_chat_number' => 'Agent chat number',
+               'agt_gender' => 'Agent gender',
+               'agt_res_address' => 'Agent residential address',
+               'agt_res_city' => 'Agent current city',
+               'agt_res_state' => 'Agent current state',
+               'agt_state_origin' => 'Agent state of origin',
+               'agt_lga_origin' => 'Agent LGA of origin',
+               'agt_home_town' => 'Agent home town',
+               'agt_birth_date' => 'Agent birth date',
+               'agt_birth_place' => 'Agent birth place',
+               'agt_username' => 'Agent username',
+               'agt_password' => 'Agent password',
+               'nok_fullname' => 'Next of kin fullname',
+               'nok_res_address' => 'Next of kin address',
+               'nok_res_city' => 'Next of kin city',
+               'nok_res_state' => 'Next of kin current state',
+               'nok_phone_number' => 'Next of kin phone number',
+               'nok_relationship' => 'Next of kin relationship',
+               'grt_first_name' => 'Guarantor firstname',
+               'grt_last_name' => 'Guarantor lastname',
+               'grt_other_name' => 'Guarantor othername',
+               'grt_age' => 'Guarantor age', 
+               'grt_phone_number'=> 'Guarantor Phone number',
+               'grt_res_address' => 'Guarantor residential address',
+               'grt_res_city' => 'Guarantor current city',
+               'grt_res_state' => 'Guarantor current state',
+               'grt_occupation' => 'Guarantor occupation',
+               'grt_bis_name' => 'Guarantor business name',
+               'grt_bis_address' => 'Guarantor business address',
+               'grt_relationship' => 'Guarantor relationship',
+               'ut_grt_fullname' => 'Guarantor fullname at undertaken section',
+               'ut_agt_fullname' => 'Agent fullname at undertaken section', 
+               'ut_agt_location' => 'Agent location at undertaken section',
+               'ut_agt_position' => 'Agent work position at undertaken section'
+        );
+       $validator = Validator::make($request->all(),
+          [
+           'agt_first_name' => ['required', 'string', 'max:55'],
+           'agt_last_name' => ['required', 'string', 'max:55'], 
+           'agt_other_name' => ['required', 'string', 'max:55'],
+           'agt_email' => ['required', 'string', 'email', 'max:100', 'unique:users,email'],
+           'agt_phone_number' => ['required', 'string', 'max:22', 'unique:agents,agt_phone_number'],
+           'agt_chat_number' => ['required', 'string', 'max:22', 'unique:agents,agt_chat_number'],
+           'agt_gender' => ['required', 'string', 'max:11'],
+           'agt_res_address' => ['required', 'string', 'max:100'],
+           'agt_res_city' => ['required', 'string', 'max:22'],
+           'agt_res_state' => ['required', 'string', 'max:22'],
+           'agt_state_origin' => ['required', 'string', 'max:22'],
+           'agt_lga_origin' => ['required', 'string', 'max:22'],
+           'agt_home_town' => ['required', 'string', 'max:22'],
+           'agt_birth_date' => ['required', 'string'],
+           'agt_birth_place' => ['required', 'string', 'max:55'],
+           'agt_referrer_id' =>  ['string', 'nullable'],
+           'agt_username' =>  ['required', 'string', 'max:22', 'unique:users,username'],
+           'agt_password' =>  ['required', 'string', 'min:6', 'same:agt_password_rpt'],
+           'agt_password' =>  ['required', 'string', 'min:6'], 
+           'catchment_id' =>  ['required', 'string'],
+           'nok_fullname' => ['required', 'string', 'max:100'],
+           'nok_res_address' => ['required', 'string', 'max:100'],
+           'nok_res_city' => ['required', 'string', 'max:22'],
+           'nok_res_state' => ['required', 'string', 'max:22'],
+           'nok_phone_number' => ['required', 'string', 'max:22'],
+           'nok_relationship' => ['required', 'string', 'max:22'],
+           'grt_first_name' => ['required', 'string', 'max:55'],
+           'grt_last_name' => ['required', 'string', 'max:55'],
+           'grt_other_name' => ['required', 'string', 'max:55'],  
+           'grt_phone_number' => ['required', 'string', 'max:55'],
+           'grt_age' => ['required', 'integer', 'before:-40 years'], 
+           'grt_res_address' => ['required', 'string', 'max:100'],
+           'grt_res_city' => ['required', 'string', 'max:22'],
+           'grt_res_state' => ['required', 'string', 'max:22'],
+           'grt_occupation' => ['required', 'string', 'max:55'],
+           'grt_bis_name' => ['required', 'string', 'max:100'],
+           'grt_bis_address' => ['required', 'string', 'max:100'],
+           'grt_relationship' => ['required', 'string', 'max:22'],
+           'ut_grt_fullname' => ['required', 'string', 'max:55'],
+           'ut_agt_fullname' => ['required', 'string', 'max:55'], 
+           'ut_agt_location' => ['required', 'string', 'max:100'],
+           'ut_agt_position' => ['required', 'string', 'max:22'],
+
+           'hr_staff_id' => ['required', 'string', 'max:55'],
+           'hr_grt_response' => ['required', 'string', 'max:500'],
+           'hr_remark' => ['required', 'string', 'max:500'],
+          ]);
+          
+      $validator-> setAttributeNames($custom_error_messages);
+
+       if ($validator->fails()) {
+           return response()->json($validator->messages(),200);
+       } else {   // validation found zero errors
+
+           // create undertaken statement
+           $grt_undertaken = 'I '.$request['grt_first_name'].' whose particulars are as above personally recommend '.$request['agt_first_name'].' residing at '.$request['ut_agt_location'].' Employed by ADROITLINK-UP INT'."'".'L as '.$request['ut_agt_position'];
+
+           $sql = DB::select("show table status like 'users'");
+           $next_id = 100 + $sql[0]->Auto_increment;
+           $agent = Agent::create([   
+               'agent_id' => 'AGT-'.$next_id,
+               'referrer_id' => $request['agt_referrer_id'], 
+               'catchment_id' => $request['catchment_id'],
+               'agt_first_name' => $request['agt_first_name'],
+               'agt_last_name' =>  $request['agt_last_name'], 
+               'agt_other_name' =>  $request['agt_other_name'], 
+               'agt_phone_number' =>  $request['agt_phone_number'],
+               'agt_chat_number' =>  $request['agt_chat_number'],
+               'agt_gender' =>   $request['agt_gender'],
+               'agt_res_address' =>  $request['agt_res_address'],
+               'agt_res_city' =>  $request['agt_res_city'],
+               'agt_res_state' =>  $request['agt_res_state'],
+               'agt_state_origin' =>  $request['agt_state_origin'],
+               'agt_lga_origin' =>  $request['agt_lga_origin'],
+               'agt_home_town' =>  $request['agt_home_town'],
+               'agt_birth_date' =>  $request['agt_birth_date'],
+               'agt_birth_place' =>  $request['agt_birth_place'],
+               'nok_fullname' =>  $request['nok_fullname'],
+               'nok_res_address' =>  $request['nok_res_address'],
+               'nok_res_city' =>  $request['nok_res_city'],
+               'nok_res_state' =>  $request['nok_res_state'],
+               'nok_phone_number' =>  $request['nok_phone_number'],
+               'nok_relationship' =>  $request['nok_relationship'],
+               'grt_first_name' =>  $request['grt_first_name'],
+               'grt_last_name' =>  $request['grt_last_name'],
+               'grt_other_name' =>  $request['grt_other_name'],  
+               'grt_phone_number' =>  $request['grt_phone_number'],
+               'grt_age' =>  $request['grt_age'], 
+               'grt_res_address' =>  $request['grt_res_address'],
+               'grt_res_city' =>  $request['grt_res_city'],
+               'grt_res_state' =>  $request['grt_res_state'],
+               'grt_occupation' =>  $request['grt_occupation'],
+               'grt_bis_name' =>  $request['grt_bis_name'],
+               'grt_bis_address' =>  $request['grt_bis_address'],
+               'grt_relationship' =>  $request['grt_relationship'],
+               'grt_undertaken' =>  $grt_undertaken,
+
+               'hr_staff_id' =>  $request['hr_staff_id'],
+               'hr_grt_response' =>  $request['hr_grt_response'],
+               'hr_remark' =>  $request['hr_remark'],  
+               'actor_id' => auth()->user()->id
+           ]); 
+
+           $user = User::create ([
+               'user_id' => 'AGT-'.$next_id,
+               'status' => 'active',
+               'username' => strtolower($request['agt_username']),
+               'email' => $request['agt_email'],
+               'password' =>  Hash::make($request['agt_password']),
+               'usr_type' => $usr_type
            ]);
-           
-       $validator-> setAttributeNames($custom_error_messages);
 
-        if ($validator->fails()) {
-            return response()->json($validator->messages(),200);
-        } else {   // validation found zero errors
-
-            // create undertaken statement
-            $grt_undertaken = 'I '.$request['grt_first_name'].' whose particulars are as above personally recommend '.$request['agt_first_name'].' residing at '.$request['ut_agt_location'].' Employed by ADROITLINK-UP INT'."'".'L as '.$request['ut_agt_position'];
-
-            $sql = DB::select("show table status like 'users'");
-            $next_id = 100 + $sql[0]->Auto_increment;
-            $agent = Agent::create([   
-                'agent_id' => 'AGT-'.$next_id,
-                'referrer_id' => $request['agt_referrer_id'], 
-                'catchment_id' => $request['catchment_id'],
-                'agt_first_name' => $request['agt_first_name'],
-                'agt_last_name' =>  $request['agt_last_name'], 
-                'agt_other_name' =>  $request['agt_other_name'], 
-                'agt_phone_number' =>  $request['agt_phone_number'],
-                'agt_chat_number' =>  $request['agt_chat_number'],
-                'agt_gender' =>   $request['agt_gender'],
-                'agt_res_address' =>  $request['agt_res_address'],
-                'agt_res_city' =>  $request['agt_res_city'],
-                'agt_res_state' =>  $request['agt_res_state'],
-                'agt_state_origin' =>  $request['agt_state_origin'],
-                'agt_lga_origin' =>  $request['agt_lga_origin'],
-                'agt_home_town' =>  $request['agt_home_town'],
-                'agt_birth_date' =>  $request['agt_birth_date'],
-                'agt_birth_place' =>  $request['agt_birth_place'],
-                'nok_fullname' =>  $request['nok_fullname'],
-                'nok_res_address' =>  $request['nok_res_address'],
-                'nok_res_city' =>  $request['nok_res_city'],
-                'nok_res_state' =>  $request['nok_res_state'],
-                'nok_phone_number' =>  $request['nok_phone_number'],
-                'nok_relationship' =>  $request['nok_relationship'],
-                'grt_first_name' =>  $request['grt_first_name'],
-                'grt_last_name' =>  $request['grt_last_name'],
-                'grt_other_name' =>  $request['grt_other_name'],  
-                'grt_phone_number' =>  $request['grt_phone_number'],
-                'grt_age' =>  $request['grt_age'], 
-                'grt_res_address' =>  $request['grt_res_address'],
-                'grt_res_city' =>  $request['grt_res_city'],
-                'grt_res_state' =>  $request['grt_res_state'],
-                'grt_occupation' =>  $request['grt_occupation'],
-                'grt_bis_name' =>  $request['grt_bis_name'],
-                'grt_bis_address' =>  $request['grt_bis_address'],
-                'grt_relationship' =>  $request['grt_relationship'],
-                'grt_undertaken' =>  $grt_undertaken,
- 
-                'hr_staff_id' =>  $request['hr_staff_id'],
-                'hr_grt_response' =>  $request['hr_grt_response'],
-                'hr_remark' =>  $request['hr_remark'],  
-                'actor_id' => auth()->user()->id
-            ]); 
-
-            $user = User::create ([
-                'user_id' => 'AGT-'.$next_id,
-                'status' => 'active',
-                'username' => strtolower($request['agt_username']),
-                'email' => $request['agt_email'],
-                'password' =>  Hash::make($request['agt_password']),
-                'usr_type' => $usr_type
-            ]);
-
-            return response()->json(['message'=>'New agent ('.ucfirst($request['agt_first_name']).') registered successfully.']);
-          }
-
-        } else {   return redirect()->route('access_denied');   }
-        }  
+           return response()->json(['message'=>'New agent ('.ucfirst($request['agt_first_name']).') registered successfully.']);
+         }
 
 
     }
@@ -273,20 +272,16 @@ class AgentController extends BaseController
             return redirect()->route('access_denied'); 
         }
 
-        $section = 'show';   // dd(parent::middleware_except());  
+
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, parent::middleware_except())) {
+            if (!in_array(__FUNCTION__, parent::middleware_except())) {
+                return redirect()->route('access_denied'); 
+            }  
+        }  
+
 
         $user = User::firstWhere('username', $id);  // dd($user);
         return view('admin.agent_profile')->with('user', $user);
-
-            } else  {  return redirect()->route('access_denied');  }
-        } else {  // not admin
-
-            $user = User::firstWhere('username', $id);  // dd($user);
-            return view('admin.agent_profile')->with('user', $user);
-    
-        }
     }
 
    
@@ -307,10 +302,14 @@ class AgentController extends BaseController
             return redirect()->route('access_denied'); 
         }
 
-        $section = 'update';   // dd(parent::middleware_except());  
+
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, parent::middleware_except())) {
-        
+            if (!in_array(__FUNCTION__, parent::middleware_except())) {
+                return redirect()->route('access_denied'); 
+            }  
+        }  
+
+
         $user_id = User::firstWhere('username', $username)->user_id;  // dd($user);
      
         $custom_error_messages = array (
@@ -445,8 +444,8 @@ class AgentController extends BaseController
                 
             return response()->json(['message'=>'Agent ('.ucfirst("$username").') updated successfully.']);
         }
-     } else {  return redirect()->route('access_denied');  }
-     }  
+
+
     }
 
  
@@ -458,18 +457,20 @@ class AgentController extends BaseController
             return redirect()->route('access_denied'); 
         }
 
-        $section = 'destroy';   // dd(parent::middleware_except());  
+
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, parent::middleware_except())) {
+            if (!in_array(__FUNCTION__, parent::middleware_except())) {
+                return redirect()->route('access_denied'); 
+            }  
+        }  
+
 
         $user = User::firstWhere('username', $username);  // dd($user); 
         $user_id = $user->user_id;
         $agent = Agent::firstWhere('agent_id', $user_id);   
 
         $user->delete();     $agent->delete();
-        return redirect(route('agent.index'))->with('success', 'Agent deleted !');  
-        } else { return redirect()->route('access_denied'); }
-        }
+        return redirect(route('agent.index'))->with('success', 'Agent deleted !');          
 
     }
  
