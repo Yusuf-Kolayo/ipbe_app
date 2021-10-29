@@ -16,7 +16,7 @@ class CreateAccessPermissionsTable extends Migration
         if(Schema::hasTable('access_permissions')) return;
         Schema::create('access_permissions', function (Blueprint $table) {
             $table->id();
-            $table->string('user_id', 22)->unique('user_id');
+            $table->string('user_id', 22);
             $table->string('title', 22);
             $table->string('section', 22); 
             $table->timestamps();

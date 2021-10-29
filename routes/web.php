@@ -168,7 +168,7 @@ Route::group (['prefix' => 'admin_agent', 'middleware' => ['auth', 'is_admin_age
  
 
   //=========================      TARGET SAVING ROUTES      ==========================//
-Route::get('/target_savings',[TargetSavingController::class,'allTargetAccount'])->name('target_saving');
+Route::get('/target_savings',[TargetSavingController::class,'index'])->name('target_saving');
 Route::post('/checking_existing_client',[TargetSavingController::class,'searchClientUsingNumber'])->name('check_existing_client');
 Route::post('/create_target_saving',[TargetSavingController::class,'createAndSaveTargetAccount'])->name('create_target_account');
 Route::get('/target_saving_transaction',[TargetSavingController::class,'targetSavingTransaction'])->name('target_transaction');

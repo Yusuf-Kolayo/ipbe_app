@@ -15,7 +15,7 @@ class ExpenseController extends BaseController
     // EXPENSES CATEGORY FUNCTION 
 
 
-     public $title = 'expense';
+    public $title = 'expense';
 
 
     public function __construct() {
@@ -26,7 +26,7 @@ class ExpenseController extends BaseController
      
     public function allExpensesCatergories() {
 
-         if (!in_array($this->title, parent::app_sections_only())) {    
+        if (!in_array($this->title, parent::app_sections_only())) {    
             return redirect()->route('access_denied'); 
         }
 

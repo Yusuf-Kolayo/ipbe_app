@@ -17,7 +17,7 @@ class TargetSavingController extends BaseController
     public $title = 'target_savings';
 
 
-
+    //returns all target-saving account that has been created
     public function allTargetAccount(){
         if (!in_array($this->title, parent::app_sections_only())) {    
             return redirect()->route('access_denied'); 
@@ -34,6 +34,7 @@ class TargetSavingController extends BaseController
         }
     }
 
+    //this search for client with number to see if thier record is our database
     public function searchClientUsingNumber(Request $req){  
         if (!in_array($this->title, parent::app_sections_only())) {    
             return redirect()->route('access_denied'); 
@@ -104,7 +105,7 @@ class TargetSavingController extends BaseController
         return ('success');
     }
     
-
+    //return view where you can create a new target saving transaction for the client
     public function targetSavingTransaction(){
 
         if (!in_array($this->title, parent::app_sections_only())) {    
