@@ -10,6 +10,9 @@ use App\Models\Target_saving;
 use App\Models\Target_transaction;
 use App\Models\Target_request;
 
+
+
+
 class TargetSavingController extends BaseController
 {
     
@@ -23,15 +26,14 @@ class TargetSavingController extends BaseController
             return redirect()->route('access_denied'); 
         } 
 
-        $usr_type = Auth()->User()->usr_type;
-        if($usr_type=='usr_admin'){
-            $allTargets=Target_saving::orderBy('created_at', 'DESC')->get();
-            return view ('Agent\target_saving',['data'=>$allTargets]);
-        }else{
-            $agent_id=Auth()->User()->user_id;
-            $allTargets=Target_saving::where('agent_id',$agent_id)->orderBy('created_at', 'DESC')->get();
-            return view ('Agent\target_saving',['data'=>$allTargets]);
-        }
+        if (auth()->user()->usr_type=='usr_admin') {
+            if (!in_array(__FUNCTION__, parent::middleware_except())) {
+                return redirect()->route('access_denied'); 
+            }  
+        }   
+
+        $allTargets=Target_saving::orderBy('created_at', 'DESC')->get();
+        return view ('Agent\target_saving',['data'=>$allTargets]);
     }
 
     //this search for client with number to see if thier record is our database
@@ -39,6 +41,12 @@ class TargetSavingController extends BaseController
         if (!in_array($this->title, parent::app_sections_only())) {    
             return redirect()->route('access_denied'); 
         }
+
+        if (auth()->user()->usr_type=='usr_admin') {
+            if (!in_array(__FUNCTION__, parent::middleware_except())) {
+                return redirect()->route('access_denied'); 
+            }  
+        }   
 
         $phoneNo=$req['phone'];
         $client = Client::where('phone',$phoneNo)->first();
@@ -60,6 +68,12 @@ class TargetSavingController extends BaseController
             return redirect()->route('access_denied'); 
         }
         $agent_id=Auth()->User()->user_id;
+
+        if (auth()->user()->usr_type=='usr_admin') {
+            if (!in_array(__FUNCTION__, parent::middleware_except())) {
+                return redirect()->route('access_denied'); 
+            }  
+        }   
 
         $attributes = [
             'targetvalue'=>'Target overall value',
@@ -112,6 +126,12 @@ class TargetSavingController extends BaseController
             return redirect()->route('access_denied'); 
         }
 
+        if (auth()->user()->usr_type=='usr_admin') {
+            if (!in_array(__FUNCTION__, parent::middleware_except())) {
+                return redirect()->route('access_denied'); 
+            }  
+        }   
+
         return view('agent.target_saving_transaction');
     }
 
@@ -121,6 +141,12 @@ class TargetSavingController extends BaseController
             return redirect()->route('access_denied'); 
         }
         $agent_id=Auth()->User()->user_id;
+
+        if (auth()->user()->usr_type=='usr_admin') {
+            if (!in_array(__FUNCTION__, parent::middleware_except())) {
+                return redirect()->route('access_denied'); 
+            }  
+        }   
 
         $clientInfo=$req['clientInfo'];
         $clientTarget = Target_saving::where('client_no','=', $clientInfo)
@@ -146,6 +172,12 @@ class TargetSavingController extends BaseController
             return redirect()->route('access_denied'); 
         }
 
+        if (auth()->user()->usr_type=='usr_admin') {
+            if (!in_array(__FUNCTION__, parent::middleware_except())) {
+                return redirect()->route('access_denied'); 
+            }  
+        }   
+
         $targetSavingId=$req['targetSavingId'];
         $totalPaid=Target_transaction::where('target_saving_id',$targetSavingId)->sum('amount_paid');
         return $totalPaid;
@@ -156,6 +188,14 @@ class TargetSavingController extends BaseController
         if (!in_array($this->title, parent::app_sections_only())) {    
             return redirect()->route('access_denied'); 
         }
+
+        if (auth()->user()->usr_type=='usr_admin') {
+            if (!in_array(__FUNCTION__, parent::middleware_except())) {
+                return redirect()->route('access_denied'); 
+            }  
+        }   
+
+
 
         $attributes = [
             'transMethod'=>'Transaction Method',
@@ -182,7 +222,7 @@ class TargetSavingController extends BaseController
                     return redirect()->back()->with(['msg'=>'Transaction Saved']);
                     
                 }
-        }else{
+        } else {
             $transaction = new Target_transaction();
             $transaction->target_saving_id  = $req->input('targetId');
             $transaction->amount_paid = $req->input('amount');
@@ -195,25 +235,26 @@ class TargetSavingController extends BaseController
     }
 
     //this returns all the target-saving transaction history
-    public function clientTransactionDetails($id,$client_id){
-        $usr_type = Auth()->User()->usr_type;
-        if($usr_type=='usr_admin'){
-            $clientTargetTransaction=Target_transaction::where('target_saving_id',$id)->get();
-            $clientInfo = Client::where('client_id',$client_id)->get();
-            $targetDetail=Target_saving::where('id',$id)->get();
-            $totalPaid=Target_transaction::where('target_saving_id',$id)->sum('amount_paid');
-            return view ('agent.target_owner_profile',['clientTargetTransaction'=>$clientTargetTransaction,'clientInfo'=>$clientInfo,
-            'targetDetail'=>$targetDetail,'totalPaid'=>$totalPaid]);
-        }else{
-            $agent_id=Auth()->User()->user_id;
-            $clientTargetTransaction=Target_transaction::where('target_saving_id',$id)->where('agent_id',$agent_id)->get();
-            $clientInfo = Client::where('client_id',$client_id)->get();
-            $targetDetail=Target_saving::where('id',$id)->get();
-            $totalPaid=Target_transaction::where('target_saving_id',$id)->sum('amount_paid');
-            return view ('agent.target_owner_profile',['clientTargetTransaction'=>$clientTargetTransaction,'clientInfo'=>$clientInfo,
-            'targetDetail'=>$targetDetail,'totalPaid'=>$totalPaid]);
+    public function clientTransactionDetails($id,$client_id) {
+
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
         }
-        
+
+        if (auth()->user()->usr_type=='usr_admin') {
+            if (!in_array(__FUNCTION__, parent::middleware_except())) {
+                return redirect()->route('access_denied'); 
+            }  
+        }   
+
+
+
+        $clientTargetTransaction=Target_transaction::where('target_saving_id',$id)->get();
+        $clientInfo = Client::where('client_id',$client_id)->get();
+        $targetDetail=Target_saving::where('id',$id)->get();
+        $totalPaid=Target_transaction::where('target_saving_id',$id)->sum('amount_paid');
+        return view ('agent.target_owner_profile',['clientTargetTransaction'=>$clientTargetTransaction,'clientInfo'=>$clientInfo,
+        'targetDetail'=>$targetDetail,'totalPaid'=>$totalPaid]);
     }
 
     //this return all the target-saving that has been requested for by the client, I'm not done with this function too
@@ -221,15 +262,30 @@ class TargetSavingController extends BaseController
         if (!in_array($this->title, parent::app_sections_only())) {    
             return redirect()->route('access_denied'); 
         }
+      
+ 
+        if (auth()->user()->usr_type=='usr_admin') {
+            if (!in_array(__FUNCTION__, parent::middleware_except())) {
+                return redirect()->route('access_denied'); 
+            }  
+        }   
+
         $requestTargets=Target_request::orderBy('request_date', 'DESC')->get();
         return view ('Agent\target_request',['requests'=>$requestTargets]);
     }
+    
 
     //this will show a mini report of a client's target-saving history before requesting
     public function miniTransactionReport(Request $req){
         if (!in_array($this->title, parent::app_sections_only())) {    
             return redirect()->route('access_denied'); 
-        }
+        } 
+
+        if (auth()->user()->usr_type=='usr_admin') {
+            if (!in_array(__FUNCTION__, parent::middleware_except())) {
+                return redirect()->route('access_denied'); 
+            }  
+        }   
 
         $clientInfo=$req['clientInfo'];
         $clientTarget = Target_saving::where('client_no','=', $clientInfo)
@@ -255,6 +311,12 @@ class TargetSavingController extends BaseController
             return redirect()->route('access_denied'); 
         }
 
+        if (auth()->user()->usr_type=='usr_admin') {
+            if (!in_array(__FUNCTION__, parent::middleware_except())) {
+                return redirect()->route('access_denied'); 
+            }  
+        }   
+
         $idForBankDetails=$req['targetIdBank'];
         $bankDetails=Target_saving::find($idForBankDetails,['bank_name','acc_no','acc_name']);
         return $bankDetails;
@@ -265,7 +327,14 @@ class TargetSavingController extends BaseController
         if (!in_array($this->title, parent::app_sections_only())) {    
             return redirect()->route('access_denied'); 
         }
+        
+        if (auth()->user()->usr_type=='usr_admin') {
+            if (!in_array(__FUNCTION__, parent::middleware_except())) {
+                return redirect()->route('access_denied'); 
+            }  
+        }   
 
+        
         $this->validate($req,[
             'targetId'=>'required',
             'date'=>'required',

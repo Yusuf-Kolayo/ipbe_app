@@ -37,15 +37,14 @@ class CategoryController extends BaseController
             return redirect()->route('access_denied'); 
         }
 
-        $section = 'index';   // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, parent::middleware_except())) {
+            if (!in_array(__FUNCTION__, parent::middleware_except())) {
+                return redirect()->route('access_denied'); 
+            }  
+        }  
 
-                $brands = Brand::all();
-                return view('admin.brands')->with('brands',$brands);
-
-                } else {  return redirect()->route('access_denied');  }
-        }   
+        $brands = Brand::all();
+        return view('admin.brands')->with('brands',$brands);  
     }
 
 
@@ -58,17 +57,18 @@ class CategoryController extends BaseController
             return redirect()->route('access_denied'); 
         }
 
-        $section = 'sub_cat_ajax_fetch';       // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, parent::middleware_except())) {
+            if (!in_array(__FUNCTION__, parent::middleware_except())) {
+                return redirect()->route('access_denied'); 
+            }  
+        }  
 
-                $main_cat_id = $request['main_cat_id'];    $element = $request['element'];   // dd($request['cat_id']); 
-                $main_cat_name = DB::table('categories')->where('id', $main_cat_id)->value('cat_name');
-                $sub_categories = Category::where('parent_id', $main_cat_id)->get();
-                return view('admin.sub_categories_ajax_fetch', compact('sub_categories','main_cat_name', 'element'));         
 
-                } else {  return redirect()->route('access_denied');  }
-        }   
+        $main_cat_id = $request['main_cat_id'];    $element = $request['element'];   // dd($request['cat_id']); 
+        $main_cat_name = DB::table('categories')->where('id', $main_cat_id)->value('cat_name');
+        $sub_categories = Category::where('parent_id', $main_cat_id)->get();
+        return view('admin.sub_categories_ajax_fetch', compact('sub_categories','main_cat_name', 'element'));         
+
 
     }
 
@@ -83,10 +83,12 @@ class CategoryController extends BaseController
             return redirect()->route('access_denied'); 
         }
 
-        $section = 'store';       // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, parent::middleware_except())) {
-
+            if (!in_array(__FUNCTION__, parent::middleware_except())) {
+                return redirect()->route('access_denied'); 
+            }  
+        }   
+        
         $data = request()->validate([
             'cat_name' => ['required', 'string', 'max:100', 'unique:categories'],
             'abbr' => ['required', 'string', 'max:3', 'unique:categories'],
@@ -111,11 +113,7 @@ class CategoryController extends BaseController
         ]); 
     
         return redirect()->route('category.index')->with('success', 'New category ('.$data['cat_name'].') created successfully.');
-      
-        }  else { return redirect()->route('access_denied'); }
-        }
-    
-    
+
     }
 
 
@@ -128,15 +126,15 @@ class CategoryController extends BaseController
             return redirect()->route('access_denied'); 
         }
 
-        $section = 'trash';       // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, parent::middleware_except())) {
+            if (!in_array(__FUNCTION__, parent::middleware_except())) {
+                return redirect()->route('access_denied'); 
+            }  
+        }   
+
 
         $category = Category::findOrFail($id);
         return view('admin.category_trash')->with('category',$category);
-
-        } else { return redirect()->route('access_denied'); }
-        }
 
     }
 
@@ -150,9 +148,12 @@ class CategoryController extends BaseController
             return redirect()->route('access_denied'); 
         }
         
-        $section = 'update';       // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, parent::middleware_except())) {
+            if (!in_array(__FUNCTION__, parent::middleware_except())) {
+                return redirect()->route('access_denied'); 
+            }  
+        }   
+
 
         $data = request()->validate([
             'category_name' => ['required', 'string', 'max:55', 'unique:categories,category_name,'. $id . 'id'],
@@ -170,8 +171,7 @@ class CategoryController extends BaseController
         ]); 
 
         return redirect()->route('category.show', ['category'=>$id])->with('success', 'category updated Successfully.');
-        } else { return redirect()->route('access_denied'); }
-        }
+      
     }
 
   
@@ -185,11 +185,12 @@ class CategoryController extends BaseController
             return redirect()->route('access_denied'); 
         }
 
-        $section = 'destroy';       // dd(parent::middleware_except());  
         if (auth()->user()->usr_type=='usr_admin') {
-            if (in_array($section, parent::middleware_except())) {
+            if (!in_array(__FUNCTION__, parent::middleware_except())) {
+                return redirect()->route('access_denied'); 
+            }  
+        }   
 
-            } else { return redirect()->route('access_denied'); }
-        }
+        
     }
 }
