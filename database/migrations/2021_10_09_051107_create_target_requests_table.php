@@ -23,7 +23,7 @@ class CreateTargetRequestsTable extends Migration
             $table->string('bank_name')->nullable();
             $table->string('acc_no')->nullable();
             $table->string('acc_name')->nullable();
-            $table->enum('request_status',['Requested','Pending','Completed'])->default('Requested');
+            $table->enum('request_status',['Pending','In-progress','Completed'])->default('In-progress');
             $table->date('approval_date')->nullable();
             $table->date('complete_date')->nullable();
             $table->timestamps();

@@ -365,15 +365,15 @@ class TargetSavingController extends BaseController
     }
 
     //this will change the status of the requested target depending on if it has been processed but I'm not done with it
-    public function changeRequestStatus($id){
-        if (!in_array($this->title, parent::app_sections_only())) {    
-            return redirect()->route('access_denied'); 
-        }
+    // public function changeRequestStatus($id){
+    //     if (!in_array($this->title, parent::app_sections_only())) {    
+    //         return redirect()->route('access_denied'); 
+    //     }
 
-        $status=Target_request::find($id);
-        $status->request_status='Completed';
-        $status->save();
-    }
+    //     $status=Target_request::find($id);
+    //     $status->request_status='Completed';
+    //     $status->save();
+    // }
 
     //this function will get a mini update on each requested target
     public function reqReport(Request $req){
@@ -383,8 +383,9 @@ class TargetSavingController extends BaseController
                 ->where('request_id', $reqId)
                 ->get();
         return view('/agent.ajax_targetreq_history',['reqHistory'=>$reqHistory]);
-
     }
+
+    
 
 }
 

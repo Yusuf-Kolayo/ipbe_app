@@ -63,19 +63,19 @@
                         @endif
                         @if($request->request_status=='Approved')
                         <td>
-                            <p class="d-inline">Completed</p> 
-                            <button class="btn-sm btn btn-outline-success ml-2 py-0 reqHistory"
+                            <button class="btn btn-outline-success px-1 changeStatus">Completed</button>
+                            <button class="btn-sm btn btn-outline-warning ml-2 py-0 reqHistory"
                             type="button" data-reqId="{{$request->request_id}}" data-toggle="modal" data-target="#statusRequest" >i</button>
                         </td>
-                        @elseif($request->request_status=='Pending')
+                        @elseif($request->request_status=='In-progress')
                         <td>
-                            <p class="d-inline">Pending</p> 
-                            <button class="btn-sm btn btn-outline-primary ml-2 py-0 reqHistory"
+                            <button class="btn btn-outline-primary px-1 changeStatus">In-progress</button>
+                            <button class="btn-sm btn btn-outline-warning ml-2 py-0 reqHistory"
                             type="button" data-reqId="{{$request->request_id}}" data-toggle="modal" data-target="#statusRequest" >i</button>    
                         </td>
                         @else
                         <td class="px-1">
-                            <button class="btn btn-outline-primary px-1">Requested</button>
+                            <button class="btn btn-outline-danger px-1 changeStatus">Pending</button>
                             <button class="btn-sm btn btn-outline-warning reqHistory text-black ml-1 px-1"
                             type="button" data-reqId="{{$request->request_id}}" data-toggle="modal" data-target="#statusRequest" >Record</button>  
                         </td>
@@ -381,6 +381,17 @@
                     console.log(error);
                 }
             })
+        })
+
+        $('.changeStatus').click(function(){
+            let progress=$(this).html();
+            if(progress=="Pending"){
+
+            }else if(progress =="In-progress"){
+                
+            }else{
+                
+            }
         })
         
         
