@@ -43,8 +43,8 @@ class CategoryController extends BaseController
             }  
         }  
 
-        $brands = Brand::all();
-        return view('admin.brands')->with('brands',$brands);  
+        $main_categories = Category::where('parent_id', 0)->get(); 
+        return view('admin.categories')->with('main_categories',$main_categories);  
     }
 
 
@@ -119,8 +119,8 @@ class CategoryController extends BaseController
 
 
 
-    // loads up a page to seek confirmation to delete a category 
-    public function trash($id)
+    // fetch through ajax: a form to update category
+    public function edit_category_ajax_fetch (Request $request)
     {
         if (!in_array($this->title, parent::app_sections_only())) {    
             return redirect()->route('access_denied'); 
@@ -132,11 +132,37 @@ class CategoryController extends BaseController
             }  
         }   
 
+        $category_id = $request['cat_id'];
 
-        $category = Category::findOrFail($id);
-        return view('admin.category_trash')->with('category',$category);
+        $category = Category::findOrFail($category_id);  //dd($category);
+        $main_categories = Category::where('parent_id', 0)->get(); 
+        return view('admin.edit_category_ajax_fetch', compact('category','main_categories'));
 
     }
+
+
+
+
+        // fetch through ajax: a form to delete category
+        public function delete_category_ajax_fetch (Request $request)
+        {
+            if (!in_array($this->title, parent::app_sections_only())) {    
+                return redirect()->route('access_denied'); 
+            }
+        
+            if (auth()->user()->usr_type=='usr_admin') {
+                if (!in_array(__FUNCTION__, parent::middleware_except())) {
+                    return redirect()->route('access_denied'); 
+                }
+            }   
+    
+            $category_id = $request['cat_id'];
+    
+            $category = Category::findOrFail($category_id);  //dd($category);
+            return view('admin.delete_category_ajax_fetch', compact('category'));
+    
+        }
+
 
    
      
@@ -153,24 +179,32 @@ class CategoryController extends BaseController
                 return redirect()->route('access_denied'); 
             }  
         }   
-
-
+ 
         $data = request()->validate([
-            'category_name' => ['required', 'string', 'max:55', 'unique:categories,category_name,'. $id . 'id'],
-            'description' => ['required', 'string', 'max:100'],
-            'state' => ['required', 'string', 'max:22'],
-            'lga' => ['required', 'string', 'max:55']
+            'cat_name' => ['required', 'string', 'max:55', 'unique:categories,cat_name,'. $id . 'id'], 
+            'abbr' => ['required', 'string', 'max:3', 'unique:categories,abbr,'. $id . 'id'],
+            'description' => ['required', 'string', 'max:1000'],
+            'meta_title' => ['required', 'string', 'max:100'],  
+            'meta_desc' => ['required', 'string', 'max:1000'],  
+            'meta_keyword' => ['required', 'string', 'max:100'], 
+            'parent_id' => ['required', 'string', 'max:55'],
+            'position' => ['required', 'string', 'max:55']
+
         ]); 
 
          Category::where('id', $id)
          ->update([  
-            'category_name' => $data['category_name'],
-            'description' => $data['description'],
-            'state' => $data['state'],
-            'lga' => $data['lga']
+            'cat_name' => $data['cat_name'],
+            'abbr' => strtoupper($data['abbr']),
+            'description' => $data['description'], 
+            'meta_title' => $data['meta_title'],
+            'meta_desc' => $data['meta_desc'],
+            'meta_keyword' => $data['meta_keyword'],
+            'parent_id' => $data['parent_id'],
+            'position' => $data['position']
         ]); 
 
-        return redirect()->route('category.show', ['category'=>$id])->with('success', 'category updated Successfully.');
+        return redirect()->route('category.index')->with('success', 'category updated successfully');
       
     }
 
@@ -191,6 +225,14 @@ class CategoryController extends BaseController
             }  
         }   
 
-        
+        $category = Category::where('id', $id)->firstOrFail(); 
+        if ($category) {
+            $deleted_rows = Category::where('id', $id)->delete();
+        }   
+
+
+        return redirect()->route('category.index')->with('success', 'category updated successfully');        
     }
+
+
 }

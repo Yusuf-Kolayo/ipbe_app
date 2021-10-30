@@ -37,16 +37,7 @@
          <td>  <a class="btn btn-primary btn-sm btn-block" href="{{ route('agent.show', ['agent'=>$agent->user->username]) }}"> <em class="icon ni ni-user-circle"></em> Profile</a> </td>
          </tr>
         @endforeach
-          </tbody>
-          <tfoot>
-          <td>
-            <th class="all"></th>  <th class="all"></th>  <th class="all"></th>
-            <th class="all"></th>  <th class="all"></th> 
-            <th class="all"></th> <th class="all"></th>
-            <th class="all"></th> <th class="all"></th>
-            <th class="all"></th>  <th class="all"></th> 
-          </td>
-          </tfoot>
+          </tbody> 
         </table>
 
 

@@ -14,6 +14,7 @@ use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\TargetSavingController;
 use App\Http\Controllers\StaffController;
+use Intervention\Image\Facades\Image;
 
 
 
@@ -58,7 +59,10 @@ Route::resource('client', ClientController::class);
     
 
 Route::get('/product/sub/{sub_category_id}', [ProductController::class, 'sub'])->name('product.sub');
-Route::resource('product', AdminController::class);
+Route::get('/resize/{img}/{h?}/{w?}',function($img, $h=717, $w=1098) {  //  $img->resizeCanvas(1280, 720, 'center', false, 'ff00ff');
+    return \Image::make(public_path("storage/uploads/products_img/$img"))->resizeCanvas($w, $h, 'center', false, 'ffffff')->response('jpg');
+});
+Route::resource('product', ProductController::class);
 
 
 // =========================      ADMIN ROUTES      ========================= //
@@ -156,6 +160,8 @@ Route::group (['prefix' => 'admin_agent', 'middleware' => ['auth', 'is_admin_age
     Route::resource('transaction', TransactionController::class); 
     
     Route::get('/category/sub_cat_ajax_fetch', [CategoryController::class, 'sub_cat_ajax_fetch'])->name('category.sub_cat_ajax_fetch');
+    Route::get('/category/edit_category_ajax_fetch', [CategoryController::class, 'edit_category_ajax_fetch'])->name('category.edit_category_ajax_fetch');
+    Route::get('/category/delete_category_ajax_fetch', [CategoryController::class, 'delete_category_ajax_fetch'])->name('category.delete_category_ajax_fetch');
     Route::resource('category', CategoryController::class);
 });
 

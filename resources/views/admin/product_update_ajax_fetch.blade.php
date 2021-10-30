@@ -32,7 +32,10 @@
       <div class="form-group">
         <label> Brand </label>
         <select name="brand_id" id="brand_id" class="form-control">
-          <option value="{{$product->brand->id}}">{{$product->brand->brd_name}}</option> 
+          @if ($product->brand)
+             <option value="{{$product->brand->id}}">{{$product->brand->brd_name}}</option> 
+          @endif
+
           @foreach ($brands as $brand)
             <option value="{{$brand->id}}">{{$brand->brd_name}}</option>
           @endforeach

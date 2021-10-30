@@ -58,19 +58,13 @@
 
 
 
-              <div class="card card-primary">
-                <!-- /.card-header -->
-                <div class="card-body">
-                <ul class="list-group list-group-unbordered">
-                    <li class="list-group-item" >
-                      <b> <i class="fas fa-link"></i> Referral Link:</b>  <span id="copy_target">{{route('agent.show_referring_form', ['agent_id'=>$user->user_id])}}  </span> <br><br>
-                       <p class="mb-0"> <button class="btn btn-outline-primary btn-block mt-2" id="copy_button">Copy Link</button> </p>
-                    </li>  
-                  </ul> 
-                </div>
-                <!-- /.card-body -->
+            <!-- With Only Header -->
+            <div class="card card-bordered">
+              <div class="card-header border-bottom">Quick Stats</div>
+              <div class="card-inner">
+                  <p class="card-text">... ... ...</p>
               </div>
-              <!-- /.card -->
+            </div>
 
 
   
@@ -329,7 +323,7 @@
                             echo '<p class="mt-2 text-center">No purchase sessions found yet!</p> <hr>';
                           }  
                         @endphp  
-                      
+              
   
                         </div> 
                     <!-- /.tab-pane -->
