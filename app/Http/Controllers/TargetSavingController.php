@@ -31,7 +31,6 @@ class TargetSavingController extends BaseController
                 return redirect()->route('access_denied'); 
             }  
         }   
-
         $allTargets=Target_saving::orderBy('created_at', 'DESC')->get();
         return view ('Agent\target_saving',['data'=>$allTargets]);
     }
@@ -135,7 +134,7 @@ class TargetSavingController extends BaseController
         return view('agent.target_saving_transaction');
     }
 
-    //return target saving(s) a particular client has 
+    //return all target saving(s) a particular client has 
     public function retrieveTargetRecord(Request $req){
         if (!in_array($this->title, parent::app_sections_only())) {    
             return redirect()->route('access_denied'); 
@@ -183,7 +182,7 @@ class TargetSavingController extends BaseController
         return $totalPaid;
     }
 
-    //this saves any target-saving transaction that happens
+    //this saves all target-saving transaction 
     public function saveTargetTransaction(Request $req){
         if (!in_array($this->title, parent::app_sections_only())) {    
             return redirect()->route('access_denied'); 
@@ -257,7 +256,7 @@ class TargetSavingController extends BaseController
         'targetDetail'=>$targetDetail,'totalPaid'=>$totalPaid]);
     }
 
-    //this return all the target-saving that has been requested for by the client, I'm not done with this function too
+    //this return all the target-savings that has requested for pay-back, I'm not done with this function too
     public function allRequestedTarget(){
         if (!in_array($this->title, parent::app_sections_only())) {    
             return redirect()->route('access_denied'); 
@@ -270,7 +269,7 @@ class TargetSavingController extends BaseController
             }  
         }   
 
-        $requestTargets=Target_request::orderBy('request_date', 'DESC')->get();
+        $requestTargets=Target_request::orderBy('request_date', 'DESC')->orderBy('request_status', 'DESC')->get();
         return view ('Agent\target_request',['requests'=>$requestTargets]);
     }
     
@@ -359,33 +358,57 @@ class TargetSavingController extends BaseController
                 $reqTarget->save();
                 return redirect()->back()->with(['msg'=>'Your Request has been generated successfully, Pending Approval']);
             }else{
-                return redirect()->back()->with(['msg'=>'Target has been requested previously, pay-back is in progress']);
+                $checkRequest= Target_request::where('target_saving_id','=',$target_saving_id)->value('request_status');
+                if($checkRequest=='Pending'){
+                    return redirect()->back()->with(['msg'=>'Target has been requested previously, but it\'s still pending approval from Admin']);
+                }else if($checkRequest=='In-progress'){
+                    return redirect()->back()->with(['msg'=>'Target has been requested previously, transcation is in progress']);
+                }else{
+                    return redirect()->back()->with(['msg'=>'Target has been requested previously, and pay-back is completed']);
+                }
             }
             
     }
 
     //this will change the status of the requested target depending on if it has been processed but I'm not done with it
-    // public function changeRequestStatus($id){
-    //     if (!in_array($this->title, parent::app_sections_only())) {    
-    //         return redirect()->route('access_denied'); 
-    //     }
-
-    //     $status=Target_request::find($id);
-    //     $status->request_status='Completed';
-    //     $status->save();
-    // }
+    public function changeRequestStatus(Request $req){
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+        $authoriseBy=Auth()->User()->username;
+        $requestId=$req['targetId'];
+        $progress=$req['progress'];
+        $today=date("d-m-Y");
+        if($progress=='Pending'){
+            DB::table('target_requests')
+                ->where('target_saving_id', $requestId)
+                ->update(['request_status' => 'In-progress','authorized_approval'=>$authoriseBy,'approval_date'=>$today]);
+                redirect()->back();
+        }else if($progress=='In-progress'){
+            DB::table('target_requests')
+                ->where('target_saving_id', $requestId)
+                ->update(['request_status' => 'Completed','authorized_completion'=>$authoriseBy,'complete_date'=>$today]);
+                redirect()->back();
+        }else{
+            DB::table('target_requests')
+                ->where('target_saving_id', $requestId)
+                ->update(['request_status' => 'In-progress','authorized_approval'=>$authoriseBy,'approval_date'=>$today,
+                        'authorized_completion'=>'','complete_date'=>'']);
+                redirect()->back();
+        }
+    }
 
     //this function will get a mini update on each requested target
     public function reqReport(Request $req){
         $reqId=$req['reqId'];
         $reqHistory = DB::table('target_requests')
-                ->select('request_date', 'authorized_approval','approval_date','authorized_complete','complete_date')
+                ->select('request_date', 'authorized_approval','approval_date','authorized_completion','complete_date')
                 ->where('request_id', $reqId)
                 ->get();
         return view('/agent.ajax_targetreq_history',['reqHistory'=>$reqHistory]);
     }
 
-    
+
 
 }
 

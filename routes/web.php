@@ -93,7 +93,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'is_admin']], functi
  //=========================      EXPENSES ROUTES      ==========================//
  Route::get('/company/expenses/all',[ExpenseController::class,'allExpenses'])->name('expenses_list');
  //Route::get('/company_expenses','App\Http\Controllers\Admin\ExpenseController@allExpensesCatergories')->name('admin_expenses');
- Route::get('/company/expenses/add_or_delete_catergory',[ExpenseController::class,'allExpensesCatergories'])->name('expenses_cat');
+ Route::get('/company/expenses/add_or_delete_catergory',[ExpenseController::class,'allExpensesCategories'])->name('expenses_cat');
  Route::post('/company/expenses/add_or_delete_catergory',[ExpenseController::class,'newExpensesCatgory'])->name('cat_newname');
  Route::post('/company/expenses/delete_catergory{id}',[ExpenseController::class,'deleteExpensesCatergory'])->name('delete_catname');
  Route::post('/company/expenses/edit_catergory{id}',[ExpenseController::class,'editExpensesCatergory'])->name('edit_catname');
@@ -182,5 +182,5 @@ Route::get('/agent/target_reimbursement',[TargetSavingController::class,'allRequ
 Route::post('/agent/mini_transaction_report',[TargetSavingController::class,'miniTransactionReport'])->name('mini_trans_report');
 Route::post('/agent/client_bank_details',[TargetSavingController::class,'clientBankDetails'])->name('bank_details');
 Route::post('/agent/target_reimbursement',[TargetSavingController::class,'requestTarget'])->name('requestATarget');
-Route::post('/agent/target_status{id}',[TargetSavingController::class,'changeRequestStatus'])->name('change_status');
+Route::post('/agent/target_status',[TargetSavingController::class,'changeRequestStatus'])->name('change_status');
 Route::post('/agent/requested_target_history',[TargetSavingController::class,'reqReport'])->name('request_history');

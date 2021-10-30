@@ -8,12 +8,12 @@
 <div class="row">
     @if(Session::has('msg'))
         <div class="col-12 mb-2 text-center">
-            @if(Session::get('msg') =='Target has been requested previously, pay-back is in progress')
-            <p class="alert alert-warning"><i class="fas fa-exclamation-circle mr-2"></i>{{ Session::get('msg') }}</p>
+            @if(Session::get('msg') =='Target has been requested previously, and pay-back is completed')
+            <p class="alert alert-danger"><i class="fas fa-exclamation-circle mr-2"></i>{{ Session::get('msg') }}</p>
             @elseif(Session::get('msg') =='Your Request has been generated successfully, Pending Approval')
             <p class="alert alert-success"><i class="fas fa-check-circle mr-2"></i></i>{{ Session::get('msg') }}</p>
             @else
-            <p class="alert alert-danger"><i class="fas fa-times-circle mr-2"></i>{{ Session::get('msg') }}</p>
+            <p class="alert alert-warning"><i class="fas fa-times-circle mr-2"></i>{{ Session::get('msg') }}</p>
             @endif
         </div>
     @endif
@@ -30,19 +30,20 @@
     <div class="col-12 table-responsive">
         <table class="table table-bordered table-sm">
             <thead class="thead-dark">
+                <?php
+                    $agent_id=Auth()->User()->user_id;
+                    $usr_type = Auth()->User()->usr_type;
+                ?>
                 <tr>
                     <th>S/N</th><th>NAME</th><th>PHONE-NO</th><th>AMOUNT-SAVED</th><th>PAYMENT-METHOD</th>
                     <th>BANK</th><th>ACCOUNT-NUMBER</th><th>ACCOUNT-NAME</th>
-                    <th class="text-center">PROGRESS</th>
+                    <th class="text-center" colspan="2">PROGRESS</th>@if($usr_type=='usr_admin')<th>HISTORY</th>@endif
                 </tr>
             </thead>
             <tbody>
                 <?php $no=1;?>
                 @foreach($requests as $request)
-                <?php
-                    $agent_id=Auth()->User()->user_id;
-                    $usr_type = Auth()->User()->usr_type;
-                ?>
+                
                 @if($usr_type=='usr_admin')
                 <tr>
                     <td>{{$no}}</td>
@@ -61,25 +62,25 @@
                         <td>NULL</td>
                         <td>NULL</td>
                         @endif
-                        @if($request->request_status=='Approved')
+                        
+                        @if($request->request_status=='Completed')
                         <td>
-                            <button class="btn btn-outline-success px-1 changeStatus">Completed</button>
-                            <button class="btn-sm btn btn-outline-warning ml-2 py-0 reqHistory"
-                            type="button" data-reqId="{{$request->request_id}}" data-toggle="modal" data-target="#statusRequest" >i</button>
+                            <button class="btn btn-sm btn-outline-success px-1 changeStatus" data-reqtarid="{{$request->target_saving_id}}">Completed</button>
                         </td>
                         @elseif($request->request_status=='In-progress')
                         <td>
-                            <button class="btn btn-outline-primary px-1 changeStatus">In-progress</button>
-                            <button class="btn-sm btn btn-outline-warning ml-2 py-0 reqHistory"
-                            type="button" data-reqId="{{$request->request_id}}" data-toggle="modal" data-target="#statusRequest" >i</button>    
+                            <button class="btn btn-sm btn-outline-primary px-1 changeStatus" data-reqtarid="{{$request->target_saving_id}}">In-progress</button>
                         </td>
                         @else
                         <td class="px-1">
-                            <button class="btn btn-outline-danger px-1 changeStatus">Pending</button>
-                            <button class="btn-sm btn btn-outline-warning reqHistory text-black ml-1 px-1"
-                            type="button" data-reqId="{{$request->request_id}}" data-toggle="modal" data-target="#statusRequest" >Record</button>  
+                            <button class="btn btn-sm btn-outline-danger px-1 changeStatus" data-reqtarid="{{$request->target_saving_id}}">Pending</button>
                         </td>
                         @endif
+                        <td class="px-1">
+                            <button class="btn-sm btn btn-outline-warning reqHistory text-black ml-1"
+                            type="button" data-reqId="{{$request->request_id}}" data-toggle="modal" data-target="#statusRequest" >Record</button>  
+                        </td>
+                        <td class="text-center"><button class="btn btn-sm btn-dark">i</button></td>
                     </tr>
                 @else
                     @if($agent_id==$request->target_saving->agent_id)
@@ -100,25 +101,23 @@
                                 <td>NULL</td>
                                 <td>NULL</td>
                                 @endif
-                                @if($request->request_status=='Approved')
+                                @if($request->request_status=='Completed')
                                 <td>
-                                    <p class="d-inline">Completed</p> 
-                                    <button class="btn-sm btn btn-outline-success ml-2 py-0 reqHistory"
-                                    type="button" data-reqId="{{$request->request_id}}" data-toggle="modal" data-target="#statusRequest" >i</button>
+                                    <p class="d-inline text-success font-weight-bold">Completed</p> 
                                 </td>
-                                @elseif($request->request_status=='Pending')
+                                @elseif($request->request_status=='In-progress')
                                 <td>
-                                    <p class="d-inline">Pending</p> 
-                                    <button class="btn-sm btn btn-outline-primary ml-2 py-0 reqHistory"
-                                    type="button" data-reqId="{{$request->request_id}}" data-toggle="modal" data-target="#statusRequest" >i</button>    
+                                    <p class="d-inline text-primary font-weight-bold">In-progress</p> 
                                 </td>
                                 @else
                                 <td>
-                                    <p class="d-inline">Requested</p> 
+                                    <p class="d-inline text-danger font-weight-bold">Pending</p> 
+                                </td>
+                                @endif
+                                <td> 
                                     <button class="btn-sm btn btn-outline-warning ml-2 py-0 reqHistory"
                                     type="button" data-reqId="{{$request->request_id}}" data-toggle="modal" data-target="#statusRequest" >i</button>
                                 </td>
-                                @endif
                         </tr>
                     @endif    
                 @endif
@@ -165,20 +164,20 @@
             <div class="modal-body" id="reqMtd">
                 <form class="form" >
                     <div class="form-check my-2">
-                        <input class="form-check-input" type="radio" name="paybackMethod" id="transfer" value="transfer">
-                        <label class="form-check-label" for="transfer">
+                        <input type="radio" name="paybackMethod" id="transfer" value="transfer">
+                        <label for="transfer">
                         TRANSFER
                         </label>
                     </div>
                     <div class="form-check my-2">
-                        <input class="form-check-input" type="radio" name="paybackMethod" id="cash" value="cash">
-                        <label class="form-check-label" for="cash">
+                        <input type="radio" name="paybackMethod" id="cash" value="cash">
+                        <label for="cash">
                         CASH
                         </label>
                     </div>
                     <div class="form-check my-2">
-                        <input class="form-check-input" type="radio" name="paybackMethod" id="swap" value="swap for product" required>
-                        <label class="form-check-label" for="swap">
+                        <input type="radio" name="paybackMethod" id="swap" value="swap for product" required>
+                        <label for="swap">
                         SWAP FOR PRODUCT
                         </label>
                     </div>
@@ -383,29 +382,63 @@
             })
         })
 
+//function to show modal to change status for Admin
         $('.changeStatus').click(function(){
             let progress=$(this).html();
-            if(progress=="Pending"){
+            let targetId=$(this).data('reqtarid');
+           
+            $("#miniReport").modal("show");
+            $("#miniReport").on('shown.bs.modal', function () {
+                let foot=$("#miniReport .modal-footer").button();
+                if($('#miniReport .modal-footer .btn-outline-danger').length == 0) {
+                    if(progress=='In-progress'||progress=='Completed'){
+                        let okay="<button class='btn btn-sm btn-outline-danger' id='continue' data-dismiss='modal'>CONTINUE</button>";
+                        $(foot).prepend(okay);
+                    }
+                }
+                
+                if(progress=='In-progress'){
+                    $("#miniReport .modal-title").html("REQUEST PROGRESS : "+ progress);
+                    $("#miniReport .modal-body").html('You are about to change the progress status to completed<br>Are you sure pay-back has been completed?');
+                }else if(progress=='Completed'){
+                        $("#miniReport .modal-title").html("REQUEST PROGRESS : "+ progress);
+                        $("#miniReport .modal-body").html('This Request has been completed<br>Are you sure you want to change status back to In-progess?');
+                }else{
+                        $("#miniReport .modal-title").html("REQUEST PROGRESS : "+ progress);
+                        $("#miniReport .modal-body").html('You just acknowledge this request, Request is now in-progress<br>Make sure to follow up !');
+                        $.ajax({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name=csrf-token]').attr('content')
+                            },
+                        url:"{{ route('change_status') }}",
+                        type:'POST',
+                        data:{'targetId': targetId,'progress': progress},
+                        dataType:'text',
+                        success:function(success){
 
-            }else if(progress =="In-progress"){
+                        },
+                        error:function(error){
+                            console.log(error);
+                        }
+                    })
+                }
                 
-            }else{
-                
-            }
+                $('#continue').click(function(){
+                    $.ajax({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name=csrf-token]').attr('content')
+                            },
+                        url:"{{ route('change_status') }}",
+                        type:'POST',
+                        data:{'targetId': targetId,'progress': progress},
+                        dataType:'text',
+                        error:function(error){
+                            console.log(error);
+                        }
+                    })
+                })
+            })
         })
-        
-        
-
-
-
-         
-        
-                    
-            
-        
-
-        
-
     })
 </script>
 @endsection

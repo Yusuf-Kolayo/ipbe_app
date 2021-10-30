@@ -24,7 +24,7 @@ class ExpenseController extends BaseController
     }
 
      
-    public function allExpensesCatergories() {
+    public function allExpensesCategories() {
 
         if (!in_array($this->title, parent::app_sections_only())) {    
             return redirect()->route('access_denied'); 

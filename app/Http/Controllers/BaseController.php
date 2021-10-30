@@ -17,7 +17,7 @@ class BaseController extends Controller
     
 
     public $app_sections = array ( 
-        // ['dashboard',   [['index','Dashboard'],'resolve_notification','all_notifications','my_profile','profile','chat_board','post_chat','fetch_chat']],
+        //['dashboard',   [['index','Dashboard'],'resolve_notification','all_notifications','my_profile','profile','chat_board','post_chat','fetch_chat']],
         ['staff',       [['index','view staffs'],['show','staff profiles'],['store','store new staff'],['update','edit staff'],['destroy','delete staff'],['update_user_permission','assign permissions'],['refresh_permissions_ajax_fetch', 'refresh permissions after update']]],
         ['product',     [['index','view products'],['store','create new product'],['sub','product catalog'],['update_product_ajax_fetch','edit product form'],['show_details_ajax_fetch','product details modal'],['refresh_product_ajax_fetch','refresh edited product'],['show','product profile'],['trash','delete warning'],['edit','product edit page'],['update','product update'],['destroy','delete product']]],
         ['agent',       [['index','view agents'],['ajax_fetch','fetch agents'],['store','store new agents'],['show','agent profiles'],['update','edit agent'],['destroy','delete agent']]],

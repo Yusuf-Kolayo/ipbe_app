@@ -60,8 +60,8 @@
                         <h5 class="text-muted card-title">TRANSACTION STATUS : <span id="statusVal"></span></h5>
                     </div>
                     <?php $usr_type = Auth()->User()->usr_type;?>
-                    @if($usr_type !=='usr_admin'){
-                        <<div class="col-md-3 mt-3 mt-md-0">
+                    @if($usr_type !=='usr_admin')
+                        <div class="col-md-3 mt-3 mt-md-0">
                             <button class="btn btn-sm btn-primary float-right px-3" id="newPayment">NEW PAYMENT</button>
                         </div>
                     @endif

@@ -14,24 +14,17 @@
                             <?php 
                                 $reqDate = $reqHistory->request_date;
                                 $changeReqDate = date("d-m-Y", strtotime($reqDate));
-
-                                $appDate = $reqHistory->approval_date;
-                                $changeAppDate = date("d-m-Y", strtotime($appDate));
-
-                                $comDate = $reqHistory->complete_date;
-                                $changeComDate = date("d-m-Y", strtotime($comDate));
                             ?>
                             <p><i class="icon ni ni-alert-circle mr-2"></i>Target was requested for on the <b>{{$changeReqDate}}</b></p>
                             @if($reqHistory->approval_date=='' ||$reqHistory->approval_date=='null')
                             <p><i class="icon ni ni-alert-circle mr-2"></i>Request has not been approved</p>
-                            @elseif($reqHistory->approval_date !=='' && $reqHistory->approval_date !=='null')
-                            <p><i class="icon ni ni-alert-circle mr-2"></i>Request has been approved by <b>{{$reqHistory->authorized_approval}}</b> on the <b>{{$changeAppDate }}</b></p>
-                                @if($reqHistory->complete_date=='' ||$reqHistory->complete_date=='null')
-                                <p><i class="icon ni ni-alert-circle mr-2"></i>Payback has not been confirmed</p>
-                                @else
-                                <p><i class="icon ni ni-check-circle mr-2"></i>Request payback has been completed. <b>{{$reqHistory->authorized_complete}}</b> ... <b>{{$changeComDate }}</b></p>
-                                <p>Confirm reciept from your customer</p>
-                                @endif
+                            @elseif(($reqHistory->approval_date !=='' && $reqHistory->approval_date !=='null') && ($reqHistory->complete_date=='' ||$reqHistory->complete_date=='null'))
+                            <p><i class="icon ni ni-alert-circle mr-2"></i>Request has been approved by <b>{{$reqHistory->authorized_approval}}</b> on the <b>{{$reqHistory->approval_date}}</b></p>
+                            <p><i class="icon ni ni-alert-circle mr-2"></i>Payback has not been confirmed</p>
+                            @else
+                            <p><i class="icon ni ni-alert-circle mr-2"></i>Request was been approved by <b>{{$reqHistory->authorized_approval}}</b> on the <b>{{$reqHistory->approval_date}}</b></p>
+                            <p><i class="icon ni ni-check-circle mr-2"></i>Request payback has been completed. <b>{{$reqHistory->authorized_completion}}</b> confirmed it on the <b>{{$reqHistory->complete_date}}</b></p>
+                            <p>Confirm reciept from your customer</p>
                             @endif
                         </div>
                         @endforeach

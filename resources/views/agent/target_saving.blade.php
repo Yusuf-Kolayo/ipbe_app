@@ -4,7 +4,7 @@
 
 <div class="row">
     <?php $usr_type = Auth()->User()->usr_type;?>
-    @if($usr_type !=='usr_admin'){
+    @if($usr_type !=='usr_admin')
         <div class="col-md-6">
             <button type="button" class="btn btn-primary btn-sm mb-3" id="newTransaction">RECORD NEW TRANSACTION</button>
         </div>
