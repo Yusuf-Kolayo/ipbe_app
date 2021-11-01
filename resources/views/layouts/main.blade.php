@@ -66,6 +66,8 @@ animation: spin 2s linear infinite;
 div.card-header .card-title {  color: #364a63!important;  font-size: 20px; }
 td, th { font-size: 13px!important; } label { font-weight: 400!important;  margin-bottom: 0px;   margin-top: 13px; }
 .modal-dialog form, .modal-dialog div.text-center  { margin: 0 auto;  width: 100%; }
+div.dataTables_wrapper div.dataTables_filter label { margin-top: 0px ; }
+.alert.alert-icon > .icon { position: initial; }
 </style>
 
 

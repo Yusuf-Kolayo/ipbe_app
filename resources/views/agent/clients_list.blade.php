@@ -141,21 +141,7 @@
                   <td>  <a class="btn btn-primary btn-xs" href="{{ route('client.show', ['client'=>$client->client_id]) }}"> <span class="fa fa-user"></span> Profile</a> </td>
                  </tr>
                 @endforeach
-                  </tbody>
-                  <tfoot>
-                  <tr>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th> 
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th> 
-                    <th></th> 
-                  </tr>
-                  </tfoot>
+                  </tbody> 
                 </table>
 
 

@@ -65,21 +65,7 @@
                   <td> <a class="btn btn-primary btn-xs btn-block" href="#" onclick="show_profile('{{$client->client_id}}', '{{$product->product_id}}')"> <span class="fa fa-user"></span> Profile</a> </td>
                  </tr>
                 @endforeach
-                  </tbody>
-                  <tfoot>
-                  <tr>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th> 
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th> 
-                    {{-- <th></th>  --}}
-                  </tr>
-                  </tfoot>
+                  </tbody> 
                 </table>
 
 

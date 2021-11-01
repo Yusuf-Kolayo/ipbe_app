@@ -169,16 +169,7 @@
                 <td>  <a class="btn btn-primary btn-xs w-100" id="btn_update" href="{{route('staff.show', ['staff'=>$staff->staff_id])}}"> <em class="icon ni ni-user-circle-fill"></em> Profile </a> </td>
                </tr>
               @endforeach
-                </tbody>
-                <tfoot>
-                <td>
-                  <th></th>  <th></th> 
-                  <th></th>
-                  <th></th> 
-                  <th></th> 
-                  <th></th>   <th></th>   <th></th>   <th></th> 
-                </td>
-                </tfoot>
+                </tbody> 
               </table>
 
 

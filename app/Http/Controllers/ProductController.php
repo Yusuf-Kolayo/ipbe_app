@@ -85,8 +85,8 @@ class ProductController extends BaseController
         $product_id = "$brand_abbr-$sub_cat_abbr-$next_id";
    
         
-        $file = $request->file('img_name');  $random_string = Str::random(20); 
-        $ogImage = Image::make($file);
+        $file = $request->file('img_name');  $random_string = Str::random(20);      $w=1098; $h=717;
+        $ogImage = Image::make($file)->resizeCanvas($w, $h, 'center', false, 'ffffff');
         $originalPath = 'app/public/uploads/products_img/'; 
         $filename = time().'-'. $random_string .'.'. $file->getClientOriginalExtension();
         $ogImage =  $ogImage->save(storage_path($originalPath.$filename));
@@ -288,8 +288,8 @@ class ProductController extends BaseController
 
             if ($request->hasFile('img_name')) {  
 
-                $file = $request->file('img_name');  $random_string = Str::random(20); 
-                $ogImage = Image::make($file);
+                $file = $request->file('img_name');  $random_string = Str::random(20);   $w=1098; $h=717;
+                $ogImage = Image::make($file)->resizeCanvas($w, $h, 'center', false, 'ffffff');
                 $originalPath = 'app/public/uploads/products_img/'; 
                 $filename = time().'-'. $random_string .'.'. $file->getClientOriginalExtension();
                 $ogImage =  $ogImage->save(storage_path($originalPath.$filename));
