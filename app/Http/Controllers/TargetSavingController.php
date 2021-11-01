@@ -35,6 +35,21 @@ class TargetSavingController extends BaseController
         return view ('Agent\target_saving',['data'=>$allTargets]);
     }
 
+    //the function refresh the all target div immdiately after a target is created 
+    public function refreshTargetDiv(){
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        } 
+
+        if (auth()->user()->usr_type=='usr_admin') {
+            if (!in_array(__FUNCTION__, parent::middleware_except())) {
+                return redirect()->route('access_denied'); 
+            }  
+        }
+        $allTargets=Target_saving::orderBy('created_at', 'DESC')->get();
+        return view ('Agent\ajax_refresh_after_newtarget',['data'=>$allTargets]);
+    }
+
     //this search for client with number to see if thier record is our database
     public function searchClientUsingNumber(Request $req){  
         if (!in_array($this->title, parent::app_sections_only())) {    

@@ -184,3 +184,4 @@ Route::post('/agent/client_bank_details',[TargetSavingController::class,'clientB
 Route::post('/agent/target_reimbursement',[TargetSavingController::class,'requestTarget'])->name('requestATarget');
 Route::post('/agent/target_status',[TargetSavingController::class,'changeRequestStatus'])->name('change_status');
 Route::post('/agent/requested_target_history',[TargetSavingController::class,'reqReport'])->name('request_history');
+Route::get('/agent/refresh_target_div',[TargetSavingController::class,'refreshTargetDiv'])->name('request_targetDiv');

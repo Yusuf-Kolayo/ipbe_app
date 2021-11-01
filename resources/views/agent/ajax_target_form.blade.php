@@ -89,18 +89,10 @@
                             <input type="text" class="form-control form-control-sm" id="accname" name="accname">
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-12 card text-center alert alert-danger d-none" id="statusError">
-
-                        </div>
-                        <div class="col-12 card text-center alert alert-success d-none" id="statusSuccess">
-
-                        </div>
-                    </div>
                     <div class="row text-right">
                         <div class="col-12 mb-2">
                             <button type="submit" class="btn btn-sm btn-primary font-weight-bold px-4"  id="createAcc">CREATE</button>
-                            <button type="button" data-dismiss="modal" class="btn btn-sm btn-danger font-weight-bold px-4"  id="closeModal">CLOSE</button>
+                            <button type="button" class="btn btn-sm btn-danger font-weight-bold px-4"  id="closeDiv">CLOSE</button>
                         </div>
                     </div>
                   </form>
@@ -141,13 +133,50 @@
                     dataType:'text',
                     success:function(success){
                         if(success=='success'){
-                            let successStatus='Target created successfully, Remember to always save !'
+                            $.ajax({
+                                    headers: {
+                                        'X-CSRF-TOKEN': $('meta[name=csrf-token]').attr('content')
+                                        },
+                                    url:"{{route('request_targetDiv')}}",
+                                    method:'GET',
+                                    success:function(success){
+                                        $('#first-tab').html(success);
+                                        if(targetroutine=='Daily'){
+                                            $('#nav-tab1 #nav-daily-tab').click();
+                                            $('#nav-tab3').hide();
+                                            $('#nav-tab2').show();
+                                            if(targetplan=='3-months'){
+                                                $('#nav-quarterly-tab').click();
+                                            }else if(targetplan=='6-months'){
+                                                $('#nav-6month-tab').click();
+                                            }else if(targetplan=='not-specific'){
+                                                $('#nav-unfixed-tab').click();
+                                            }
+                                        }else{
+                                            $('#nav-tab1 #nav-weekly-tab').click();
+                                            $('#nav-tab2').hide();
+                                            $('#nav-tab3').show();
+                                            if(targetplan=='3-months'){
+                                                $('#nav-wquarterly-tab').click();
+                                            }else if(targetplan=='6-months'){
+                                                $('#nav-w6month-tab').click();
+                                            }else if(targetplan=='not-specific'){
+                                                $('#nav-wunfixed-tab').click();
+                                            }
+                                        }
+                                        
+                                    },
+                                    error:function(error){
+                                        console.log(error);
+                                    }
+                                })
+                            $('#targetForm').hide();
+                            let successStatus='Target created successfully, Remember to always record transactions !'
                             $('#createAcc').attr("disabled","disabled");
                             if($('#statusError').is(':visible')){
                                $('#statusError').toggleClass("d-none");
                                $('#statusSuccess').toggleClass("d-none");
                                $('#statusSuccess').html(successStatus);
-                               
                             }else{
                                 $('#statusSuccess').toggleClass("d-none");
                                 $('#statusSuccess').html(successStatus);
@@ -176,7 +205,7 @@
                     }
             })
         })
-        $("#closeModal").click(function(){
+        $("#closeDiv").click(function(){
             $('#targetForm').hide()
         })
 
