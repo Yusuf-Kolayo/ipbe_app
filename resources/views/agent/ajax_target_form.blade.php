@@ -141,16 +141,29 @@
                                     method:'GET',
                                     success:function(success){
                                         $('#first-tab').html(success);
-                                        if(targetroutine=='Daily'){
+                                        if(targetroutine=='daily'){
                                             $('#nav-tab1 #nav-daily-tab').click();
                                             $('#nav-tab3').hide();
                                             $('#nav-tab2').show();
                                             if(targetplan=='3-months'){
                                                 $('#nav-quarterly-tab').click();
+                                                e.preventDefault();
+                                                $('#nav-monthly').removeClass('active show');
+                                                $('#nav-quarterly').addClass('active show');
                                             }else if(targetplan=='6-months'){
                                                 $('#nav-6month-tab').click();
+                                                e.preventDefault();
+                                                $('#nav-monthly').removeClass('active show');
+                                                $('#nav-6month').addClass('active show');
                                             }else if(targetplan=='not-specific'){
                                                 $('#nav-unfixed-tab').click();
+                                                e.preventDefault();
+                                                $('#nav-monthly').removeClass('active show');
+                                                $('#nav-unfixed').addClass('active show');
+                                            }else{
+                                                $('#nav-monthly-tab').click();
+                                                e.preventDefault();
+                                                $('#nav-monthly').addClass('active show');
                                             }
                                         }else{
                                             $('#nav-tab1 #nav-weekly-tab').click();
@@ -158,10 +171,23 @@
                                             $('#nav-tab3').show();
                                             if(targetplan=='3-months'){
                                                 $('#nav-wquarterly-tab').click();
+                                                e.preventDefault();
+                                                $('#nav-wmonthly').removeClass('active show');
+                                                $('#nav-wquarterly').addClass('active show');
                                             }else if(targetplan=='6-months'){
                                                 $('#nav-w6month-tab').click();
+                                                e.preventDefault();
+                                                $('#nav-wmonthly').removeClass('active show');
+                                                $('#nav-w6month').addClass('active show');
                                             }else if(targetplan=='not-specific'){
                                                 $('#nav-wunfixed-tab').click();
+                                                e.preventDefault();
+                                                $('#nav-wmonthly').removeClass('active show');
+                                                $('#nav-wunfixed').addClass('active show');
+                                            }else{
+                                                $('#nav-wmonthly-tab').click();
+                                                e.preventDefault();
+                                                $('#nav-wmonthly').addClass('active show');
                                             }
                                         }
                                         

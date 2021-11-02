@@ -598,7 +598,6 @@
         $('#nav-tab1 #nav-weekly-tab').on('click', function () {
             $('#nav-tab2').hide();
             $('#nav-tab3').show();
-            $('#nav-wunfixed-tab').click();
         })
 
         //this will check if foreach has loaded any data into the t-body, if empty then this will display message
