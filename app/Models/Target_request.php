@@ -13,4 +13,12 @@ class Target_request extends Model
     public function target_saving() {
         return $this->hasOne(Target_saving::class, 'id', 'target_saving_id');
     }
+
+    public function agent() {
+        return $this->hasOne(agent::class, 'agent_id', 'authorized_request');
+    }
+
+    public function client() {
+        return $this->hasOne(client::class, 'client_id', 'authorized_request');
+    }
 }

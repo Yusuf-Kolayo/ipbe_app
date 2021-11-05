@@ -322,3 +322,14 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+
+        $(".tableForeach tbody").each(function(index){
+            if($(this).children().length == 0){
+                $(this).html('<tr><td class="text-center font-weight-bold py-3"colspan="7"><p class="text-danger">NO TARGET FOR THIS PLAN YET!</p></td></tr>');
+            }
+        })
+    })
+</script>

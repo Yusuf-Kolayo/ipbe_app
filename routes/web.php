@@ -184,10 +184,11 @@ Route::post('/agent/check_existing_target',[TargetSavingController::class,'retri
 
 Route::get('/agent/target_owner_and_transaction/{id}/{client_id}',[TargetSavingController::class,'clientTransactionDetails'])->name('target_owner');
 Route::post('/agent/total_target_paid',[TargetSavingController::class,'totalAmountPaid'])->name('total_paid');
-Route::get('/agent/target_reimbursement',[TargetSavingController::class,'allRequestedTarget'])->name('target_request');
+Route::get('/target_reimbursement',[TargetSavingController::class,'allRequestedTarget'])->name('target_request');
 Route::post('/agent/mini_transaction_report',[TargetSavingController::class,'miniTransactionReport'])->name('mini_trans_report');
 Route::post('/agent/client_bank_details',[TargetSavingController::class,'clientBankDetails'])->name('bank_details');
 Route::post('/agent/target_reimbursement',[TargetSavingController::class,'requestTarget'])->name('requestATarget');
 Route::post('/agent/target_status',[TargetSavingController::class,'changeRequestStatus'])->name('change_status');
 Route::post('/agent/requested_target_history',[TargetSavingController::class,'reqReport'])->name('request_history');
 Route::get('/agent/refresh_target_div',[TargetSavingController::class,'refreshTargetDiv'])->name('request_targetDiv');
+Route::post('/agent/target_purpose_value_plan_routine',[TargetSavingController::class,'pvpt'])->name('request_pvpt');

@@ -53,7 +53,7 @@
                         <td>{{$request->target_saving->client_no}}</td>
                         <td>{{$request->amount_saved}}</td>
                         <td>{{$request->payment_method}}</td>
-                        @if($request->payment_method !=='cash')
+                        @if($request->payment_method !=='Cash')
                         <td>{{$request->bank_name}}</td>
                         <td>{{$request->acc_no}}</td>
                         <td>{{$request->acc_name}}</td>
@@ -80,7 +80,15 @@
                             <button class="btn-sm btn btn-outline-warning reqHistory text-black ml-1"
                             type="button" data-reqId="{{$request->request_id}}" data-toggle="modal" data-target="#statusRequest" >Record</button>  
                         </td>
-                        <td class="text-center"><button class="btn btn-sm btn-dark">i</button></td>
+                        <td class="text-center">
+                            <?php 
+                                $id=$request->target_saving_id; 
+                                $client_id=$request->target_saving->client_id;
+                            ?>
+                            <a href="{{route('target_owner',['id'=>$id,'client_id'=>$client_id])}}" target="_blank"
+                                class="btn btn-sm btn-block btn-dark">i
+                            </a>
+                        </td>
                     </tr>
                 @else
                     @if($agent_id==$request->target_saving->agent_id)
@@ -92,7 +100,7 @@
                                 <td>{{$request->target_saving->client_no}}</td>
                                 <td>{{$request->amount_saved}}</td>
                                 <td>{{$request->payment_method}}</td>
-                                @if($request->payment_method !=='cash')
+                                @if($request->payment_method !=='Cash')
                                 <td>{{$request->bank_name}}</td>
                                 <td>{{$request->acc_no}}</td>
                                 <td>{{$request->acc_name}}</td>
@@ -129,7 +137,7 @@
 </div>
 
   
-<!-- Modal to help search for mini transaction -->
+<!-- Modal to help search for client target and return with his target and transaction details -->
 <div class="modal fade"  id="miniTransactionReport" role="dialog" aria-labelledby="miniTransactionReportLabel" aria-hidden="true" data-backdrop='static' >
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -198,10 +206,10 @@
             <div class="modal-header">
                 <h5 class="modal-title" id="requestPayback2Label">STEP 2 REQUEST FORM</h5>
             </div>
-            <div class="modal-body">
+            <div class="modal-body card">
                 <div class="row" id="transactionForm">
-                    <div class="col-12 mt-3">
-                        <form class="form card" action="{{route('requestATarget')}}" method="POST">
+                    <div class="col-12">
+                        <form class="form" action="{{route('requestATarget')}}" method="POST">
                             @csrf
                             <div class="row form-group">
                                 <div class="col-md-4 offset-md-7 mb-3">
@@ -266,11 +274,13 @@
                                     <small class="text-danger pt-2 pl-1">* Please confirm the bank details before submiting request</small>
                                 </div>             
                             </div>
-                            <div class="row form-group">
-                                <div class="col-12 text-right">
-                                    <button type="button" class="btn btn-secondary mx-2" data-dismiss="modal">EXIT</button>
-                                    <button type="submit" class="btn btn-primary" id="saveReq">SAVE</button>
-                                </div>                
+                            <div class="row form-group mb-3 mx-1">
+                                <div class="col-6 text-right">
+                                    <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal">EXIT</button>
+                                </div> 
+                                <div class="col-6">
+                                    <button type="submit" class="btn btn-primary btn-block" id="saveReq">SAVE</button>
+                                </div>               
                             </div> 
                         </form>
                     </div>
@@ -303,6 +313,38 @@
         <div class="modal-content">
             <div class="modal-body">
                 
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for adding comment to a requested target -->
+<div class="modal fade in" id="newComment" role="dialog" aria-labelledby="newComment" aria-hidden="true" data-backdrop='static'>
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="row">
+                    <div class="col-12 font-weight-bold text-center">
+                        <p>Share your comment on this request</p>
+                    </div>
+                </div>
+            </div>
+            <div  class="modal-body ">
+                <div class="row">
+                    <div class="col-12">
+                        <input type="text" id="comment" name="comment" class="form-control" autocomplete="off">
+                    </div>
+                    <div class="col-12 mt-2">
+                        <div class="row">
+                            <div class="col-6">
+                                <button type="button" class="btn btn-sm btn-secondary btn-block" data-dismiss="modal">CLOSE</button>
+                            </div>
+                            <div class="col-6">
+                                <button type="button" class="btn btn-sm btn-primary btn-block" id="saveComment" disabled>SAVE</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -356,6 +398,15 @@
                       
             });
         })
+
+        let comment=$('input[name=comment').val();
+        if(comment !=='' && comment !=='undefined'){
+            $('#saveComment').removeAttr('disabled');
+        }else{
+            $('#saveComment').attr('disabled','disabled');
+        }
+
+        
 
         $('.btnEdit').click(function(){
             $('#bankName').removeAttr('readonly');
@@ -439,6 +490,7 @@
                 })
             })
         })
+
     })
 </script>
 @endsection

@@ -11,7 +11,9 @@
         <div class="col-md-6">
             <button type="button" class="btn btn-primary float-right btn-sm mb-3" data-toggle="modal" data-target="#new-target">CREATE NEW TARGET</button>
         </div>
+    @else (Auth()->user->usr_client)
     @endif
+
 </div>
 
 <div class="" id="targetform">
@@ -448,102 +450,92 @@
             <div class="modal-header">
                 <div class="row justify-content-center">
                     <div class="col-12 font-weight-bold">
-                       <h5 class="modal-title text-center"> Client Registry</h5>
+                       <h5 class="modal-title text-center"> {{ __('Client Registry') }}</h5>
                     </div>
                 </div>
             </div>
             <div class="modal-body" id="addNewModalLabel">
-                <form role="form" method="POST" action="">
-                    <input type="hidden" name="_token" value="">
-                        <div class="row">
-                            <div class="col-12" id="status">
+                {!! Form::open(['route' => ['client.store'], 'method'=>'POST', 'files' => true]) !!}
+                <div class="row"> 
+                    <div class="col-12 mx-auto">
+                     
+                       <div class="row">
 
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="fullname"> {{__('First Name')}} </label>
+                                <input required type="text" class="form-control" id="first_name" name="first_name" >
+                              </div>
+                           </div> 
+
+                           <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="fullname"> {{__('Last Name')}} </label>
+                                <input required type="text" class="form-control" id="last_name" name="last_name">
+                              </div>
+                           </div>
+ 
+                           <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="fullname"> {{__('Other Names')}}  <small>(opt)</small>  </label>
+                                <input type="text" class="form-control" id="other_name" name="other_name">
+                              </div>
+                           </div>
+
+                           <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="phone"> {{__('Telephone')}} </label>
+                                <input required type="text" class="form-control" id="phone" name="phone">
+                              </div>
+                           </div>
+
+                           <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="email"> {{__('Email Address')}} </label>
+                                <input required type="email" class="form-control" id="email" name="email">
+                              </div>
+                           </div>
+
+                           <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="str_address"> {{__('Full Address')}} </label>
+                                <input required type="text" class="form-control" id="address" name="address">
+                              </div>
+                           </div>
+   
+
+                           <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="username"> {{__('Username')}} </label>
+                                <input required type="text" class="form-control" id="username" name="username">
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="fullname"> {{__('First Name')}} </label>
-                                    <input required type="text" class="form-control" id="first_name" name="first_name" >
-                                </div>
+                           </div>
+
+                           <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="password"> {{__('Password')}} </label>
+                                <input required type="password" class="form-control" id="password" name="password">
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="fullname"> {{__('Last Name')}} </label>
-                                    <input required type="text" class="form-control" id="last_name" name="last_name">
-                                </div>
+                           </div>
+
+                           <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="password"> {{__('Confirm Password')}} </label>
+                                <input required type="password" class="form-control" id="password" name="confirm_password">
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="fullname"> {{__('First Name')}} </label>
-                                    <input required type="text" class="form-control" id="first_name" name="first_name" >
-                                </div>
+                           </div>
+
+                           <div class="col-md-12 pt-3">
+                            <div class="form-group "> 
+                                <input type="submit" class="btn btn-primary btn-block" id="submit" value="Save client" name="submit">
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="fullname"> {{__('Last Name')}} </label>
-                                    <input required type="text" class="form-control" id="last_name" name="last_name">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="fullname"> {{__('Other Names')}}  <small>(opt)</small>  </label>
-                                    <input type="text" class="form-control" id="other_name" name="other_name">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="phone"> {{__('Telephone')}} </label>
-                                    <input required type="text" class="form-control" id="phone" name="phone">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="email"> {{__('Email Address')}} </label>
-                                    <input required type="email" class="form-control" id="email" name="email">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="str_address"> {{__('Full Address')}} </label>
-                                    <input required type="text" class="form-control" id="address" name="address">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="username"> {{__('Username')}} </label>
-                                    <input required type="text" class="form-control" id="username" name="username">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="password"> {{__('Password')}} </label>
-                                    <input required type="password" class="form-control" id="password" name="password">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="password"> {{__('Confirm Password')}} </label>
-                                    <input required type="password" class="form-control" id="password" name="confirm_password">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group "> 
-                                    <button type="submit" class="btn btn-primary btn-block" id="submit" name="submit">REGISTER</button>
-                                </div>
-                            </div>
-                        </div>
-                </form>
+                           </div>
+
+                       </div>
+                        
+                    </div> 
+                </div>
+                {!! Form::close() !!}
             </div>
         </div>
     </div>

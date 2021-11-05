@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\Target_saving;
 use App\Models\Target_transaction;
 use App\Models\Target_request;
+use App\Models\Notification; 
 
 
 
@@ -197,6 +198,29 @@ class TargetSavingController extends BaseController
         return $totalPaid;
     }
 
+    // this function return the purpose,value, plan and routine(PVPT) of a 
+    // target in to the transaction div to be sure of the record they are about to save for
+    public function pvpt(Request $req){ 
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
+        if (auth()->user()->usr_type=='usr_admin') {
+            if (!in_array(__FUNCTION__, parent::middleware_except())) {
+                return redirect()->route('access_denied'); 
+            }  
+        } 
+
+        $targetSavingId=$req['targetSavingId'];
+        $ppt=Target_saving::find($targetSavingId,['target_plan','overall_value','target_routine',('target_reason'),'routine_amount']);
+        //$bankDetails=Target_saving::find($targetSavingId,['target_plan','overall_value','target_routine','target_reason']);
+            
+        
+            echo json_encode($ppt);
+        
+        
+    }
+
     //this saves all target-saving transaction 
     public function saveTargetTransaction(Request $req){
         if (!in_array($this->title, parent::app_sections_only())) {    
@@ -221,6 +245,17 @@ class TargetSavingController extends BaseController
             'amount'=>'required',
             'transMethod'=>'required',
         ],[],$attributes);
+
+        $amount_paid=$req->input('amount');
+        $target_saving_id=$req->input("targetId");
+        $old_balance=Target_transaction::select('new_balance')->where('target_saving_id',$target_saving_id)
+        ->orderBy('transaction_id','DESC')->value('new_balance');
+        $new_balance=$old_balance-$amount_paid;
+        
+        if($old_balance==null){
+            $old_balance=Target_saving::where('id',$target_saving_id)->value('overall_value'); 
+            $new_balance=$old_balance-$amount_paid;
+        }
         
         if($proof=$req->file('proof')){
             $proofName=$proof->getClientOriginalName();
@@ -228,6 +263,7 @@ class TargetSavingController extends BaseController
                     $transaction = new Target_transaction();
                     $transaction->target_saving_id  = $req->input('targetId');
                     $transaction->amount_paid = $req->input('amount');
+                    $transaction->new_balance = $new_balance;
                     $transaction->method = $req->input('transMethod');
                     $transaction->creditor_name = $req->input('name');
                     $transaction->payment_date = $req->input('date');
@@ -240,6 +276,7 @@ class TargetSavingController extends BaseController
             $transaction = new Target_transaction();
             $transaction->target_saving_id  = $req->input('targetId');
             $transaction->amount_paid = $req->input('amount');
+            $transaction->new_balance = $new_balance;
             $transaction->method = $req->input('transMethod');
             $transaction->creditor_name = $req->input('name');
             $transaction->payment_date = $req->input('date');
@@ -247,6 +284,7 @@ class TargetSavingController extends BaseController
             return redirect()->back()->with(['msg'=>'Transaction Saved']);
         }
     }
+
 
     //this returns all the target-saving transaction history
     public function clientTransactionDetails($id,$client_id) {
@@ -267,8 +305,9 @@ class TargetSavingController extends BaseController
         $clientInfo = Client::where('client_id',$client_id)->get();
         $targetDetail=Target_saving::where('id',$id)->get();
         $totalPaid=Target_transaction::where('target_saving_id',$id)->sum('amount_paid');
+        $targetStatus=Target_request::where('target_saving_id',$id)->value('request_status');
         return view ('agent.target_owner_profile',['clientTargetTransaction'=>$clientTargetTransaction,'clientInfo'=>$clientInfo,
-        'targetDetail'=>$targetDetail,'totalPaid'=>$totalPaid]);
+        'targetDetail'=>$targetDetail,'totalPaid'=>$totalPaid,'targetStatus'=>$targetStatus]);
     }
 
     //this return all the target-savings that has requested for pay-back, I'm not done with this function too
@@ -370,7 +409,39 @@ class TargetSavingController extends BaseController
                 $reqTarget->bank_name=$req['bankName'];
                 $reqTarget->acc_no=$req['accNo'];
                 $reqTarget->acc_name=$req['accName'];
+                $reqTarget->authorized_request=Auth()->User()->user_id;
+                $reqTarget->authorized_request_type=Auth()->User()->usr_type;
                 $reqTarget->save();
+                
+                // notify admins of that a target has been requested
+                $type = 'new_target_request';
+                $agent_id=auth()->user()->user_id;
+                $target_saving_id=$req["targetId"];
+                $client_id=Target_saving::where('id',$target_saving_id)->value('client_id');
+                $purpose=Target_saving::where('id',$target_saving_id)->value('target_reason');
+                $request_id=Target_request::where('target_saving_id',$target_saving_id)->value('request_id');$client = Client::where('client_id', $client_id)->first();
+                $agent= User::where('user_id', $agent_id)->first();
+                
+                if(auth()->user()->usr_type=='usr_agent'){
+                    $message = '<b>'.ucfirst($agent->username).' ['.$agent_id.']</b> requested for'.$purpose.'target saving on behalf of <b>'.ucfirst($client->last_name).'  '.ucfirst($client->first_name).' ['.$client_id.']</b>';
+                    $intiator=$agent_id;
+                }else{
+                    $message = '<b>'.ucfirst($client->last_name).'  '.ucfirst($client->first_name).' ['.$client_id.']</b> requested for <b>'.$purpose.'</b> target saving';
+                    $intiator=$client_id;
+                }
+                
+                
+                $admninistrators = User::where('usr_type', 'usr_admin')->get();
+                foreach ($admninistrators as $key => $admninistrator) {
+                    $notification = Notification::create ([
+                        'actor_id'=>$intiator,
+                        'receiver_id' => $admninistrator->user_id,
+                        'type' => $type,
+                        'message' => $message,
+                        'status' => 'sent',
+                        'main_foreign_key' => $request_id,
+                    ]);
+                }
                 return redirect()->back()->with(['msg'=>'Your Request has been generated successfully, Pending Approval']);
             }else{
                 $checkRequest= Target_request::where('target_saving_id','=',$target_saving_id)->value('request_status');
@@ -416,8 +487,7 @@ class TargetSavingController extends BaseController
     //this function will get a mini update on each requested target
     public function reqReport(Request $req){
         $reqId=$req['reqId'];
-        $reqHistory = DB::table('target_requests')
-                ->select('request_date', 'authorized_approval','approval_date','authorized_completion','complete_date')
+        $reqHistory = Target_request::select('authorized_request','authorized_request_type','request_date', 'authorized_approval','approval_date','authorized_completion','complete_date')
                 ->where('request_id', $reqId)
                 ->get();
         return view('/agent.ajax_targetreq_history',['reqHistory'=>$reqHistory]);

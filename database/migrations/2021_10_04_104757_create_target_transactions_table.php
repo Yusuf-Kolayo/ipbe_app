@@ -18,6 +18,7 @@ class CreateTargetTransactionsTable extends Migration
             $table->bigIncrements('transaction_id');
             $table->foreignId('target_saving_id');
             $table->float('amount_paid');
+            $table->float('new_balance');
             $table->enum('method',['cash','transfer','deposit']);
             $table->string('creditor_name');
             $table->date('payment_date');

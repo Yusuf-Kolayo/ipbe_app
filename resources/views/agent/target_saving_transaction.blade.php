@@ -14,12 +14,11 @@
     </div>
 </div>
 @endif
-<div class="row card">
-    <div class="row pt-4">
-        <div class="card col-md-6 offset-md-3">
+    <div class="row card pt-4">
+        <div class="col-md-6 offset-md-3">
 
             <div class="row">
-                <div class="col-12 my-2 pr-0">
+                <div class="col-12 my-2">
                     <p class="font-weight-bold">Provide the target owner's Phone-number or Email</p>
                 </div>
                 <div class="col-12 mb-1">
@@ -27,17 +26,18 @@
                 </div>
             </div>
            
-            <div class="row">
+            <div class="row  mb-2">
                 <div class="col-12 text-right ">
                     <button id="chkData" class="btn btn-sm btn-primary py-0 font-weight-bold">CHECK</button>
                 </div> 
             </div>
         </div>
     </div>
-</div>
 <div class="row" id="recordTrans">
 
 </div>
+
+
 
 <script type="text/javascript" src="{{ URL::asset('js/jquery-3.5.1.min.js') }}"></script>
 <script type="text/javascript" src="{{ URL::asset('js/popper.min.js') }}"></script>

@@ -7,7 +7,8 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Notification;  
 use App\Models\User;  
 use App\Models\Message;  
-use App\Models\Active_state;  
+use App\Models\Active_state;
+use App\Models\Target_request;
 use App\Models\Target_saving; 
 
 
@@ -65,6 +66,30 @@ class DashboardController extends BaseController
             ->update([ 'status' => 'seen' ]); 
 
             return redirect()->route('client.show', ['client'=>$client_id])->with('success', 'switch to the <i>purchase sessions tab<\/i> to see new product purchases for this client');
+        }elseif($notification->type=='new_target_request'){
+          $target_id = $notification->main_foreign_key;
+          $authoriseBy=Auth()->User()->username;
+          $authoriseDate=date('d-m-Y');
+
+          $affected1 = DB::table('notifications')
+          ->where('id', $notification_id)
+          ->update([ 'status' => 'seen' ]);
+          
+          $ifApproved=Target_request::where('request_id',$target_id)->value('request_status');
+          $reqAmt=Target_request::where('request_id',$target_id)->value('amount_saved');
+          if($ifApproved=='Pending'){
+            DB::table('target_requests')
+            ->where('request_id', $target_id)
+            ->update([ 'request_status' => 'In-progress','authorized_approval'=>$authoriseBy,'approval_date'=>$authoriseDate]);
+            
+            return redirect()->route('requestATarget')->with('success', '<ul class="d-inline-block ml-3">
+            <li>It has been recorded that you\'ve seen target request with <b>N'.$reqAmt.'</b> Make sure to follow-up till back-pay is completed </li>
+            <li>Click on <button class="btn btn-sm btn-dark py-0">i</button> to view all target transactions and owner information</il></ul>');
+          }
+          
+          return redirect()->route('requestATarget')->with('success', '<ul class="d-inline-block ml-3">
+          <li><b>All Requested Targets :</b> All target with pending status are new and needs approval, follow up</li>
+          <li>Click on <button class="btn btn-sm btn-dark py-0">i</button> to view all target transactions and owner information</il></ul>');
         }
     }
 
