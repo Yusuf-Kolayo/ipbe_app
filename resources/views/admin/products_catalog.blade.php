@@ -119,7 +119,7 @@
           <div class="col-md-4">  
             <div class="row">
                 <div class="col-4 pr-0">
-                   <label for="" class="_select">Brand</label>
+                   <label for="" class="_select">Brand <em class="icon ni ni-chevrons-right" style="float: right;padding-top: 3px;"></em> </label>
                 </div>
                 <div class="col-8">
                   <input type="hidden" name="cat_id" id="cat_id" value="{{$sub_category->id}}">
