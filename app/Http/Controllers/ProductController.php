@@ -85,9 +85,9 @@ class ProductController extends BaseController
         $product_id = "$brand_abbr-$sub_cat_abbr-$next_id";
    
         
-        $file = $request->file('img_name');  $random_string = Str::random(20);      $w=1098; $h=717;
+        $file = $request->file('img_name');    $w=1098; $h=717;
         $ogImage = Image::make($file)->resizeCanvas($w, $h, 'center', false, 'ffffff');
-        $originalPath = 'app/public/uploads/products_img/'; 
+        $originalPath = 'app/public/uploads/products_img/';   $random_string = Str::random(20);  
         $filename = time().'-'. $random_string .'.'. $file->getClientOriginalExtension();
         $ogImage =  $ogImage->save(storage_path($originalPath.$filename));
  
@@ -129,11 +129,31 @@ class ProductController extends BaseController
         $brands = Brand::all();
         $main_categories = Category::where('parent_id', 0)->get();  
         $sub_category = Category::where('id', $sub_category_id)->firstOrFail();  
-        $products = Product::where('sub_category_id', $sub_category_id)->simplePaginate(12);
+        $products = Product::where('sub_category_id', $sub_category_id)->simplePaginate(1);
  
         return view('admin.products_catalog', 
         compact('products','main_categories','brands','sub_category_id','sub_category'));
     }
+
+
+
+        // fetch product by brand for catalog
+        public function fetch_product_by_brand (Request $request)
+        {   
+            // if (!in_array($this->title, parent::app_sections_only())) {    
+            //     return redirect()->route('access_denied'); 
+            // }
+    
+            // if (auth()->user()->usr_type=='usr_admin') {
+            //     if (!in_array(__FUNCTION__, parent::middleware_except())) {
+            //         return redirect()->route('access_denied'); 
+            //     }  
+            // }   
+            $brand_id = (int) $request['brand_id'];     $cat_id = $request['cat_id'];  // dd($request['cat_id']);
+            $products = ($brand_id==0) ? Product::where(['sub_category_id'=> $cat_id])->simplePaginate(1) : Product::where(['sub_category_id'=> $cat_id, 'brand_id'=>$brand_id])->simplePaginate(1);
+            // dd($products->hasMore);
+            return view('components.products_catalog_ajax_fetch', compact('products'));
+        }
 
     
 
@@ -268,7 +288,6 @@ class ProductController extends BaseController
         }   
 
 
-      
         
         $data = request()->validate([
             'img_name' => ['nullable', 'image'],
@@ -281,16 +300,16 @@ class ProductController extends BaseController
         ]); 
 
         // $product = Product::find($product_id); 
-        $product = Product::where('product_id', $product_id)->firstOrFail();
+        $product = Product::where('product_id', $product_id)->firstOrFail(); // $created_at = $product->created_at;  dd($created_at);
         $previous_image = DB::table('products')->where('product_id', $product_id)->value('img_name');
 
         if ($product) {
 
             if ($request->hasFile('img_name')) {  
 
-                $file = $request->file('img_name');  $random_string = Str::random(20);   $w=1098; $h=717;
+                $file = $request->file('img_name');   $w=1098; $h=717;
                 $ogImage = Image::make($file)->resizeCanvas($w, $h, 'center', false, 'ffffff');
-                $originalPath = 'app/public/uploads/products_img/'; 
+                $originalPath = 'app/public/uploads/products_img/';  $random_string = Str::random(20); 
                 $filename = time().'-'. $random_string .'.'. $file->getClientOriginalExtension();
                 $ogImage =  $ogImage->save(storage_path($originalPath.$filename));
 

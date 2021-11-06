@@ -67,7 +67,9 @@ div.card-header .card-title {  color: #364a63!important;  font-size: 20px; }
 td, th { font-size: 13px!important; } label { font-weight: 400!important;  margin-bottom: 0px;   margin-top: 13px; }
 .modal-dialog form, .modal-dialog div.text-center  { margin: 0 auto;  width: 100%; }
 div.dataTables_wrapper div.dataTables_filter label { margin-top: 0px ; }
-.alert.alert-icon > .icon { position: initial; }
+.alert.alert-icon > .icon { position: initial; }  
+._select {margin: 0px ; padding: 5px ; padding-left: 10px ;  width: 100%; border: 1px solid; border-radius: 5px ; }
+div>h6>a { text-transform: capitalize; } .preloader1 { width: 10%; }
 </style>
 
 
@@ -241,9 +243,13 @@ a.btn { white-space: nowrap; }   button.btn { white-space: nowrap; }
                 fetch_chat(); // fetch new chat data at 5 seconds interval
                 }, 5000);
             }, 5000);
-           
+        
         // });
         });
+
+
+
+
         </script>
    @endif
 

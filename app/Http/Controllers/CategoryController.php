@@ -136,7 +136,7 @@ class CategoryController extends BaseController
 
         $category = Category::findOrFail($category_id);  //dd($category);
         $main_categories = Category::where('parent_id', 0)->get(); 
-        return view('admin.edit_category_ajax_fetch', compact('category','main_categories'));
+        return view('admin.category_edit_ajax_fetch', compact('category','main_categories'));
 
     }
 
@@ -159,7 +159,7 @@ class CategoryController extends BaseController
             $category_id = $request['cat_id'];
     
             $category = Category::findOrFail($category_id);  //dd($category);
-            return view('admin.delete_category_ajax_fetch', compact('category'));
+            return view('admin.category_delete_ajax_fetch', compact('category'));
     
         }
 

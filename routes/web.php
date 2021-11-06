@@ -59,6 +59,7 @@ Route::resource('client', ClientController::class);
     
 
 Route::get('/product/sub/{sub_category_id}', [ProductController::class, 'sub'])->name('product.sub');
+Route::get('/fetch_product_by_brand', [ProductController::class, 'fetch_product_by_brand'])->name('fetch_product_by_brand');
 Route::get('/resize/{img}/{h?}/{w?}',function($img, $h=717, $w=1098) {  //  $img->resizeCanvas(1280, 720, 'center', false, 'ff00ff');
     return \Image::make(public_path("storage/uploads/products_img/$img"))->resizeCanvas($w, $h, 'center', false, 'ffffff')->response('jpg');
 });
