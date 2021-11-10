@@ -82,12 +82,12 @@ class DashboardController extends BaseController
             ->where('request_id', $target_id)
             ->update([ 'request_status' => 'In-progress','authorized_approval'=>$authoriseBy,'approval_date'=>$authoriseDate]);
             
-            return redirect()->route('requestATarget')->with('success', '<ul class="d-inline-block ml-3">
+            return redirect()->route('target_request')->with('success', '<ul class="d-inline-block ml-3">
             <li>It has been recorded that you\'ve seen target request with <b>N'.$reqAmt.'</b> Make sure to follow-up till back-pay is completed </li>
             <li>Click on <button class="btn btn-sm btn-dark py-0">i</button> to view all target transactions and owner information</il></ul>');
           }
           
-          return redirect()->route('requestATarget')->with('success', '<ul class="d-inline-block ml-3">
+          return redirect()->route('target_request')->with('success', '<ul class="d-inline-block ml-3">
           <li><b>All Requested Targets :</b> All target with pending status are new and needs approval, follow up</li>
           <li>Click on <button class="btn btn-sm btn-dark py-0">i</button> to view all target transactions and owner information</il></ul>');
         }

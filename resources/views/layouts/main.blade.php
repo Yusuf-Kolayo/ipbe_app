@@ -130,6 +130,7 @@ a.btn { white-space: nowrap; }   button.btn { white-space: nowrap; }
  $notification_icon_array = array( 
    'new_purchase_reg' => 'fas fa-shopping-cart',
    'purchase_session_approved' => 'fas fa-legal',
+   'new_target_request'=>'fas fa-piggy-bank',
 );
  @endphp
 

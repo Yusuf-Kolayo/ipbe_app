@@ -3,15 +3,22 @@
 @section('content')
 
 <div class="row">
-    <?php $usr_type = Auth()->User()->usr_type;?>
+    <?php $usr_type = Auth()->User()->usr_type; $usr_id = Auth()->User()->user_id;?>
     @if($usr_type !=='usr_admin')
         <div class="col-md-6">
             <button type="button" class="btn btn-primary btn-sm mb-3" id="newTransaction">RECORD NEW TRANSACTION</button>
         </div>
+        @if($usr_type =='usr_agent')
         <div class="col-md-6">
             <button type="button" class="btn btn-primary float-right btn-sm mb-3" data-toggle="modal" data-target="#new-target">CREATE NEW TARGET</button>
         </div>
-    @else (Auth()->user->usr_client)
+        @endif
+        @if($usr_type =='usr_client')
+        <div class="col-md-6">
+            <button type="button" class="btn btn-primary float-right btn-sm mb-3 searchExistingClient">CREATE NEW TARGET</button>
+            <input type="hidden" id="phonenumber" name="phonenumber" value="{{Auth()->User()->client->phone}}">
+        </div>
+        @endif
     @endif
 
 </div>
@@ -436,7 +443,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button  type="button" class="btn btn-primary" data-dismiss="modal"  id="searchExistingClient">Search</button>
+                <button  type="button" class="btn btn-primary searchExistingClient" data-dismiss="modal"  >Search</button>
             </div>
         </div>
     </div>
@@ -557,9 +564,8 @@
         })
 
 
-        $('#searchExistingClient').click(function(){
-            let clientNumber=$('input[name=phonenumber]').val();
-    
+        $('.searchExistingClient').click(function(){
+            let clientNumber=$(this).parents().find(':input[name=phonenumber]').val();
             $.ajax({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name=csrf-token]').attr('content')

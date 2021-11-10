@@ -41,7 +41,7 @@
                 </div>
             </div>
             <div class="tab-pane fade col-12" id="nav-quarterly" role="tabpanel" aria-labelledby="nav-quarterly-tab">
-                <div class="row ">
+                <div class="row">
                     <div class="col-12" style="height: 100px">
                         quarterly graph
                     </div>

@@ -1,7 +1,7 @@
 @if(count($errors) > 0)
 @foreach($errors->all() as $error)
 <div class="alert alert-danger alert-icon alert-dismissible">
-  <em class="icon ni ni-cross-circle"></em> <span>{!!session('error')!!}</span> <button class="close" data-dismiss="alert"></button>
+  <em class="icon ni ni-cross-circle"></em> <span>{{$error}}</span> <button class="close" data-dismiss="alert"></button>
 </div> 
 @endforeach
 @endif

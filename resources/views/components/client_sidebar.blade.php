@@ -67,7 +67,7 @@
                         </li>
                         <li class="nk-menu-item">
                             <a href="{{ route('target_transaction')}}" class="nk-menu-link">
-                            <span class="nk-menu-text">New Transaction </span>
+                            <span class="nk-menu-text">Quick Top-up</span>
                             </a>
                         </li>
                         <li class="nk-menu-item">

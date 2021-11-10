@@ -31,8 +31,17 @@ class TargetSavingController extends BaseController
             if (!in_array(__FUNCTION__, parent::middleware_except())) {
                 return redirect()->route('access_denied'); 
             }  
-        }   
-        $allTargets=Target_saving::orderBy('created_at', 'DESC')->get();
+        }
+
+        if(auth()->user()->usr_type=='usr_agent'){
+            $agent_id=auth()->user()->user_id;
+            $allTargets=Target_saving::where('agent_id',$agent_id)->orderBy('created_at', 'DESC')->get();
+        }else if(auth()->user()->usr_type=='usr_client'){
+            $client_id=auth()->user()->user_id;
+            $allTargets=Target_saving::where('client_id',$client_id)->orderBy('created_at', 'DESC')->get();
+        }else{
+            $allTargets=Target_saving::orderBy('created_at', 'DESC')->get();
+        }
         return view ('Agent\target_saving',['data'=>$allTargets]);
     }
 
@@ -47,8 +56,17 @@ class TargetSavingController extends BaseController
                 return redirect()->route('access_denied'); 
             }  
         }
-        $allTargets=Target_saving::orderBy('created_at', 'DESC')->get();
-        return view ('Agent\ajax_refresh_after_newtarget',['data'=>$allTargets]);
+        
+        if(auth()->user()->usr_type=='usr_agent'){
+            $agent_id=auth()->user()->user_id;
+            $allTargets=Target_saving::where('agent_id',$agent_id)->orderBy('created_at', 'DESC')->get();
+        }else if(auth()->user()->usr_type=='usr_client'){
+            $client_id=auth()->user()->user_id;
+            $allTargets=Target_saving::where('client_id',$client_id)->orderBy('created_at', 'DESC')->get();
+        }else{
+            $allTargets=Target_saving::orderBy('created_at', 'DESC')->get();
+        }
+        return view ('Agent\target_saving',['data'=>$allTargets]);
     }
 
     //this search for client with number to see if thier record is our database
@@ -118,7 +136,9 @@ class TargetSavingController extends BaseController
         }
         
         $targetSaving = new Target_saving();
-        $targetSaving->agent_id=$agent_id;
+        if(Auth()->User()->usr_type=='usr_agent'){
+            $targetSaving->agent_id=$agent_id;
+        }
         $targetSaving->overall_value=$req['targetvalue'];
         $targetSaving->target_plan=$req['targetplan'];
         $targetSaving->target_reason=$req['targetreason'];
@@ -147,6 +167,11 @@ class TargetSavingController extends BaseController
             }  
         }   
 
+        if((Auth()->User()->usr_type=='usr_client')){
+            $client_id=Auth()->User()->user_id;
+            $clientTarget=Target_Saving::where('client_id',$client_id)->orderBy('created_at', 'DESC')->get();
+            return view('client.client_self_transaction',compact('clientTarget'));
+        }
         return view('agent.target_saving_transaction');
     }
 
@@ -175,9 +200,9 @@ class TargetSavingController extends BaseController
         $noResult='no result';
                     
         if ($totalRecord==0){
-            return view('agent\ajax_created_target',['clientTarget'=>$noResult]);
+            return view('agent\ajax_return_client_target',['clientTarget'=>$noResult]);
         } else{
-            return view('agent\ajax_created_target',['clientTarget'=>$clientTarget,]);
+            return view('agent\ajax_return_client_target',['clientTarget'=>$clientTarget,]);
         }
     }
 
@@ -323,7 +348,20 @@ class TargetSavingController extends BaseController
             }  
         }   
 
-        $requestTargets=Target_request::orderBy('request_date', 'DESC')->orderBy('request_status', 'DESC')->get();
+        if(auth()->user()->usr_type=='usr_agent'){
+            $agent_id=auth()->user()->user_id;
+            $requestTargets=Target_request::where('authorized_request_type','usr_agent')->where('authorized_request',$agent_id)
+            ->orderBy('request_date', 'DESC')->orderBy('request_status', 'DESC')->get();
+
+        }else if(auth()->user()->usr_type=='usr_client'){
+            $client_id=auth()->user()->user_id;
+            $target_saving_id=Target_saving::where('client_id',$client_id)->pluck('id')->toArray();
+            $requestTargets=Target_request::wherein('target_saving_id',$target_saving_id)->orderBy('created_at', 'DESC')->get();
+        }else{
+            $requestTargets=Target_request::orderBy('request_date', 'DESC')->orderBy('request_status', 'DESC')->get();
+        }
+
+        
         return view ('Agent\target_request',['requests'=>$requestTargets]);
     }
     

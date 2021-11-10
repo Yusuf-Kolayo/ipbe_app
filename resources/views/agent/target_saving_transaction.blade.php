@@ -4,9 +4,6 @@
 
 <link rel="stylesheet" href="{{ asset('css/dist/css/reset.css') }}">
 <link rel="stylesheet" href="{{ asset('css/dist/css/responsive.css') }}">
-<style>
-   
-</style>
 @if(Session::has('msg'))
 <div class="row">
     <div class="col-12 card text-center">
@@ -22,22 +19,20 @@
                     <p class="font-weight-bold">Provide the target owner's Phone-number or Email</p>
                 </div>
                 <div class="col-12 mb-1">
-                    <input type="text" name="numOrEmail" class=" form-control form-control-sm">
+                    <input type="text" name="numOrEmail" class="form-control form-control-sm">
                 </div>
             </div>
            
             <div class="row  mb-2">
                 <div class="col-12 text-right ">
-                    <button id="chkData" class="btn btn-sm btn-primary py-0 font-weight-bold">CHECK</button>
+                    <button class="chkData btn btn-sm btn-primary py-0 font-weight-bold">CHECK</button>
                 </div> 
             </div>
         </div>
     </div>
-<div class="row" id="recordTrans">
+    <div class="row mt-2" id="recordTrans">
 
-</div>
-
-
+    </div>
 
 <script type="text/javascript" src="{{ URL::asset('js/jquery-3.5.1.min.js') }}"></script>
 <script type="text/javascript" src="{{ URL::asset('js/popper.min.js') }}"></script>
@@ -45,8 +40,8 @@
 
 <script type="text/javascript">
     $(document).ready(function(){
-        $('#chkData').click(function(){
-            let clientInfo=$('input[name=numOrEmail]').val();
+        $('.chkData').click(function(){
+            let clientInfo=$(this).parents().find(':input[name=numOrEmail]').val();
             if(clientInfo==''){
                 $('#recordTrans').html('<div class="col-md-6 offset-md-3 card my-3 py-2 mr-1 text-center"><h5 class="alert alert-danger">Provide the client\'s number or email you want to record new transaction for her target</h5></div>')
             }else{
@@ -67,7 +62,6 @@
                 })
             }
         })
-
     })
 </script>
 

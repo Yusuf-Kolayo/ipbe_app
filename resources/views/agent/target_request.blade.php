@@ -18,10 +18,13 @@
         </div>
     @endif
     <div class="col-md-6">
-    @if(Auth()->User()->usr_type !=='usr_admin')
+    @if(Auth()->User()->usr_type =='usr_agent')
         <button type="button" class="btn btn-primary btn-sm mb-3" data-toggle="modal" data-target="#miniTransactionReport" id="newTransaction">REQUEST TARGET PAYBACK</button>
+    @elseif(Auth()->User()->usr_type =='usr_client')
+        <button type="button" class="btn btn-primary btn-sm mb-3 chkData" >REQUEST TARGET PAYBACK</button>
+        <input type="hidden" name="numOrEmail" value="{{Auth()->User()->client->phone}}">
     @else
-    <button type="button" class="btn btn-primary btn-sm mb-3">REQUESTED TARGET PAYBACKS</button>
+        <button type="button" class="btn btn-primary btn-sm mb-3">REQUESTED TARGET PAYBACKS</button>
     @endif
     </div>
     
@@ -91,43 +94,41 @@
                         </td>
                     </tr>
                 @else
-                    @if($agent_id==$request->target_saving->agent_id)
-                        <tr>
-                            <td>{{$no}}</td>
-                            <td>{{ucfirst($request->target_saving->client->last_name) }}{{' '}}
-                                {{ucfirst($request->target_saving->client->first_name) }}{{' '}}
-                                {{ucfirst($request->target_saving->client->other_name )}}</td>
-                                <td>{{$request->target_saving->client_no}}</td>
-                                <td>{{$request->amount_saved}}</td>
-                                <td>{{$request->payment_method}}</td>
-                                @if($request->payment_method !=='Cash')
-                                <td>{{$request->bank_name}}</td>
-                                <td>{{$request->acc_no}}</td>
-                                <td>{{$request->acc_name}}</td>
-                                @else
-                                <td>NULL</td>
-                                <td>NULL</td>
-                                <td>NULL</td>
-                                @endif
-                                @if($request->request_status=='Completed')
-                                <td>
-                                    <p class="d-inline text-success font-weight-bold">Completed</p> 
-                                </td>
-                                @elseif($request->request_status=='In-progress')
-                                <td>
-                                    <p class="d-inline text-primary font-weight-bold">In-progress</p> 
-                                </td>
-                                @else
-                                <td>
-                                    <p class="d-inline text-danger font-weight-bold">Pending</p> 
-                                </td>
-                                @endif
-                                <td> 
-                                    <button class="btn-sm btn btn-outline-warning ml-2 py-0 reqHistory"
-                                    type="button" data-reqId="{{$request->request_id}}" data-toggle="modal" data-target="#statusRequest" >i</button>
-                                </td>
-                        </tr>
-                    @endif    
+                    <tr>
+                        <td>{{$no}}</td>
+                        <td>{{ucfirst($request->target_saving->client->last_name) }}{{' '}}
+                            {{ucfirst($request->target_saving->client->first_name) }}{{' '}}
+                            {{ucfirst($request->target_saving->client->other_name )}}</td>
+                            <td>{{$request->target_saving->client_no}}</td>
+                            <td>{{$request->amount_saved}}</td>
+                            <td>{{$request->payment_method}}</td>
+                            @if($request->payment_method !=='Cash')
+                            <td>{{$request->bank_name}}</td>
+                            <td>{{$request->acc_no}}</td>
+                            <td>{{$request->acc_name}}</td>
+                            @else
+                            <td>NULL</td>
+                            <td>NULL</td>
+                            <td>NULL</td>
+                            @endif
+                            @if($request->request_status=='Completed')
+                            <td>
+                                <p class="d-inline text-success font-weight-bold">Completed</p> 
+                            </td>
+                            @elseif($request->request_status=='In-progress')
+                            <td>
+                                <p class="d-inline text-primary font-weight-bold">In-progress</p> 
+                            </td>
+                            @else
+                            <td>
+                                <p class="d-inline text-danger font-weight-bold">Pending</p> 
+                            </td>
+                            @endif
+                            <td> 
+                                <button class="btn-sm btn btn-outline-warning ml-2 py-0 reqHistory"
+                                type="button" data-reqId="{{$request->request_id}}" data-toggle="modal" data-target="#statusRequest" >i</button>
+                            </td>
+                    </tr>
                 @endif
                 <?php $no++?>
                 @endforeach
@@ -156,7 +157,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">CLOSE</button>
-                <button type="button" class="btn btn-primary" id="chkData">SUBMIT</button>
+                <button type="button" class="btn btn-primary chkData" >SUBMIT</button>
             </div>
         </div>
     </div>
@@ -356,8 +357,8 @@
 
 <script type="text/javascript">
     $(document).ready(function(){
-        $('#chkData').click(function(){
-            let clientInfo=$('input[name=numOrEmail]').val();
+        $('.chkData').click(function(){
+            let clientInfo=$(this).parents().find(':input[name=numOrEmail]').val();
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name=csrf-token]').attr('content')

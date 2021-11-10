@@ -17,6 +17,7 @@
             
             <div class="card-body">
                 @foreach($clientInfo as $clientInfo)
+                @if(Auth()->User()->usr_type !=='usr_client')
                 <strong><i class="fas fa-user mr-1"></i> Full Name </strong>
                 <p class="text-muted  ml-1 mt-2">{{ucfirst($clientInfo->last_name)}}{{' '}}
                                         {{ucfirst($clientInfo->first_name)}}{{' '}}
@@ -31,6 +32,7 @@
                 <p class="text-muted  ml-1 mt-2">{{$clientInfo->user->email}}</p>
 
                 <hr> 
+                @endif
                 @foreach($targetDetail as $targetDetail)
                 <strong><i class="fas fa-piggy-bank mr-1"></i></i> Targeted Value</strong> 
                 <p class="text-muted ml-1 mt-2" id="total">NGN {{$targetDetail->overall_value}}</p>

@@ -9,32 +9,56 @@ if it does, it returns all the target saving that client has created --}}
     </div>
     
 @else
-<div class="col-12 font-weight-bolder text-center alert alert-danger"><p>Please click on the NEW PAYMENT button under the target you are about to record</p></div>
+<div class="col-12 font-weight-bolder text-center alert alert-danger"><p>Please click on the TOP _ UP button under the target you want to top up</p></div>
+<?php $no=1;?>
 @foreach($clientTarget as $clientTarget)
-    <div class="col-md-4 card my-3 py-2 pr-1">
-        <h5 class="font-weight-bolder text-primary">Target Record</h5>
-        <p><b> Name: </b>{{ucfirst($clientTarget->client->last_name) }}{{' '}}
-            {{ucfirst($clientTarget->client->first_name) }}{{' '}}
-            {{ucfirst($clientTarget->client->other_name )}}
-        </p>
-        <p><b> Phone Number: </b>{{$clientTarget->client_no}}</p>
-        <p><b> Email Address: </b>{{$clientTarget->client_email}}</p>
-        <p><b> Targetted Value: </b>{{$clientTarget->overall_value}}</p>
-        <p><b> Routine Amount: </b>{{$clientTarget->routine_amount}}</p>
-        <p><b> Target Reason: </b>{{$clientTarget->target_reason}}</p>
-        <div class="row">
-            <div class="col-6">
+    <div class="card col-md-5 my-3 mx-3 d-flex justify-content-center py-2 pr-1 table-responsive">
+        <table class="table table-bordered table-sm">
+            <thead>
+                <tr>
+                    <td colspan="2"><h5 class=" text-center font-weight-bolder text-primary">TARGET RECORD {{$no}}</h5></td>
+                </tr>
+            </thead>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <td>{{ucfirst($clientTarget->client->last_name) }}{{' '}}
+                        {{ucfirst($clientTarget->client->first_name) }}{{' '}}
+                        {{ucfirst($clientTarget->client->other_name )}}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Phone Number</th><td>{{$clientTarget->client_no}}</td>
+                </tr>
+                <tr>
+                    <th> Email Address</th><td>{{$clientTarget->client_email}}</td>
+                </tr>
+                <tr>
+                    <th>Targetted Value</th><td>{{$clientTarget->overall_value}}</td>
+                </tr>
+                <tr>
+                    <th>Routine Amount</th><td>{{$clientTarget->routine_amount}}</td>
+                </tr>
+                <tr>
+                    <th>Target Reason</th><td>{{$clientTarget->target_reason}}</td>
+                </tr>
                 <?php $id=$clientTarget->id; $client_id=$clientTarget->client_id?>
-                <a href="{{route('target_owner',['id'=>$id,'client_id'=>$client_id])}}" class="btn btn-sm bg-none btn-outline-primary">Transaction Record</a>
-            </div>
-            <div class="col-6">
-                <input type="hidden" id="amountPaid">
-                <button class="btn btn-sm btn-outline-warning showBal" data-id="{{$clientTarget->id}}"
-                    data-totalval="{{$clientTarget->overall_value}}">Show Balance  <i class="fas fa-eye pl-2"></i></button>
-            </div>
-        </div>
-        <button data-id="{{$clientTarget->id}}" class="btn btnSave btn-outline-primary mt-2 btn-block text-center" data-toggle="modal" data-target="#new-payment">NEW PAYMENT</button>
+                <tr>
+                    <td><a href="{{route('target_owner',['id'=>$id,'client_id'=>$client_id])}}" class="btn btn-sm btn-outline-primary">Transaction Record</a></td>
+                    <td>
+                        <input type="hidden" id="amountPaid">
+                        <button class="btn btn-sm btn-outline-warning showBal" data-id="{{$clientTarget->id}}"
+                                data-totalval="{{$clientTarget->overall_value}}">Show Balance  <i class="fas fa-eye pl-2"></i>
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2"><button data-id="{{$clientTarget->id}}" class="btn btnSave btn-outline-primary mt-2 btn-block text-center" data-toggle="modal" data-target="#new-payment">TOP-UP</button></td>
+                </tr>
+            </thead>
+        </table>
     </div>
+    <?php $no++ ?>
 @endforeach
 
 <!-- Modal for selecting the type of client that want to start a target saving -->
@@ -47,6 +71,9 @@ if it does, it returns all the target saving that client has created --}}
         </div>
     </div>
 </div>
+
+
+{{-- Form to save for a target --}}
 <div class="col-12">
     <div class="row d-none" id="transactionForm">
         <div class="col-12 mt-3 card">
@@ -137,8 +164,6 @@ if it does, it returns all the target saving that client has created --}}
     $(document).ready(function(){
         $('#createTarget').click(function(){
             window.location.replace("{{ route('target_saving') }}");
-            //$('#new-target').trigger('click'); 
-            //jQuery('#new-target').click();
         })
 
         $('.btnSave').click(function(){
@@ -169,7 +194,7 @@ if it does, it returns all the target saving that client has created --}}
 
             $('#new-payment').on('shown.bs.modal', function () {
                 let paymentForm=$('#transactionForm').html();
-                $(".modal-body").html( paymentForm);
+                $(".modal-body").html(paymentForm);
 
                 $("#transMethod").on('change',function() {
                     let tranMethodVal=$(this).val();
@@ -191,10 +216,7 @@ if it does, it returns all the target saving that client has created --}}
                     }
                 });
             })
-            // $('#transactionForm').removeClass("d-none").show();
-            // let paymentForm=$('#transactionForm').html();
-            // $('.btnSave').next('.paymentDiv').html();
-            // console.log(paymentForm);
+            
         })
 
         
