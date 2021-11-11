@@ -20,6 +20,7 @@ class CreateTargetTransactionsTable extends Migration
             $table->float('amount_paid');
             $table->float('new_balance');
             $table->enum('method',['cash','transfer','deposit']);
+            $table->enum('status',['pending','approved'])->default('pending');
             $table->string('creditor_name');
             $table->date('payment_date');
             $table->string('evidence_transfer_deposit')->nullable();

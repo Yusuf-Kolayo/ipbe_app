@@ -130,7 +130,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'is_admin']], functi
 Route::group (['prefix' => 'agent', 'middleware' => ['auth', 'is_agent']], function() {
     Route::get('/agent/catalog', [ClientController::class, 'delete'])->name('agent.catalog'); 
     Route::get('/product/select_client/', [ClientController::class, 'select_client'])->name('client.select_client');
-    
+    Route::post('/create/new_client/', [ClientController::class, 'storeFromTargetPage'])->name('target.create_client');
     Route::post('/client/new_purchase_session/', [TransactionController::class, 'new_purchase_session'])->name('client.new_purchase_session');
 });
 

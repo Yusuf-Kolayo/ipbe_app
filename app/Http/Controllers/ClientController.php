@@ -279,4 +279,73 @@ class ClientController extends BaseController
         return redirect()->route('client.index')->with('success', 'Account and related records deleted successfully');
     
     }
+
+    //this function will create and store a new client data from target saving page
+    public function storeFromTargetPage(Request $request)
+    {
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+
+        if (auth()->user()->usr_type=='usr_admin') {
+            if (!in_array(__FUNCTION__, parent::middleware_except())) {
+                return redirect()->route('access_denied'); 
+            }  
+        }   
+
+
+        
+        
+        $data = request()->validate([
+            'first_name' => ['required', 'string', 'max:55'],
+            'last_name' => ['required', 'string', 'max:55'],
+            'other_name' => ['nullable', 'string', 'max:55'],
+            'phone' => ['required', 'string', 'max:55', 'unique:clients'],
+            'email' => ['required', 'string', 'email', 'max:99', 'unique:users'],
+            'address' => ['required', 'string', 'max:200'],
+            'username' => ['required', 'string', 'max:55', 'unique:users'],
+            'password' => ['required', 'string', 'min:6', 'same:confirm_password'],
+            'confirm_password' => ['required', 'string', 'min:6']
+        ]); 
+
+        $sql = DB::select("show table status like 'users'");
+        $next_id = 100 + $sql[0]->Auto_increment;   $usr_type = 'usr_client';
+        $client_id = 'CLT-'.$next_id;  $agent_id = auth()->user()->user_id;
+        $catchment_id = auth()->user()->agent->catchment_id;
+
+        $client = Client::create([  
+            'client_id' => $client_id,
+            'agent_id' => $agent_id, 
+            'first_name' => $data['first_name'],
+            'last_name' => $data['last_name'],
+            'other_name' => $data['other_name'],
+            'phone' => $data['phone'],
+            'address' => $data['address']
+        ]);
+
+        $user = User::create ([
+            'user_id' => $client_id,
+            'status' => 'active',
+            'username' => strtolower($request['username']),
+            'email' => $request['email'],
+            'password' => Hash::make($request['password']),
+            'usr_type' => $usr_type
+        ]);
+    
+    
+        // save user activity
+        $type = 'new_client_reg';
+        $activity = '<b>'.ucfirst(auth()->user()->username).' ['.$agent_id.']</b> registered a new client <b> '.strtolower($request['username']).' ['.$client_id.']</b>';
+        $user = Activity::create ([
+            'user_id' => auth()->user()->user_id,
+            'usr_type' => auth()->user()->usr_type,
+            'type' => $type,
+            'activity' => $activity
+        ]);
+
+        return redirect()->route('target_saving')->with('registered', 'New client ('.$data['username'].') registered Successfuly ... You can now proceed with creating a target saving account by clicking create new target then exisitng client.');
+       
+
+
+    }
 }

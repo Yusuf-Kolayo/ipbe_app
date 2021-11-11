@@ -2,6 +2,17 @@
 
 @section('content')
 
+@if(Session::has('registered'))
+  <div class="row">
+    <div class="col-12 alert alert-success alert-dismissible fade show py-1 mb-2" role="alert">
+        <p>
+            <i class="fas fa-check pr-2"></i> {{ Session::get('registered')}}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
+        </p>
+    </div>
+  </div>
+@endif
+
 <div class="row">
     <?php $usr_type = Auth()->User()->usr_type; $usr_id = Auth()->User()->user_id;?>
     @if($usr_type !=='usr_admin')
@@ -20,7 +31,6 @@
         </div>
         @endif
     @endif
-
 </div>
 
 <div class="" id="targetform">
@@ -462,7 +472,7 @@
                 </div>
             </div>
             <div class="modal-body" id="addNewModalLabel">
-                {!! Form::open(['route' => ['client.store'], 'method'=>'POST', 'files' => true]) !!}
+                {!! Form::open(['route' => ['target.create_client'], 'method'=>'POST', 'files' => true]) !!}
                 <div class="row"> 
                     <div class="col-12 mx-auto">
                      
