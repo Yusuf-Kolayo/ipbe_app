@@ -192,3 +192,4 @@ Route::post('/agent/target_status',[TargetSavingController::class,'changeRequest
 Route::post('/agent/requested_target_history',[TargetSavingController::class,'reqReport'])->name('request_history');
 Route::get('/agent/refresh_target_div',[TargetSavingController::class,'refreshTargetDiv'])->name('request_targetDiv');
 Route::post('/agent/target_purpose_value_plan_routine',[TargetSavingController::class,'pvpt'])->name('request_pvpt');
+Route::get('/admin/target_transaction_history',[TargetSavingController::class,'topupHistory'])->name('all_topup_with_status');

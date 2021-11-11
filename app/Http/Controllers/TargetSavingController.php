@@ -531,6 +531,13 @@ class TargetSavingController extends BaseController
         return view('/agent.ajax_targetreq_history',['reqHistory'=>$reqHistory]);
     }
 
+    //this function will fectch all top up[pending & approved] history to Admin view 
+    public function topupHistory(){
+        $pending=Target_transaction::where('status','pending')->orderBy('payment_date')->paginate(10);
+        $approved=Target_transaction::where('status','approved')->orderBy('payment_date')->paginate(10);
+        return view('/admin.target_transaction',compact('pending','approved'));
+    }
+
 
 
 }

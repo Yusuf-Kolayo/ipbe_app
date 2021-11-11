@@ -120,6 +120,11 @@
                             </a>
                           </li>
                           <li class="nk-menu-item">
+                            <a href="{{ route('all_topup_with_status')}}" class="nk-menu-link">
+                              <span class="nk-menu-text">Target Transaction </span>
+                            </a>
+                          </li>
+                          <li class="nk-menu-item">
                             <a href="{{ route('target_request')}}" class="nk-menu-link">
                               <span class="nk-menu-text">Request Target</span>
                             </a>

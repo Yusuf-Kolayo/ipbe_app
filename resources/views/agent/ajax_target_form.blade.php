@@ -140,7 +140,7 @@
                                     url:"{{route('request_targetDiv')}}",
                                     method:'GET',
                                     success:function(success){
-                                        $('#first-tab').html(success);
+                                        $('#first-tab').html('LOL');
                                         if(targetroutine=='daily'){
                                             $('#nav-tab1 #nav-daily-tab').click();
                                             $('#nav-tab3').hide();
