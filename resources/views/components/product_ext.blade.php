@@ -1,6 +1,7 @@
 
-<!-- UPDATE BANNER MODAL -->
+
 @admin
+  <!-- UPDATE BANNER MODAL -->
   <div class="modal fade" id="update_product_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" style="" role="document" id="update_ready_div">
       <div class="text-center"> <img src="{{asset('images/preloader1.gif')}}" class="img mx-auto" alt=""> </div>   

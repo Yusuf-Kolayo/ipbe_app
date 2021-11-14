@@ -28,7 +28,7 @@
        
     @endforeach  
       </div>
-      <div class="row">
+      <div class="row mt-2">
           <div class="col-12">
                         <div>
             <ul class="pagination pagination-sm">

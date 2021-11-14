@@ -14,6 +14,8 @@ use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\TargetSavingController;
 use App\Http\Controllers\StaffController;
+use App\Http\Controllers\FrontstoreController;
+use App\Http\Controllers\ShopController;
 use Intervention\Image\Facades\Image;
 
 
@@ -31,8 +33,8 @@ use Intervention\Image\Facades\Image;
 
 // Route::get('/', function () {  return view('welcome'); });
 
-Route::get('/', function () { return redirect()->route('login'); });
-
+Route::get('/', [ShopController::class, 'home'])->name('homepage');
+Route::get('/shop', [ShopController::class, 'shop'])->name('shop');
 
 
 //============================  DEV PUBLIC PASSWORD PROTECTED ROUTES  ================================//
@@ -71,6 +73,18 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'is_admin']], functi
     Route::post('/update_app_permissions', [AdminController::class, 'update_app_permissions'])->name('update_app_permissions');
     Route::get('/refresh_app_permissions_ajax_fetch', [AdminController::class, 'refresh_app_permissions_ajax_fetch'])->name('refresh_app_permissions_ajax_fetch');
     Route::get('/super', [AdminController::class, 'index'])->name('super');
+
+    Route::get('/frontstore/business_info', [FrontstoreController::class, 'business_info'])->name('frontstore.business_info');
+    Route::post('/frontstore/business_identity', [FrontstoreController::class, 'business_identity'])->name('frontstore.business_identity');
+    Route::get('/frontstore/banners', [FrontstoreController::class, 'banners'])->name('frontstore.banners');
+    Route::post('/frontstore/create_html_banner', [FrontstoreController::class, 'create_html_banner'])->name('frontstore.create_html_banner');
+    Route::post('/frontstore/create_default_banner', [FrontstoreController::class, 'create_default_banner'])->name('frontstore.create_default_banner');
+    Route::post('/frontstore/create_picture_banner', [FrontstoreController::class, 'create_picture_banner'])->name('frontstore.create_picture_banner');
+    Route::get('/frontstore/update_banner_fetch', [FrontstoreController::class, 'update_banner_fetch'])->name('frontstore.update_banner_fetch');
+    Route::get('/frontstore/delete_banner_fetch', [FrontstoreController::class, 'delete_banner_fetch'])->name('frontstore.delete_banner_fetch');
+    Route::post('/frontstore/update_banner_post', [FrontstoreController::class, 'update_banner_post'])->name('frontstore.update_banner_post');
+    Route::post('/frontstore/delete_banner_post', [FrontstoreController::class, 'delete_banner_post'])->name('frontstore.delete_banner_post');
+    Route::post('/frontstore/switch_slider', [FrontstoreController::class, 'switch_slider'])->name('frontstore.switch_slider');
 
     Route::post('/update_user_permission', [StaffController::class, 'update_user_permission'])->name('update_user_permission');
     Route::get('/refresh_permissions_ajax_fetch', [StaffController::class, 'refresh_permissions_ajax_fetch'])->name('refresh_permissions_ajax_fetch');

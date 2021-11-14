@@ -19,10 +19,6 @@ class Agent extends Model
         return $this->hasOne(User::class, 'user_id', 'agent_id');
     }
 
-    public function catchment() {
-        return $this->hasOne(Catchment::class, 'catchment_id', 'catchment_id');
-    }
-
     public function client() {
         return $this->hasMany(Client::class, 'agent_id', 'agent_id');
     }

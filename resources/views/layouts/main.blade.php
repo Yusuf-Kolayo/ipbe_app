@@ -87,7 +87,8 @@ label { font-weight: 400!important; } .img-size-50 { width: 38px; }
 .profile-user-img { border: 3px solid #2196f3;    border-radius:50%;   margin: 0 auto;   padding: 4%;     color: #2196f3; width: 100px;   background: #f1fbff;  font-family: monospace;   font-size: 30px; display: block; }
 .box_sh {border-radius: 5px;   box-shadow: 0px 0px 14px 0px #bebebe, -20px -20px 60px #ffffff;    margin-bottom: 25px; }
 th {  white-space: nowrap; }
-.th_span {  white-space: nowrap; }  .btn-app { height: 32px; padding: 6px 9px; margin: 0 10px 10px 0px;}
+.th_span {  white-space: nowrap; } 
+.btn-app { height: 32px; padding: 6px 9px; margin: 0 10px 10px 0px; border-radius: 3px;  border: 1px solid #ddd; color: #6c757d; font-size: 12px;}
 .alert-danger { color: #e91e63;   background-color: #fff0f1;  border-color: #d32535; }
 .alert-success {  color: #014880;   background-color: #e0edf9;  border-color: #014880; }
 .list-group-item { border-bottom: 1px solid rgba(0,0,0,.125);  }
@@ -110,10 +111,12 @@ a.btn { white-space: nowrap; }   button.btn { white-space: nowrap; }
 .short_msg { white-space: break-spaces; margin-bottom: 2px; }
 
   @media (min-width: 576px) {
-    .large_modal { max-width:90%!important; } 
+    .large_modal  { max-width:90%!important; } 
     .medium_modal { max-width:70%!important; }
   }
   </style>
+
+  @yield('headers')
 
 </head>
 
@@ -177,13 +180,15 @@ a.btn { white-space: nowrap; }   button.btn { white-space: nowrap; }
                 <!-- main header  -->
                 <!-- content      -->
                 <div class="nk-content ">
-                    <div class="container-fluid">
+                    <div class="">
                         <div class="nk-content-inner">
                             <div class="nk-content-body">
 
                             
-                              
-                                <x-alerts />    
+                                <div class="container-fluid pb-2">
+                                    <x-alerts /> 
+                                </div>
+                                 
                                 @yield('content') 
                           
  

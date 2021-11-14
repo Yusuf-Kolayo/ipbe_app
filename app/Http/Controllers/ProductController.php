@@ -135,20 +135,20 @@ class ProductController extends BaseController
         compact('products','main_categories','brands','sub_category_id','sub_category'));
     }
 
-
+    
 
         // fetch product by brand for catalog
         public function fetch_product_by_brand (Request $request)
         {   
-            // if (!in_array($this->title, parent::app_sections_only())) {    
-            //     return redirect()->route('access_denied'); 
-            // }
+            if (!in_array($this->title, parent::app_sections_only())) {    
+                return redirect()->route('access_denied'); 
+            }
     
-            // if (auth()->user()->usr_type=='usr_admin') {
-            //     if (!in_array(__FUNCTION__, parent::middleware_except())) {
-            //         return redirect()->route('access_denied'); 
-            //     }  
-            // }   
+            if (auth()->user()->usr_type=='usr_admin') {
+                if (!in_array(__FUNCTION__, parent::middleware_except())) {
+                    return redirect()->route('access_denied'); 
+                }  
+            }   
             $brand_id = (int) $request['brand_id'];     $cat_id = $request['cat_id'];  // dd($request['cat_id']);
             $products = ($brand_id==0) ? Product::where(['sub_category_id'=> $cat_id])->simplePaginate(1) : Product::where(['sub_category_id'=> $cat_id, 'brand_id'=>$brand_id])->simplePaginate(1);
             // dd($products->hasMore);
@@ -251,26 +251,7 @@ class ProductController extends BaseController
     }
 
 
-    // 
-    // public function trash($id)
-    // {
-    //     if (!in_array($this->title, parent::app_sections_only())) {    
-    //         return redirect()->route('access_denied'); 
-    //     }
-
-    // if (auth()->user()->usr_type=='usr_admin') {
-    //     if (!in_array(__FUNCTION__, parent::middleware_except())) {
-    //         return redirect()->route('access_denied'); 
-    //     }  
-    // }   
-
- 
     
-     //     $product = Product::findOrFail($id);
-    //     return view('admin.product_trash')->with('product',$product);
-    // }
-
-  
     
 
     // update a product data
