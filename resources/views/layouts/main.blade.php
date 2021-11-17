@@ -168,12 +168,12 @@ a.btn { white-space: nowrap; }   button.btn { white-space: nowrap; }
              
 
     <div class="nk-wrap ">
-
+    
     <!-- top nav -->
-    @include('components.top_nav') 
+    @include('components.top_nav')
 
 
- 
+       
 
 
 
