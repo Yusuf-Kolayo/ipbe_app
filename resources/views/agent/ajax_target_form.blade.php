@@ -140,7 +140,7 @@
                                     url:"{{route('request_targetDiv')}}",
                                     method:'GET',
                                     success:function(success){
-                                        $('#first-tab').html('LOL');
+                                        $('#first-tab').html(success);
                                         if(targetroutine=='daily'){
                                             $('#nav-tab1 #nav-daily-tab').click();
                                             $('#nav-tab3').hide();
@@ -202,10 +202,10 @@
                             if($('#statusError').is(':visible')){
                                $('#statusError').toggleClass("d-none");
                                $('#statusSuccess').toggleClass("d-none");
-                               $('#statusSuccess').html(successStatus);
+                               $('#statusSuccess').html('<p><i class="fas fa-check pr-2"></i>'+successStatus+'<button type="button" class="close" data-dismiss="alert" aria-label="Close"></button></p>');
                             }else{
                                 $('#statusSuccess').toggleClass("d-none");
-                                $('#statusSuccess').html(successStatus);
+                                $('#statusSuccess').html('<p><i class="fas fa-check pr-2"></i>'+successStatus+'<button type="button" class="close" data-dismiss="alert" aria-label="Close"></button></p>');
                             }
                             
                         }else{

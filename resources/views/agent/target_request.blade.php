@@ -29,6 +29,16 @@
     </div>
     
 </div>
+
+<div class="d-none row text-center" id="showMsg">
+    <div class="col-12 alert alert-danger alert-dismissible fade show d-none mb-1 py-1" role="alert" id="showMsg3">
+        <i class="fas fa-exclamation-triangle pr-1"></i>
+        <p id="showMsg4" class="d-inline-block mb-0"></p>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
+    </div>
+</div>
+
+
 <div class="row">
     <div class="col-12 table-responsive">
         <table class="table table-bordered table-sm">
@@ -40,10 +50,10 @@
                 <tr>
                     <th>S/N</th><th>NAME</th><th>PHONE-NO</th><th>AMOUNT-SAVED</th><th>PAYMENT-METHOD</th>
                     <th>BANK</th><th>ACCOUNT-NUMBER</th><th>ACCOUNT-NAME</th>
-                    <th class="text-center" colspan="2">PROGRESS</th>@if($usr_type=='usr_admin')<th>HISTORY</th>@endif
+                    <th class="text-center" colspan="2">PROGRESS</th>@if($usr_type=='usr_admin')<th>HISTORY</th> <th>DELETE</th>@endif
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="tbody">
                 <?php $no=1;?>
                 @foreach($requests as $request)
                 
@@ -54,7 +64,7 @@
                         {{ucfirst($request->target_saving->client->first_name) }}{{' '}}
                         {{ucfirst($request->target_saving->client->other_name )}}</td>
                         <td>{{$request->target_saving->client_no}}</td>
-                        <td>{{$request->amount_saved}}</td>
+                        <td><b>N</b>{{$request->amount_saved}}</td>
                         <td>{{$request->payment_method}}</td>
                         @if($request->payment_method !=='Cash')
                         <td>{{$request->bank_name}}</td>
@@ -65,32 +75,30 @@
                         <td>NULL</td>
                         <td>NULL</td>
                         @endif
-                        
-                        @if($request->request_status=='Completed')
                         <td>
-                            <button class="btn btn-sm btn-outline-success px-1 changeStatus" data-reqtarid="{{$request->target_saving_id}}">Completed</button>
+                            @if($request->request_status=='Completed')
+                                <button class="btn btn-sm btn-outline-success px-1 changeStatus" data-reqtarid="{{$request->target_saving_id}}">Completed</button>
+                            @elseif($request->request_status=='In-progress')
+                                <button class="btn btn-sm btn-outline-primary px-1 changeStatus" data-reqtarid="{{$request->target_saving_id}}">In-progress</button>
+                            @else
+                                <button class="btn btn-sm btn-outline-danger px-1 changeStatus" data-reqtarid="{{$request->target_saving_id}}">Pending</button>
+                            @endif
                         </td>
-                        @elseif($request->request_status=='In-progress')
-                        <td>
-                            <button class="btn btn-sm btn-outline-primary px-1 changeStatus" data-reqtarid="{{$request->target_saving_id}}">In-progress</button>
-                        </td>
-                        @else
-                        <td class="px-1">
-                            <button class="btn btn-sm btn-outline-danger px-1 changeStatus" data-reqtarid="{{$request->target_saving_id}}">Pending</button>
-                        </td>
-                        @endif
                         <td class="px-1">
                             <button class="btn-sm btn btn-outline-warning reqHistory text-black ml-1"
                             type="button" data-reqId="{{$request->request_id}}" data-toggle="modal" data-target="#statusRequest" >Record</button>  
                         </td>
-                        <td class="text-center">
+                        <td>
                             <?php 
                                 $id=$request->target_saving_id; 
                                 $client_id=$request->target_saving->client_id;
                             ?>
                             <a href="{{route('target_owner',['id'=>$id,'client_id'=>$client_id])}}" target="_blank"
-                                class="btn btn-sm btn-block btn-dark">i
+                                class="btn btn-sm btn-block btn-dim btn-dark">i
                             </a>
+                        </td>
+                        <td class="text-center px-1 pt-1">
+                            <button class="btn btn-sm btn-outline-danger btn-round py-1 deletTarget btn-block " data-reqid="{{$request->request_id}}"><i class="fas fa-trash-alt text-danger"></i></button>
                         </td>
                     </tr>
                 @else
@@ -100,7 +108,7 @@
                             {{ucfirst($request->target_saving->client->first_name) }}{{' '}}
                             {{ucfirst($request->target_saving->client->other_name )}}</td>
                             <td>{{$request->target_saving->client_no}}</td>
-                            <td>{{$request->amount_saved}}</td>
+                            <td><b>N</b>{{$request->amount_saved}}</td>
                             <td>{{$request->payment_method}}</td>
                             @if($request->payment_method !=='Cash')
                             <td>{{$request->bank_name}}</td>
@@ -381,9 +389,6 @@
             })
         })
 
-        // $('#miniReport').on('hidden.bs.modal', function () {
-        //     $("#miniTransactionReport").modal("toggle");
-        // })
         
         $('input[name=paybackMethod]:radio','#reqMtd').click(function(){
             $('#reqStep1').removeAttr('disabled');
@@ -416,6 +421,7 @@
         })
 
         $('.reqHistory').click(function(){
+            
             let reqId=$(this).data('reqid');
             $.ajax({
                 headers: {
@@ -492,6 +498,60 @@
             })
         })
 
+        $('.deletTarget').click(function(){
+            let origin   = window.location.origin;
+            let reqId= $(this).data('reqid');
+
+            Swal.fire({
+                    icon: 'question',
+                    title: 'Are you sure you want to delete this request?',
+                    showDenyButton: true,
+                    showCancelButton: true,
+                    confirmButtonText: 'Delete',
+                    showLoaderOnConfirm: true,
+                    cancelButtonText: `Don't delete`,
+                    }).then((result) => {
+                    /* Read more about isConfirmed, isDenied below */
+                    if (result.isConfirmed) {
+                         $.ajax({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name=csrf-token]').attr('content')
+                            },
+                            url:"{{route('delete_request') }}",
+                            data:{'reqId':reqId},
+                            dataType:'json',
+                            type:'POST',
+                            success:function(response){
+                                $.ajax({
+                                    headers: {
+                                        'X-CSRF-TOKEN': $('meta[name=csrf-token]').attr('content')
+                                    },
+                                    type:'POST',
+                                    url:"{{route('refresh_request_div') }}",
+                                    success:function(success){
+                                        $('#tbody').html(success);
+                                    },
+                                });
+                                $("#showMsg").addClass('d-none');
+                                $("#showMsg3").addClass('d-none');
+                                Swal.fire('Target request deleted successfully!', '', 'success')
+                            },
+                            error:function(error){
+                                $("#showMsg").removeClass('d-none');
+                                $("#showMsg3").removeClass('d-none');
+                                if(error.errorMsg){
+                                    $("#showMsg4").html(error.errorMsg);
+                                }else{
+                                    $("#showMsg4").html('Could not delete target request, if problem pesist contact your web assistance');
+                                }
+                            }
+                        })
+                    }else if (result.isCancel) {
+                        Swal.fire('Target request is not deleted', '', 'error')
+                    }
+                })
+           
+        })
     })
 </script>
 @endsection

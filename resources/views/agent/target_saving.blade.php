@@ -36,11 +36,11 @@
 <div class="" id="targetform">
 
 </div>
-<div class="row">
-    <div class="col-12 card text-center alert alert-danger d-none" id="statusError">
+<div class="row mb-2">
+    <div class="col-12 card text-center alert alert-danger d-none  alert-dismissible fade show" id="statusError">
 
     </div>
-    <div class="col-12 card text-center alert alert-success d-none" id="statusSuccess">
+    <div class="col-12 card text-center alert alert-success d-none  alert-dismissible fade show" id="statusSuccess">
 
     </div>
 </div>
@@ -75,7 +75,7 @@
         <div class="tab-pane fade show active col-12" id="nav-daily" role="tabpanel" aria-labelledby="nav-daily-tab">
             <div class="tab-content row" id="nav-tabContent">
                 <div class="tab-pane fade show active col-12" id="nav-monthly" role="tabpanel" aria-labelledby="nav-monthly-tab">
-                    <div class="row ">
+                    <div class="row">
                         <div class="col-12" style="height: 100px">
                         daily monthly graph
                         </div>

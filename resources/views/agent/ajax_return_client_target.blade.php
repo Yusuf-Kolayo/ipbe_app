@@ -80,17 +80,37 @@ if it does, it returns all the target saving that client has created --}}
             <form class="form" enctype="multipart/form-data" action="{{route('save_transaction')}}" method="POST">
                 @csrf
                 <div class="row mx-3">
-                    <div class="col-12">
+                    <div class="col-12 table-responsive">
                         <h5 class="btn btn-sm btn-primary btn-block my-4" >RECORD NEW TARGET-TRANSACTION</h5>
-                        <p id="tarReason" class="mt-md-4 ml-3"></p>
+                        <table class="table table-bordered text-center" id="about">
+                            <thead>
+                                <tr>
+                                    <th colspan="4">
+                                        ABOUT
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th>AMOUNT</th><th>ROUTINE</th><th>PLAN</th><th>REASON</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td id="amt"></td><td id="routine"></td><td id="plan"></td><td id="reason"></td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-                <div class="row form-group">
-                    <div class="col-md-4 offset-md-7">
-                        <div class="row mx-1 mx-md-0">
+                <div class="row form-group justify-content-center">
+                    <div class="col-md-5 mx-3">
+                        <div class="row">
                             <label for="date" class="col-12">Transaction Date</label>
+                        </div>
+                    </div>
+                    <div class="col-md-5 mx-3">
+                        <div class="row">
                             <input type="hidden" name="targetId" id="targetId" class="col-12 form-control form-control-sm" required>
-                            <input type="date" id="date" name="date" class="col-12 form-control form-control-sm" required>
+                            <input type="date" id="date" name="date" class="col-12 form-control form-control-sm mt-md-2" required>
                         </div>
                     </div>
                 </div>
@@ -179,12 +199,11 @@ if it does, it returns all the target saving that client has created --}}
                 dataType:'text',
                 success:function(success){
                     let info=JSON.parse(success)
-                    $('#tarReason').html('      <ul><p class="mb-1 d-block font-weight-bold text-center"><u>ABOUT</u></p><li class="d-inline-block pr-1"><b>PER - PAY</b> : N '+(info.routine_amount).toUpperCase()+
-                                                ',</li><li class="d-inline-block pr-1""><b>AMOUNT</b> : N '+(info.overall_value).toUpperCase()+
-                                                ',</li><li class="d-inline-block pr-1""><b>ROUTINE</b> : '+(info.target_routine).toUpperCase()+    
-                                                ',</li><li class="d-inline-block pr-1""><b>PLAN</b> : '+(info.target_plan).toUpperCase()+    
-                                                ',</li><li class="d-inline-block pr-1""><b>REASON</b> : '+(info.target_reason).toUpperCase()+
-                                                '</li></ul>')
+                    $('#about #amt').html((info.overall_value).toUpperCase());
+                    $('#about #routine').html((info.target_routine).toUpperCase());
+                    $('#about #plan').html((info.target_plan).toUpperCase());
+                    $('#about #reason').html((info.target_reason).toUpperCase());
+                    
                 },
                 error:function(error){
                     console.log(error);

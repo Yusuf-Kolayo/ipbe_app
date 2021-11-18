@@ -66,7 +66,7 @@ class TargetSavingController extends BaseController
         }else{
             $allTargets=Target_saving::orderBy('created_at', 'DESC')->get();
         }
-        return view ('Agent\target_saving',['data'=>$allTargets]);
+        return view ('Agent\ajax_refresh_after_newtarget',['data'=>$allTargets]);
     }
 
     //this search for client with number to see if thier record is our database
@@ -531,11 +531,61 @@ class TargetSavingController extends BaseController
         return view('/agent.ajax_targetreq_history',['reqHistory'=>$reqHistory]);
     }
 
-    //this function will fectch all top up[pending & approved] history to Admin view 
+    //this function will fectch all target top up status[pending & approved] history to Admin view 
     public function topupHistory(){
-        $pending=Target_transaction::where('status','pending')->orderBy('payment_date')->paginate(10);
-        $approved=Target_transaction::where('status','approved')->orderBy('payment_date')->paginate(10);
-        return view('/admin.target_transaction',compact('pending','approved'));
+        $pending=Target_transaction::orderBy('status','ASC')->orderBy('payment_date','asc')->paginate(8);
+        return view('/admin.target_transaction',compact('pending'));
+    }
+
+    //admin will able to change a transation status
+    public function transactionStatus(Request $req){
+        $id=$req['id'];
+        $status=$req['status'];
+        $no=$req['no'];
+        if($status=='PENDING'){
+            $newstatus='approved';
+        }else{
+            $newstatus='pending';
+        }
+
+        $success=Target_transaction::where('transaction_id',$id)->update(array('status'=>$newstatus)); 
+        if($success){
+            $refreshTransactionRow=Target_transaction::where('transaction_id',$id)->get();
+            return view('/admin.refresh_approve_transaction',compact('refreshTransactionRow','no'));
+        }else{
+            return ('Network error, Transaction could not be process');
+        }
+
+    }
+
+    //admin can delete a requested target
+    public function deleteRequest(Request $req){
+        $reqId=$req['reqId'];
+
+        $deleted=Target_request::where('request_id',$reqId)->delete();
+        if($deleted){
+            return response()->json(['successMsg'=>'Target Request deleted successfully']);
+        }else{
+            return response()->json(['errorMsg'=>'Network error, Target Request could not be deleted']);
+        }
+        
+    }
+
+    //after each target request delete, the div refreshes
+    public function refreshTargetRequestDiv(){
+        if (!in_array($this->title, parent::app_sections_only())) {    
+            return redirect()->route('access_denied'); 
+        }
+      
+ 
+        if (auth()->user()->usr_type=='usr_admin') {
+            if (!in_array(__FUNCTION__, parent::middleware_except())) {
+                return redirect()->route('access_denied'); 
+            }  
+        }   
+        $requestTargets=Target_request::orderBy('request_date', 'DESC')->orderBy('request_status', 'DESC')->get();
+        
+        return view ('Admin\refresh_target_after_delete',['requests'=>$requestTargets]);
     }
 
 

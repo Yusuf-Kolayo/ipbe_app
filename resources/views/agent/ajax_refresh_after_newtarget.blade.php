@@ -2,7 +2,7 @@
     <div class="tab-pane fade show active col-12" id="nav-daily" role="tabpanel" aria-labelledby="nav-daily-tab">
         <div class="tab-content row" id="nav-tabContent">
             <div class="tab-pane fade show active col-12" id="nav-monthly" role="tabpanel" aria-labelledby="nav-monthly-tab">
-                <div class="row ">
+                <div class="row">
                     <div class="col-12" style="height: 100px">
                     daily monthly graph
                     </div>
@@ -41,7 +41,7 @@
                 </div>
             </div>
             <div class="tab-pane fade col-12" id="nav-quarterly" role="tabpanel" aria-labelledby="nav-quarterly-tab">
-                <div class="row">
+                <div class="row ">
                     <div class="col-12" style="height: 100px">
                         quarterly graph
                     </div>
@@ -162,8 +162,8 @@
 
 
     <div class="tab-pane fade show col-12" id="nav-weekly" role="tabpanel" aria-labelledby="nav-weekly-tab">
-        <div class="tab-content row" id="nav-tabContent">
-            <div class="tab-pane fade show active col-12" id="nav-wmonthly" role="tabpanel" aria-labelledby="nav-wmonthly-tab">
+        <div class="tab-content row" id="nav-tabContent3">
+            <div class="tab-pane fade col-12 active show" id="nav-wmonthly" role="tabpanel" aria-labelledby="nav-wmonthly-tab">
                 <div class="row ">
                     <div class="col-12" style="height: 100px">
                         weekly monthly graph
