@@ -379,13 +379,12 @@ class FrontstoreController extends BaseController
                             if ($loop==1)  {  $index= 'fl';  }   if ($loop==2)  {  $index= 'sl';  }  if ($loop==3)  {  $index= 'tl';  } 
                     
                             $update2 = Slider_content::where(['slider_id'=>$data['slider_id'],'type'=>$index])->update([  
-                                'position' => $l_p,
                                 'content' => $l_t
                             ]); 
                         }
                 } elseif ($data['type']=='html') {
                         $update2 = Slider_content::where(['slider_id'=>$data['slider_id'],'type'=>'html'])->update([  
-                            'position' => $l_p,
+                            'position' => '0',
                             'content' => $data['html_content']
                         ]); 
                 }

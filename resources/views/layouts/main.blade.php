@@ -190,9 +190,7 @@ a.btn { white-space: nowrap; }   button.btn { white-space: nowrap; }
                                 </div>
                                  
                                 @yield('content') 
-                          
- 
-
+                            
 
                             </div>
                         </div>
