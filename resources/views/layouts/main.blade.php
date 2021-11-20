@@ -70,6 +70,9 @@ div.dataTables_wrapper div.dataTables_filter label { margin-top: 0px ; }
 .alert.alert-icon > .icon { position: initial; }  
 ._select {margin: 0px ; padding: 5px ; padding-left: 10px ;  width: 100%; border: 1px solid; border-radius: 5px ; }
 div>h6>a { text-transform: capitalize; } .preloader1 { width: 10%; }
+.frame { width: 100%; height: 100%; overflow: hidden; }
+.zoomin img { width: 100%; height: 100% -webkit-transition: all 0.5s ease; -moz-transition: all 0.5s ease; -ms-transition: all 0.5s ease; transition: all 0.5s ease; }
+.zoomin img:hover { -moz-transform: scale(1.1); -webkit-transform: scale(1.1); transform: scale(1.1); }
 </style>
 
 

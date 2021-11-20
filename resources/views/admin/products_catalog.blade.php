@@ -144,7 +144,7 @@
 
             <div class="col-md-4" id="DIV-{{$product->product_id}}">
               <div class="card card-bordered my-1">
-                  <div class="card-header border-bottom p-0 bg-white">
+                  <div class="card-header border-bottom p-0 bg-white zoomin frame">
                     <img src="{{asset('storage/uploads/products_img/'.$product->img_name)}}" alt="" class="img img-fluid">
                   </div>
                   <div class="card-body"> 

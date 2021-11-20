@@ -19,4 +19,12 @@ class Category extends Model
         return $this->hasMany('App\Models\Category', 'parent_id', 'id');
     } 
 
+    public function products () {
+        return $this->hasMany('App\Models\Product', 'main_category_id', 'id');
+    }
+
+    public function cat_name_hard () {
+        return strtolower(str_replace(' ','-',$this->cat_name));
+    }
+
 }

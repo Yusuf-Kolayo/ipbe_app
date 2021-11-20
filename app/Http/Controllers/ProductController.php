@@ -85,7 +85,7 @@ class ProductController extends BaseController
         $product_id = "$brand_abbr-$sub_cat_abbr-$next_id";
    
         
-        $file = $request->file('img_name');    $w=1098; $h=717;
+        $file = $request->file('img_name');      $w=1098; $h=717;
         $ogImage = Image::make($file)->resizeCanvas($w, $h, 'center', false, 'ffffff');
         $originalPath = 'app/public/uploads/products_img/';   $random_string = Str::random(20);  
         $filename = time().'-'. $random_string .'.'. $file->getClientOriginalExtension();
@@ -129,7 +129,7 @@ class ProductController extends BaseController
         $brands = Brand::all();
         $main_categories = Category::where('parent_id', 0)->get();  
         $sub_category = Category::where('id', $sub_category_id)->firstOrFail();  
-        $products = Product::where('sub_category_id', $sub_category_id)->simplePaginate(1);
+        $products = Product::where('sub_category_id', $sub_category_id)->simplePaginate(10);
  
         return view('admin.products_catalog', 
         compact('products','main_categories','brands','sub_category_id','sub_category'));
@@ -216,10 +216,10 @@ class ProductController extends BaseController
         }
 
         if (auth()->user()->usr_type=='usr_admin') {
-            if (!in_array(__FUNCTION__, parent::middleware_except())) {
+            if (!in_array(__FUNCTION__, parent::middleware_except())) {  
                 return redirect()->route('access_denied'); 
-            }  
-        }   
+            }   
+        }       
 
     
         
@@ -288,7 +288,7 @@ class ProductController extends BaseController
 
             if ($request->hasFile('img_name')) {  
 
-                $file = $request->file('img_name');   $w=1098; $h=717;
+                $file = $request->file('img_name');    $w=1098; $h=717;
                 $ogImage = Image::make($file)->resizeCanvas($w, $h, 'center', false, 'ffffff');
                 $originalPath = 'app/public/uploads/products_img/';  $random_string = Str::random(20); 
                 $filename = time().'-'. $random_string .'.'. $file->getClientOriginalExtension();

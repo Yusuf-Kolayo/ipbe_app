@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;  
 use App\Models\Business_info;
 use App\Models\Store_slider;
+use App\Models\Category;
 
 
 class ShopController extends BaseController
@@ -26,10 +27,11 @@ class ShopController extends BaseController
 
     // loads up homepage
     public function home()
-    { 
+    {
         $business_info = Business_info::where('id', '>', '0')->get()[0];
         $store_sliders = Store_slider::where('status', 'active')->orderBy('position', 'asc')->get();
-        return view('shop.home', compact('business_info','store_sliders'));
+        $main_categories = Category::where('parent_id', 0)->get();
+        return view('shop.home', compact('business_info','store_sliders','main_categories'));
     }
 
 
