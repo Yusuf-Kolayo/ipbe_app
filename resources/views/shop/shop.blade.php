@@ -2,11 +2,10 @@
 
 @section('content')
  
-   
-    <!-- header nav -->
-    @include('shop.header') 
-
   
+    <!-- header 2 nav -->
+    @include('shop.header2') 
+
      
        		<!-- Breadcrumbs -->
 		<div class="breadcrumbs">
@@ -445,13 +444,7 @@
 			</div>
 		</section>
 		<!-- End Shop Newsletter -->
-  
-     
-
-    {{-- footer  --}}
-    @include('shop.footer')
-
-
+   
 
 
  

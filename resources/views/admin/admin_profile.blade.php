@@ -68,7 +68,7 @@
                             <div class="col-12"> <p class="text-center mb-2 th_head"><b>PERSONAL INFO</b></p> </div>
                             <div class="col-md-6">
                             <div class="table-responsive">
-                              <table class="table">
+                              <table class="table table-hover">
                                 <tbody>   
                                   <tr> <td><span class="th_span"> Agent ID</span> </td> <td> <b>  {{ $user->user_id }} </b> </td> </tr>
                                   <tr> <td><span class="th_span"> Firstname</span> </td> <td> <b>   {{ $user->staff->agt_first_name }} </b> </td> </tr>
@@ -93,7 +93,7 @@
                             </div>
                              <div class="col-md-6">
                               <div class="table-responsive">
-                                <table class="table">
+                                <table class="table table-hover">
                                   <tbody>   
                                     <tr> <td><span class="th_span"> NOK Fullname</span> </td> <td> <b>  {{ $user->staff->nok_fullname }} </b> </td> </tr>
                                     <tr> <td><span class="th_span"> NOK Address</span> </td> <td> <b>   {{ $user->staff->nok_res_address }} </b> </td> </tr>
@@ -782,7 +782,7 @@ function copyToClipboard(elem) {
                         <div class="col-12"> <p class="text-center mb-2 th_head"><b>PERSONAL INFO</b></p> </div>
                         <div class="col-md-6">
                         <div class="table-responsive">
-                          <table class="table">
+                          <table class="table table-hover">
                             <tbody>   
                               <tr> <td><span class="th_span"> Agent ID</span> </td> <td> <b>  {{ $user->user_id }} </b> </td> </tr>
                               <tr> <td><span class="th_span"> Firstname</span> </td> <td> <b>   {{ $user->staff->agt_first_name }} </b> </td> </tr>
@@ -807,7 +807,7 @@ function copyToClipboard(elem) {
                         </div>
                          <div class="col-md-6">
                           <div class="table-responsive">
-                            <table class="table">
+                            <table class="table table-hover">
                               <tbody>   
                                 <tr> <td><span class="th_span"> NOK Fullname</span> </td> <td> <b>  {{ $user->staff->nok_fullname }} </b> </td> </tr>
                                 <tr> <td><span class="th_span"> NOK Address</span> </td> <td> <b>   {{ $user->staff->nok_res_address }} </b> </td> </tr>

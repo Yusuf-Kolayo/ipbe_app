@@ -26,7 +26,7 @@
             </div>  
                 
             <div class="col-md-6">
-                 <table class="table w-100">
+                 <table class="table table-hover w-100">
                     <tr><td>Session ID</td>  <td> <b>{{$product_purchase_session->pps_id}}</b></td></tr>
                     <tr><td>Client Name</td> <td> <b>{{$product_purchase_session->client->first_name}} {{$product_purchase_session->client->last_name}} {{$product_purchase_session->client->other_name}}</b></td></tr>
                     <tr><td>Product ID</td>  <td> <b>{{$product_purchase_session->product->product_id}}</b></td></tr>

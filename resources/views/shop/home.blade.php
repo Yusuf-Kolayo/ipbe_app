@@ -3,13 +3,13 @@
    <style>
 	   .slider-content { margin-top:15%; }
    </style>
+    <link rel="stylesheet" href="{{asset('assets/store/owl/css/plugins.css')}}">
 @endsection
 @section('content')
 
-    <link rel="stylesheet" href="{{asset('assets/store/owl/css/plugins.css')}}">
-   
-    <!-- header nav -->
-    @include('shop.header') 
+
+    <!-- header 1 nav -->
+    @include('shop.header1') 
 
  
 
@@ -97,7 +97,7 @@
     <!--/ End Slider Area -->
 	
 	<!-- Start Small Banner  -->
-	<section class="small-banner section">
+	{{-- <section class="small-banner section">
 	   <div class="container">
       <div class="">
         <div class="row">
@@ -140,7 +140,7 @@
         </div>
       </div>
      </div>
-	</section>
+	</section> --}}
 	<!-- End Small Banner -->
 	
 	<!-- Start Product Area -->
@@ -149,7 +149,7 @@
 				<div class="row">
 					<div class="col-12">
 						<div class="section-title">
-							<h2>Trending Item</h2>
+							<h2>Trending Items</h2>
 						</div>
 					</div>
 				</div>
@@ -159,8 +159,8 @@
 							<div class="nav-main">
 								<!-- Tab Nav -->
 								<ul class="nav nav-tabs" id="myTab" role="tablist">
-									@php $sn=0; @endphp
-									@foreach ($main_categories as $main_category)
+									@php $sn=0; @endphp  
+									@foreach ($store_data['main_categories'] as $main_category)
 									@php $sn++; if($sn==1) { $active='active'; } else { $active=''; } @endphp
 									<li class="nav-item"><a class="nav-link {{$active}}" data-toggle="tab" href="#{{$main_category->cat_name_hard()}}" role="tab">{{$main_category->cat_name}}</a></li>
 									@endforeach 
@@ -169,7 +169,7 @@
 							</div>
 							<div class="tab-content" id="myTabContent">
 								@php $sn=0; @endphp
-								@foreach ($main_categories as $main_category)  
+								@foreach ($store_data['main_categories'] as $main_category)  
 								@php $sn++; if($sn==1) { $active='active'; $show='show'; } else { $active=''; $show=''; } @endphp
 								
 									<!-- Start Single Tab -->
@@ -186,7 +186,7 @@
 															</a>
 															<div class="button-head">
 																<div class="product-action">
-																	<a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="#"><i class=" ti-eye"></i><span>Quick Shop</span></a>
+																	<a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="#" onclick="product_quickshop_modal('{{$product->product_id}}')"><i class=" ti-eye"></i><span>Quick Shop</span></a>
 																	<a title="Wishlist" href="#"><i class=" ti-heart "></i><span>Add to Wishlist</span></a>
 																	{{-- <a title="Compare" href="#"><i class="ti-bar-chart-alt"></i><span>Add to Compare</span></a> --}}
 																</div>
@@ -579,88 +579,8 @@
 		</div>
 	</section>
 	<!-- End Shop Home List  -->
-	
-	<!-- Start Cowndown Area -->
-	<section class="cown-down">
-		<div class="section-inner ">
-			<div class="container-fluid">
-				<div class="row">
-					<div class="col-lg-6 col-12 padding-right">
-						<div class="image">
-							<img src="https://via.placeholder.com/750x590" alt="#">
-						</div>	
-					</div>	
-					<div class="col-lg-6 col-12 padding-left">
-						<div class="content">
-							<div class="heading-block">
-								<p class="small-title">Deal of day</p>
-								<h3 class="title">Beatutyful dress for women</h3>
-								<p class="text">Suspendisse massa leo, vestibulum cursus nulla sit amet, frungilla placerat lorem. Cars fermentum, sapien. </p>
-								<h1 class="price">$1200 <s>$1890</s></h1>
-								<div class="coming-time">
-									<div class="clearfix" data-countdown="2021/02/30"></div>
-								</div>
-							</div>
-						</div>	
-					</div>	
-				</div>
-			</div>
-		</div>
-	</section>
-	<!-- /End Cowndown Area -->
-	
-	<!-- Start Shop Blog  -->
-	<section class="shop-blog section">
-		<div class="container">
-			<div class="row">
-				<div class="col-12">
-					<div class="section-title">
-						<h2>From Our Blog</h2>
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-lg-4 col-md-6 col-12">
-					<!-- Start Single Blog  -->
-					<div class="shop-single-blog">
-						<img src="https://via.placeholder.com/370x300" alt="#">
-						<div class="content">
-							<p class="date">22 July , 2020. Monday</p>
-							<a href="#" class="title">Sed adipiscing ornare.</a>
-							<a href="#" class="more-btn">Continue Reading</a>
-						</div>
-					</div>
-					<!-- End Single Blog  -->
-				</div>
-				<div class="col-lg-4 col-md-6 col-12">
-					<!-- Start Single Blog  -->
-					<div class="shop-single-blog">
-						<img src="https://via.placeholder.com/370x300" alt="#">
-						<div class="content">
-							<p class="date">22 July, 2020. Monday</p>
-							<a href="#" class="title">Man’s Fashion Winter Sale</a>
-							<a href="#" class="more-btn">Continue Reading</a>
-						</div>
-					</div>
-					<!-- End Single Blog  -->
-				</div>
-				<div class="col-lg-4 col-md-6 col-12">
-					<!-- Start Single Blog  -->
-					<div class="shop-single-blog">
-						<img src="https://via.placeholder.com/370x300" alt="#">
-						<div class="content">
-							<p class="date">22 July, 2020. Monday</p>
-							<a href="#" class="title">Women Fashion Festive</a>
-							<a href="#" class="more-btn">Continue Reading</a>
-						</div>
-					</div>
-					<!-- End Single Blog  -->
-				</div>
-			</div>
-		</div>
-	</section>
-	<!-- End Shop Blog  -->
-	
+	 
+	    
 	<!-- Start Shop Services Area -->
 	<section class="shop-services section home">
 		<div class="container">
@@ -707,7 +627,7 @@
 	<!-- End Shop Services Area -->
 	
 	<!-- Start Shop Newsletter  -->
-	<section class="shop-newsletter section">
+	{{-- <section class="shop-newsletter section">
 		<div class="container">
 			<div class="inner-top">
 				<div class="row">
@@ -726,7 +646,7 @@
 				</div>
 			</div>
 		</div>
-	</section>
+	</section> --}}
 	<!-- End Shop Newsletter -->
 	
 	<!-- Modal -->
@@ -736,106 +656,10 @@
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span class="ti-close" aria-hidden="true"></span></button>
                     </div>
-                    <div class="modal-body">
-                        <div class="row no-gutters">
-                            <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
-                                <!-- Product Slider -->
-									<div class="product-gallery">
-										<div class="quickview-slider-active">
-											<div class="single-slider">
-												<img src="https://via.placeholder.com/569x528" alt="#">
-											</div>
-											<div class="single-slider">
-												<img src="https://via.placeholder.com/569x528" alt="#">
-											</div>
-											<div class="single-slider">
-												<img src="https://via.placeholder.com/569x528" alt="#">
-											</div>
-											<div class="single-slider">
-												<img src="https://via.placeholder.com/569x528" alt="#">
-											</div>
-										</div>
-									</div>
-								<!-- End Product slider -->
-                            </div>
-                            <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
-                                <div class="quickview-content">
-                                    <h2>Flared Shift Dress</h2>
-                                    <div class="quickview-ratting-review">
-                                        <div class="quickview-ratting-wrap">
-                                            <div class="quickview-ratting">
-                                                <i class="yellow fa fa-star"></i>
-                                                <i class="yellow fa fa-star"></i>
-                                                <i class="yellow fa fa-star"></i>
-                                                <i class="yellow fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                            </div>
-                                            <a href="#"> (1 customer review)</a>
-                                        </div>
-                                        <div class="quickview-stock">
-                                            <span><i class="fa fa-check-circle-o"></i> in stock</span>
-                                        </div>
-                                    </div>
-                                    <h3>$29.00</h3>
-                                    <div class="quickview-peragraph">
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia iste laborum ad impedit pariatur esse optio tempora sint ullam autem deleniti nam in quos qui nemo ipsum numquam.</p>
-                                    </div>
-									<div class="size">
-										<div class="row">
-											<div class="col-lg-6 col-12">
-												<h5 class="title">Size</h5>
-												<select>
-													<option selected="selected">s</option>
-													<option>m</option>
-													<option>l</option>
-													<option>xl</option>
-												</select>
-											</div>
-											<div class="col-lg-6 col-12">
-												<h5 class="title">Color</h5>
-												<select>
-													<option selected="selected">orange</option>
-													<option>purple</option>
-													<option>black</option>
-													<option>pink</option>
-												</select>
-											</div>
-										</div>
-									</div>
-                                    <div class="quantity">
-										<!-- Input Order -->
-										<div class="input-group">
-											<div class="button minus">
-												<button type="button" class="btn btn-primary btn-number" disabled="disabled" data-type="minus" data-field="quant[1]">
-													<i class="ti-minus"></i>
-												</button>
-											</div>
-											<input type="text" name="quant[1]" class="input-number"  data-min="1" data-max="1000" value="1">
-											<div class="button plus">
-												<button type="button" class="btn btn-primary btn-number" data-type="plus" data-field="quant[1]">
-													<i class="ti-plus"></i>
-												</button>
-											</div>
-										</div>
-										<!--/ End Input Order -->
-									</div>
-									<div class="add-to-cart">
-										<a href="#" class="btn">Add to cart</a>
-										<a href="#" class="btn min"><i class="ti-heart"></i></a>
-										<a href="#" class="btn min"><i class="fa fa-compress"></i></a>
-									</div>
-                                    <div class="default-social">
-										<h4 class="share-now">Share:</h4>
-                                        <ul>
-                                            <li><a class="facebook" href="#"><i class="fa fa-facebook"></i></a></li>
-                                            <li><a class="twitter" href="#"><i class="fa fa-twitter"></i></a></li>
-                                            <li><a class="youtube" href="#"><i class="fa fa-pinterest-p"></i></a></li>
-                                            <li><a class="dribbble" href="#"><i class="fa fa-google-plus"></i></a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="modal-body" style="height: initial;">
+						<div id="quickshop_ready_div">
+							<div class="text-center mt-4"> <img src="{{asset('images/preloader1.gif')}}" class="img mx-auto mt-4" alt=""> </div>  
+						</div> 
                     </div>
                 </div>
             </div>
@@ -843,11 +667,31 @@
     <!-- Modal end -->
 	
 
-    {{-- footer  --}}
-    @include('shop.footer')
+
      
-    <script src="{{asset('assets/store/owl/js/plugins.js')}}"></script>
-    <script src="{{asset('assets/store/owl/js/main.js')}}"></script>
+   @section('footers')
+	<script src="{{asset('assets/store/owl/js/plugins.js')}}"></script>
+	<script src="{{asset('assets/store/owl/js/main.js')}}"></script>
+    
+	<script>
+		function product_quickshop_modal(product_id) {   
+		$('#quickshop_ready_div').html('<div class="text-center mt-5 mb-5"> <img src=" {{ asset('images/preloader1.gif') }} " class="img mx-auto" alt=""> </div>');
+		// $('#quickshop_ready_div').html('');  
+			var data2send={'product_id':product_id};  
+			$.ajaxSetup({ headers: { 'X-CSRF-TOKEN': $("meta[name=csrf-token]").attr('content') }  });
+			$.ajax({
+				url:"{{ route('shop.product_quickshop') }}",
+				dataType:"text",
+				method:"GET",
+				data:data2send,
+				success:function(resp){
+					$('#quickshop_ready_div').html(resp);
+				}
+		  }); 
+		}
+	</script>
+	
+   @endsection
  
  
 @endsection

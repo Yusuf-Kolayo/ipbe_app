@@ -34,7 +34,8 @@ use Intervention\Image\Facades\Image;
 // Route::get('/', function () {  return view('welcome'); });
 
 Route::get('/', [ShopController::class, 'home'])->name('homepage');
-Route::get('/shop', [ShopController::class, 'shop'])->name('shop');
+Route::get('/shop/{cat_id}/{slug?}', [ShopController::class, 'shop'])->name('shop');
+Route::get('/shop/product_quickshop', [ShopController::class, 'product_quickshop'])->name('shop.product_quickshop');
 
 
 //============================  DEV PUBLIC PASSWORD PROTECTED ROUTES  ================================//
@@ -76,6 +77,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'is_admin']], functi
 
     Route::get('/frontstore/business_info', [FrontstoreController::class, 'business_info'])->name('frontstore.business_info');
     Route::post('/frontstore/business_identity', [FrontstoreController::class, 'business_identity'])->name('frontstore.business_identity');
+    Route::post('/frontstore/business_contacts', [FrontstoreController::class, 'business_contacts'])->name('frontstore.business_contacts');
     Route::get('/frontstore/banners', [FrontstoreController::class, 'banners'])->name('frontstore.banners');
     Route::post('/frontstore/create_html_banner', [FrontstoreController::class, 'create_html_banner'])->name('frontstore.create_html_banner');
     Route::post('/frontstore/create_default_banner', [FrontstoreController::class, 'create_default_banner'])->name('frontstore.create_default_banner');

@@ -41,7 +41,7 @@ class FrontstoreController extends BaseController
             }  
         }  
 
-        $business_info = Business_info::where('id', '>', '0')->get();
+        $business_info = Business_info::where('id', '>', '0')->get()[0];
         return view('admin.business_info', compact('business_info'));
     }
 
@@ -81,7 +81,7 @@ class FrontstoreController extends BaseController
             //     }  
             // }   
     
-      
+    
             
             $data = request()->validate([
                 'name' => ['required', 'string'],
@@ -94,15 +94,59 @@ class FrontstoreController extends BaseController
             $originalPath = 'app/public/uploads/assets/';   $random_string = Str::random(10);  
             $filename = time().'-'. $random_string .'.'. $file->getClientOriginalExtension();
             $ogImage =  $ogImage->save(storage_path($originalPath.$filename));
-     
-      
+    
+    
             $insert = Business_info::updateOrCreate(
                 ['id'=>'1'],
                 ['name'=>$data['name'], 'logo'=>$filename, 'slogan'=>$data['slogan']]
             );
             
-            $business_info = Business_info::where('id', '>', '0')->get();
-            return redirect()->route('frontstore.update', compact('business_info'))->with('success', 'Front-store updated successfully.');
+            $business_info = Business_info::where('id', '>', '0')->get()[0];
+            return redirect()->route('frontstore.business_info', compact('business_info'))->with('success', 'Front-store updated successfully.');
+        }
+
+
+
+
+        // this stores front-store identity info
+        public function business_contacts (Request $request)
+        {
+            // if (!in_array($this->title, parent::app_sections_only())) {    
+            //     return redirect()->route('access_denied'); 
+            // }
+    
+            // if (auth()->user()->usr_type=='usr_admin') {
+            //     if (!in_array(__FUNCTION__, parent::middleware_except())) {
+            //         return redirect()->route('access_denied'); 
+            //     }  
+            // }   
+    
+        
+            
+            $data = request()->validate([
+                'email_a' => ['required', 'string'],
+                'email_b' => ['nullable', 'string'],
+                'phone_a' => ['required', 'string'],
+                'phone_b' => ['nullable', 'string'],
+                'address_a' => ['required', 'string'],
+                'address_b' => ['nullable', 'string'],
+                'facebook_link' => ['nullable', 'string'],
+                'twitter_link' => ['nullable', 'string'],
+                'instagram_link' => ['nullable', 'string']
+            ]); 
+            
+             
+            $insert = Business_info::updateOrCreate(
+                ['id'=>'1'],
+                [
+                    'email_a'=>$data['email_a'], 'email_b'=>$data['email_b'], 'phone_a'=>$data['phone_a'], 'phone_b'=>$data['phone_b'], 
+                    'address_a'=>$data['address_a'], 'address_b'=>$data['address_b'], 'facebook_link'=>$data['facebook_link'], 
+                    'twitter_link'=>$data['twitter_link'], 'instagram_link'=>$data['instagram_link']
+                ]
+            );
+            
+            $business_info = Business_info::where('id', '>', '0')->get()[0];
+            return redirect()->route('frontstore.business_info', compact('business_info'))->with('success', 'Front-store updated successfully.');
         }
 
 

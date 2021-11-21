@@ -21,7 +21,7 @@
                              
                 <div class="card-body">
                     <a class="btn btn-app" data-toggle="modal" data-target="#identity">
-                        <p class="mb-0"> <em class="icon ni ni-article"></em> Identity  </p> 
+                        <p class="mb-0"> <em class="icon ni ni-article"></em> Brand Identity  </p> 
                     </a>
 
                     <a class="btn btn-app" data-toggle="modal" data-target="#contacts">
@@ -42,6 +42,40 @@
                 </div> 
             </div>
           
+
+
+
+            <div class="card mt-4" id="">
+              <div class="card-header"> <h6 class="mb-0">Brand Identity</h6> </div>
+                           
+              <div class="card-body table-responsive">
+                      <table class="table table-hover">
+                             <tr> <td>Name</td> <td>{{$business_info->name}}</td> </tr>
+                             <tr> <td>Logo</td> <td> <img src="{{ asset('storage/uploads/assets/'.$business_info->logo) }}" alt="" width="40%" class="img img-fluid"> </td> </tr>
+                             <tr> <td>Slogan</td> <td>{{$business_info->slogan}}</td> </tr>
+                      </table>
+              </div> 
+              </div>
+
+
+
+              <div class="card mt-4" id="">
+                <div class="card-header"> <h6 class="mb-0">Contacts</h6> </div>
+                             
+                <div class="card-body table-responsive">
+                        <table class="table table-hover">
+                               <tr> <td>Primary Email</td> <td>{{$business_info->email_a}}</td> </tr>
+                               <tr> <td>Secondary Email</td> <td> {{$business_info->email_b}} </td> </tr>
+                               <tr> <td>Primary Phone</td> <td>{{$business_info->phone_a}}</td> </tr>
+                               <tr> <td>Secondary Phone</td> <td>{{$business_info->phone_b}}</td> </tr>
+                               <tr> <td>Primary Address</td> <td>{{$business_info->address_a}}</td> </tr>
+                               <tr> <td>Secondary Address</td> <td>{{$business_info->address_b}}</td> </tr>
+                               <tr> <td>Facebook Link</td> <td>{{$business_info->facebook_link}}</td> </tr>
+                               <tr> <td>Twitter Link</td> <td>{{$business_info->twitter_link}}</td> </tr>
+                               <tr> <td>Instagram link</td> <td>{{$business_info->instagram_link}}</td> </tr>
+                        </table>
+                </div> 
+                </div>
         </div><!-- /.container-fluid -->
       </section>
 
@@ -113,7 +147,7 @@
                             <div class="modal fade" id="contacts">
                                 <div class="modal-dialog">
                                   <div class="modal-content">
-                                  <form action="" method="post" autocomplete="off">
+                                    {!! Form::open(['route' => ['frontstore.business_contacts'], 'method'=>'POST', 'files' => true]) !!}
                                     <div class="modal-header">
                                       <h5 class="modal-title d-inline"> <em class="icon ni ni-call-alt"></em> Contacts </h5>
                                       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -121,41 +155,47 @@
                                       </button>
                                     </div>
                                     <div class="modal-body"> 
-                                      {!! Form::open(['route' => ['frontstore.business_identity'], 'method'=>'POST', 'files' => true]) !!}
-                                       <div class="row">
-                          
+                                       <div class="row"> 
 
-                                                    <div class="col-md-12">
+                                                    <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label for="act_number">Support Email</label>
-                                                        <input type="text" name="email" id="email" class="form-control" required>
+                                                        <label for="email_a">Primary Email</label>
+                                                        <input type="text" name="email_a" id="email_a" class="form-control" required>
                                                     </div>
                                                     </div>
+
+                                                    <div class="col-md-6">
+                                                      <div class="form-group">
+                                                          <label for="email_b">Secondary Email</label>
+                                                          <input type="text" name="email_b" id="email_b" class="form-control" required>
+                                                    </div>
+                                                    </div>
+
 
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label for="">Telephone A</label>
+                                                            <label for="phone_a">Priamry Telephone </label>
                                                             <input type="text" name="phone_a" id="phone_a" class="form-control" required>
                                                         </div>
-                                                    </div>  
+                                                    </div>    
                                                     
                                                     <div class="col-md-6">
                                                     <div class="form-group">
-                                                         <label for="logo">Telephone B</label>
+                                                         <label for="phone_b">Secondary Telephone</label>
                                                          <input type="text" name="phone_b" id="phone_b" class="form-control" required>
                                                     </div>
                                                    </div> 
                 
                                                     <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label for="act_number">Adrress A</label>
+                                                        <label for="address_a">Primary Adrress</label>
                                                         <input type="text" name="address_a" id="address_a" class="form-control" required>
                                                     </div>
                                                     </div>
 
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label for="act_number">Address B</label>
+                                                            <label for="address_b">Secondary Address</label>
                                                             <input type="text" name="address_b" id="address_b" class="form-control" required>
                                                         </div>
                                                     </div>
@@ -164,34 +204,33 @@
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label for="act_number">Facebook Link</label>
-                                                            <input type="text" name="facebook" id="facebook" class="form-control" required>
+                                                            <input type="text" name="facebook_link" id="facebook_link" class="form-control" required>
                                                         </div>
                                                         </div>
     
                                                         <div class="col-md-6">
                                                             <div class="form-group">
                                                                 <label for="act_number">Twitter Link</label>
-                                                                <input type="text" name="twitter" id="twitter" class="form-control" required>
+                                                                <input type="text" name="twitter_link" id="twitter_link" class="form-control" required>
                                                             </div>
                                                         </div>
 
                                                         <div class="col-md-6">
                                                             <div class="form-group">
                                                                 <label for="act_number">Instagram Link</label>
-                                                                <input type="text" name="instagram" id="instagram" class="form-control" required>
+                                                                <input type="text" name="instagram_link" id="instagram_link" class="form-control" required>
                                                             </div>
                                                         </div>
                         
                                                    
                                        </div>
-                                      {!! Form::close() !!}
+                                 
                                     </div>
                                     <div class="modal-footer justify-content-between">
                                       <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                       <button class="btn btn-primary" type="submit" name="user_change_password" id="user_change_password">Submit</button>
-                                     
                                     </div>
-                                    </form>  
+                                    {!! Form::close() !!}
                                   </div>
                                   <!-- /.modal-content -->
                                 </div>

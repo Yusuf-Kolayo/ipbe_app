@@ -53,7 +53,7 @@
                        daily monthly graph
                     </div>
                     <div class="col-12 table-responsive">
-                        <table class="table table-bordered table-hover table-sm">
+                        <table class="table table-hover table-bordered table-hover table-sm">
                             <thead class="thead-dark">
                                 <tr>
                                     <th>NAME</th><th>PHONE-NO</th><th>TARGET-VALUE</th><th>ROUTINE-AMOUNT</th><th>STATUS</th><th>TRANSACTION</th>
@@ -92,7 +92,7 @@
                         quarterly graph
                     </div>
                     <div class="col-12 table">
-                        <table class="table table-bordered">
+                        <table class="table table-hover table-bordered">
                             <thead class="thead-dark">
                                 <tr>
                                     <th>NAME</th><th>PHONE-NO</th><th>TARGET-VALUE</th><th>ROUTINE-AMOUNT</th><th>STATUS</th><th>DETAILS</th>
@@ -131,7 +131,7 @@
                         6month graph
                     </div>
                     <div class="col-12 table">
-                        <table class="table table-bordered">
+                        <table class="table table-hover table-bordered">
                             <thead class="thead-dark">
                                 <tr>
                                     <th>NAME</th><th>PHONE-NO</th><th>TARGET-VALUE</th><th>ROUTINE-AMOUNT</th><th>STATUS</th><th>DETAILS</th>
@@ -170,7 +170,7 @@
                         unfixed graph
                     </div>
                     <div class="col-12 table">
-                        <table class="table table-bordered">
+                        <table class="table table-hover table-bordered">
                             <thead class="thead-dark">
                                 <tr>
                                     <th>NAME</th><th>PHONE-NO</th><th>TARGET-VALUE</th><th>ROUTINE-AMOUNT</th><th>STATUS</th><th>DETAILS</th>
@@ -215,7 +215,7 @@
                         weekly monthly graph
                     </div>
                     <div class="col-12 table-responsive">
-                        <table class="table table-bordered table-hover table-sm">
+                        <table class="table table-hover table-bordered table-hover table-sm">
                             <thead class="thead-dark">
                                 <tr>
                                     <th>NAME</th><th>PHONE-NO</th><th>TARGET-VALUE</th><th>ROUTINE-AMOUNT</th><th>STATUS</th><th>DETAILS</th>
@@ -254,7 +254,7 @@
                         quarterly graph
                     </div>
                     <div class="col-12 table">
-                        <table class="table table-bordered">
+                        <table class="table table-hover table-bordered">
                             <thead class="thead-dark">
                                 <tr>
                                     <th>NAME</th><th>PHONE-NO</th><th>TARGET-VALUE</th><th>ROUTINE-AMOUNT</th><th>STATUS</th><th>DETAILS</th>
@@ -293,7 +293,7 @@
                         6month graph
                     </div>
                     <div class="col-12 table">
-                        <table class="table table-bordered">
+                        <table class="table table-hover table-bordered">
                             <thead class="thead-dark">
                                 <tr>
                                     <th>NAME</th><th>PHONE-NO</th><th>TARGET-VALUE</th><th>ROUTINE-AMOUNT</th><th>STATUS</th><th>DETAILS</th>
@@ -331,7 +331,7 @@
                         unfixed graph
                     </div>
                     <div class="col-12 table">
-                        <table class="table table-bordered">
+                        <table class="table table-hover table-bordered">
                             <thead class="thead-dark">
                                 <tr>
                                     <th>NAME</th><th>PHONE-NO</th><th>TARGET-VALUE</th><th>ROUTINE-AMOUNT</th><th>STATUS</th><th>DETAILS</th>

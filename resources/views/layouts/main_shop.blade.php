@@ -8,11 +8,11 @@
   <meta http-equiv="pragma" content="no-cache" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
 
 	<!-- Title Tag  -->
-    <title>Eshop - eCommerce HTML5 Template.</title>
-   <link rel="icon" href="{{ asset('assets/store/img/favicon.png')}}" type="image/png" />
-    <title>Flexipay - </title>
+  <title> {{ $store_data['business_info']->name}} - {{$store_data['business_info']->slogan}}</title>
+   <link rel="icon" href="{{ asset('storage/uploads/assets/'.$store_data['business_info']->logo) }}" type="image/png" />
    <!-- Web Font -->
 	<link href="https://fonts.googleapis.com/css?family=Poppins:200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap" rel="stylesheet">
 		<!-- StyleSheet -->
@@ -62,11 +62,51 @@
     </div>
     <!-- End Preloader -->
     
-  
+
+
 
     {{-- content  --}}
     @yield('content') 
 
     
+    {{-- footer  --}}
+    @include('shop.footer')
+
+
+    <!-- Jquery -->
+    <script src="{{ asset('assets/store/js/jquery.min.js') }}"></script>
+    <script src="{{ asset('assets/store/js/jquery-migrate-3.0.0.js') }}"></script>
+    <script src="{{ asset('assets/store/js/jquery-ui.min.js') }}"></script>
+    <!-- Popper JS -->
+    <script src="{{ asset('assets/store/js/popper.min.js') }}"></script>
+    <!-- Bootstrap JS -->
+    <script src="{{ asset('assets/store/js/bootstrap.min.js') }}"></script>
+    <!-- Color JS -->
+    <script src="{{ asset('assets/store/js/colors.js') }}"></script>
+    <!-- Slicknav JS -->
+    <script src="{{ asset('assets/store/js/slicknav.min.js') }}"></script>
+    <!-- Owl Carousel JS -->
+    <script src="{{ asset('assets/store/js/owl-carousel.js') }}"></script>
+    <!-- Magnific Popup JS -->
+    <script src="{{ asset('assets/store/js/magnific-popup.js') }}"></script>
+    <!-- Waypoints JS -->
+    <script src="{{ asset('assets/store/js/waypoints.min.js') }}"></script>
+    <!-- Countdown JS -->
+    <script src="{{ asset('assets/store/js/finalcountdown.min.js') }}"></script>
+    <!-- Nice Select JS -->
+    <script src="{{ asset('assets/store/js/nicesellect.js') }}"></script>
+    <!-- Flex Slider JS -->
+    <script src="{{ asset('assets/store/js/flex-slider.js') }}"></script>
+    <!-- ScrollUp JS -->
+    <script src="{{ asset('assets/store/js/scrollup.js') }}"></script>
+    <!-- Onepage Nav JS -->
+    <script src="{{ asset('assets/store/js/onepage-nav.min.js') }}"></script>
+    <!-- Easing JS -->
+    <script src="{{ asset('assets/store/js/easing.js') }}"></script>
+    <!-- Active JS -->
+    <script src="{{ asset('assets/store/js/active.js') }}"></script>
+
+
+    @yield('footers')
   </body>
 </html>

@@ -6,7 +6,7 @@
     </div>
     <div class="row table table-bordered table-responsive card-body">
         <div class="col-12 text-center ">
-            <table class="table">
+            <table class="table table-hover">
                 @if($sum!==0)
                 <thead class="thead-dark">
                     <tr>

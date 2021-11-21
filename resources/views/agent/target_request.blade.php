@@ -28,7 +28,7 @@
 </div>
 <div class="row">
     <div class="col-12 table-responsive">
-        <table class="table table-bordered table-sm">
+        <table class="table table-hover table-bordered table-sm">
             <thead class="thead-dark">
                 <tr>
                     <th>S/N</th><th>NAME</th><th>PHONE-NO</th><th>AMOUNT-SAVED</th><th>PAYMENT-METHOD</th>

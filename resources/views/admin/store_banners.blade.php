@@ -98,8 +98,9 @@
                     {!! Form::close() !!}
 
 
-                                                    </div>
-                                                    <div class="tab-pane" id="tabItem6">
+                </div>
+                
+                <div class="tab-pane" id="tabItem6">
                                                     
                     {!! Form::open(['route' => ['frontstore.create_default_banner'], 'method'=>'POST', 'files' => true]) !!}
 
@@ -286,12 +287,10 @@
         
         
         
-                <div class="card-inner table-responsive">
-                     <!-- START START START -->
-                             
-        
-                         
-                    <table class="table" style="width:100%">
+                <div class="card-inner table-responsive"> 
+                
+ 
+                    <table class="table table-hover" style="width:100%">
                                  <thead> 
                                     <tr> 
                                     <th width="5%">ID</th> 

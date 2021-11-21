@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-12 table-responsive">
-        <table class="table table-bordered table-sm mb-0">
+        <table class="table table-hover table-bordered table-sm mb-0">
             <thead class="thead-dark">
                 <tr class="text-center">
                     <th>REQUEST REPORT</th>

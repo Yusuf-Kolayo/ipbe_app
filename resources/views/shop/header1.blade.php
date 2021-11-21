@@ -1,4 +1,4 @@
-  <!-- Header -->
+    <!-- Header -->
 	<header class="header shop">
 		<!-- Topbar -->
 		<div class="topbar">
@@ -8,8 +8,8 @@
 						<!-- Top Left -->
 						<div class="top-left">
 							<ul class="list-main">
-								<li><i class="ti-headphone-alt"></i> +060 (800) 801-582</li>
-								<li><i class="ti-email"></i> support@shophub.com</li>
+								<li><i class="ti-headphone-alt"></i> {{$store_data['business_info']->phone_a}}</li>
+								<li><i class="ti-email"></i> {{$store_data['business_info']->email_a}}</li>
 							</ul>
 						</div>
 						<!--/ End Top Left -->
@@ -36,7 +36,7 @@
 					<div class="col-lg-2 col-md-2 col-12">
 						<!-- Logo -->
 						<div class="logo">
-							<a href="index.html"><img src="{{ asset('storage/uploads/assets/'.$business_info->logo) }}" alt="logo"></a>
+							<a href="index.html"><img src="{{ asset('storage/uploads/assets/'.$store_data['business_info']->logo) }}" alt="logo"></a>
 						</div>
 						<!--/ End Logo -->
 						<!-- Search Form -->
@@ -57,11 +57,10 @@
 					<div class="col-lg-8 col-md-7 col-12">
 						<div class="search-bar-top">
 							<div class="search-bar">
-								<select>
-									<option selected="selected">All Category</option>
-									<option>watch</option>
-									<option>mobile</option>
-									<option>kid’s item</option>
+								<select> <option>All Categories</option>
+									@foreach ($store_data['main_categories'] as $main_category) 
+										<option>{{$main_category->cat_name}}</option>									
+									@endforeach 
 								</select>
 								<form>
 									<input name="search" placeholder="Search Products Here....." type="search">
@@ -80,7 +79,7 @@
 								<a href="#" class="single-icon"><i class="fa fa-user-circle-o" aria-hidden="true"></i></a>
 							</div>
 							<div class="sinlge-bar shopping">
-								<a href="#" class="single-icon"><i class="ti-bag"></i> <span class="total-count">2</span></a>
+								<a href="#" class="single-icon"><i class="ti-shopping-cart mr-2"></i> <span class="total-count">2</span></a>
 								<!-- Shopping Item -->
 								<div class="shopping-item">
 									<div class="dropdown-cart-header">
@@ -197,22 +196,20 @@
 										<div class="nav-inner">	
 											<ul class="nav main-menu menu navbar-nav">
 													<li class="active"><a href="{{route('homepage')}}">Home</a></li>
-													<li><a href="#">Product</a></li>												
-													<li><a href="#">Service</a></li>
-													<li><a href="{{route('shop')}}">Shop<i class="ti-angle-down"></i><span class="new">New</span></a>
+												   <li><a href="#">Products<i class="ti-angle-down"></i><span class="new">New</span></a>
 														<ul class="dropdown">
-															<li><a href="shop-grid.html">Shop Grid</a></li>
+														@foreach ($store_data['main_categories'] as $main_category) 
+															<li> <a href="{{route('shop', ['cat_id'=>$main_category->id, 'slug'=>$main_category->cat_name_hard()])}}">{{$main_category->cat_name}}</a> </li>									
+														@endforeach 
+															{{-- <li><a href="shop-grid.html">Shop Grid</a></li>
 															<li><a href="cart.html">Cart</a></li>
-															<li><a href="checkout.html">Checkout</a></li>
+															<li><a href="checkout.html">Checkout</a></li> --}}
 														</ul>
 													</li>
-													<li><a href="#">Pages</a></li>									
-													<li><a href="#">Blog<i class="ti-angle-down"></i></a>
-														<ul class="dropdown">
-															<li><a href="blog-single-sidebar.html">Blog Single Sidebar</a></li>
-														</ul>
-													</li>
+												 									
+													<li><a href="#">About Us</a></li>
 													<li><a href="contact.html">Contact Us</a></li>
+													<li><a href="#">Terms of Service</a></li>
 												</ul>
 										</div>
 									</div>

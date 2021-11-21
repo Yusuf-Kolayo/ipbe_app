@@ -78,7 +78,7 @@
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane active" id="details">
-                        <table class="table w-100">
+                        <table class="table table-hover w-100">
                             <tr><td>Product ID</td>  <td><b>{{$product->product_id}}</b></td></tr>
                             <tr><td>Name</td>        <td><b>{{$product->prd_name}}</b></td></tr>
                             <tr><td>Price</td>       <td><b class="NPP"> {{number_format($product->price)}} </b></td></tr>
@@ -178,7 +178,7 @@
               </div>  
                   
               <div class="col-md-8">
-                  <table class="table w-100">
+                  <table class="table table-hover w-100">
                       <tr><td>Product ID</td>  <td><b>{{$product->product_id}}</b></td></tr>
                       <tr><td>Name</td>        <td><b>{{$product->prd_name}}</b></td></tr>
                       <tr><td>Price</td>       <td>

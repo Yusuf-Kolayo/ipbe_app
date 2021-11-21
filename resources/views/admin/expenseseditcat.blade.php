@@ -36,7 +36,7 @@
 
     <div class="col-12 table-responsive text-nowrap">
     <h5 class="mb-0 text-right btn btn-sm btn-primary mb-4" id="expen_cat">EXPENSES CATEGORY</h5>
-        <table class="table table-striped table-bordered">
+        <table class="table table-hover table-striped table-bordered">
             <thead class="thead-dark">
                 <tr>
                     <th class="text-md text-center">S/N</th>

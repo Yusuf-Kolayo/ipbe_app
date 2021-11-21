@@ -81,7 +81,7 @@
                                 <div class="col-12"> <p class="text-center mb-2 th_head"><b>PERSONAL INFO</b></p> 
                           
                                 <div class="table-responsive">
-                                  <table class="table">
+                                  <table class="table table-hover">
                                     <tbody>   
                                       <tr> <td><span class="th_span"> Agent ID</span> </td> <td> <b>  {{ $user->user_id }} </b> </td> </tr>
                                       <tr> <td><span class="th_span"> Firstname</span> </td> <td> <b>   {{ $user->staff->first_name }} </b> </td> </tr>
@@ -386,7 +386,7 @@
                               {{-- <div class="col-12"> <p class="text-center mb-2 th_head"><b>PERSONAL INFO</b></p> </div> --}}
                         
                               <div class="table-responsive mt-2">
-                                <table class="table">
+                                <table class="table table-hover">
                                   <tbody>   
                                     <tr> <td><span class="th_span"> Agent ID</span> </td> <td> <b>  {{ $user->user_id }} </b> </td> </tr>
                                     <tr> <td><span class="th_span"> Firstname</span> </td> <td> <b>   {{ $user->staff->first_name }} </b> </td> </tr>
