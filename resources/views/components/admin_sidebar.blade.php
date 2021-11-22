@@ -86,7 +86,6 @@
                             <span class="nk-menu-text">Expenses</span>
                         </a>
                         <ul class="nk-menu-sub"> 
-                           
                             <li class="nk-menu-item">
                                 <a href="{{ route('new_expense') }}" class="nk-menu-link"><span class="nk-menu-text">  Add Expenses</span></a>
                             </li> 
@@ -102,8 +101,6 @@
                             <li class="nk-menu-item">
                                 <a href="{{ route('expenses_cat') }}" class="nk-menu-link"><span class="nk-menu-text"> Add Expenses Catergory </span></a>
                             </li> 
-
-                         
                         </ul><!-- .nk-menu-sub -->
                     </li><!-- .nk-menu-item -->
 
@@ -114,25 +111,54 @@
                         </a> 
                     
                         <ul class="nk-menu-sub"> 
-                          <li class="nk-menu-item">
-                            <a href="{{ route('target_saving')}}" class="nk-menu-link">
-                              <span class="nk-menu-text">Targets </span>
-                            </a>
-                          </li>
-                          <li class="nk-menu-item">
-                            <a href="{{ route('all_topup_with_status')}}" class="nk-menu-link">
-                              <span class="nk-menu-text">Target Transaction </span>
-                            </a>
-                          </li>
-                          <li class="nk-menu-item">
-                            <a href="{{ route('target_request')}}" class="nk-menu-link">
-                              <span class="nk-menu-text">Request Target</span>
-                            </a>
-                          </li>
-              
-                          
-                        </ul>  
-                      </li>
+                            <li class="nk-menu-item">
+                                <a href="{{ route('target_saving')}}" class="nk-menu-link">
+                                    <span class="nk-menu-text">Targets </span>
+                                </a>
+                            </li>
+                            <li class="nk-menu-item">
+                                <a href="{{ route('all_topup_with_status')}}" class="nk-menu-link">
+                                    <span class="nk-menu-text">Target Transaction </span>
+                                </a>
+                            </li>
+                            <li class="nk-menu-item">
+                                <a href="{{ route('target_request')}}" class="nk-menu-link">
+                                    <span class="nk-menu-text">Request Target</span>
+                                </a>
+                            </li>
+                        </ul>  <!-- .nk-menu-sub -->
+                    </li><!-- .nk-menu-item -->
+
+                    <li class="nk-menu-item has-sub">
+                        <a href="#" class="nk-menu-link nk-menu-toggle ">
+                            <span class="nk-menu-icon"><i class="fab fa-cc-amazon-pay pr-2"></i></i></span>
+                            <span class="nk-menu-text"> Payroll Control</span>
+                        </a> 
+                    
+                        <ul class="nk-menu-sub"> 
+                            <li class="nk-menu-item">
+                                <a href="{{ route('target_saving')}}" class="nk-menu-link">
+                                    <span class="nk-menu-text">Payroll Summary</span>
+                                </a>
+                            </li>
+                            <li class="nk-menu-item">
+                                <a href="{{ route('payroll_list')}}" class="nk-menu-link">
+                                    <span class="nk-menu-text">Payroll list</span>
+                                </a>
+                            </li>
+                            <li class="nk-menu-item">
+                                <a href="{{ route('all_topup_with_status')}}" class="nk-menu-link">
+                                    <span class="nk-menu-text">Assign Payroll</span>
+                                </a>
+                            </li>
+                            <li class="nk-menu-item">
+                                <a href="{{ route('target_request')}}" class="nk-menu-link">
+                                    <span class="nk-menu-text">Payroll Report</span>
+                                </a>
+                            </li>
+                        </ul>  <!-- .nk-menu-sub -->
+                    </li><!-- .nk-menu-item -->
+
 
                     <li class="nk-menu-item has-sub">
                         <a href="#" class="nk-menu-link nk-menu-toggle">

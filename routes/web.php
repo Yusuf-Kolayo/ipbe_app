@@ -15,6 +15,7 @@ use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\TargetSavingController;
 use App\Http\Controllers\StaffController;
 use Intervention\Image\Facades\Image;
+use App\Http\Controllers\PayrollController;
 
 
 
@@ -197,3 +198,5 @@ Route::post('/admin/target_transaction_status',[TargetSavingController::class,'t
 Route::post('/admin/delete_target_request',[TargetSavingController::class,'deleteRequest'])->name('delete_request');
 Route::post('/admin/refreshdiv',[TargetSavingController::class,'refreshTargetRequestDiv'])->name('refresh_request_div');
 
+//=========================      PAYROLL ROUTES      ==========================//payroll_list.blade
+Route::get('/admin/all_payroll_month_section',[PayrollController::class,'payList'])->name('payroll_list');
