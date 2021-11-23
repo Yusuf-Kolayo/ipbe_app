@@ -14,4 +14,8 @@ class PayrollController extends Controller
     public function payList(){
         return view('admin.payroll_list');
     }
+
+    public function payrollListMonthly(){
+        return view('admin.payroll_list_month');
+    }
 }
