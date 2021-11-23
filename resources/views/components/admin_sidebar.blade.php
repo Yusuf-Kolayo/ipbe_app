@@ -147,7 +147,7 @@
                                 </a>
                             </li>
                             <li class="nk-menu-item">
-                                <a href="{{ route('all_topup_with_status')}}" class="nk-menu-link">
+                                <a href="{{ route('payroll_assign')}}" class="nk-menu-link">
                                     <span class="nk-menu-text">Assign Payroll</span>
                                 </a>
                             </li>

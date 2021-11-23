@@ -201,3 +201,4 @@ Route::post('/admin/refreshdiv',[TargetSavingController::class,'refreshTargetReq
 //=========================      PAYROLL ROUTES      ==========================//payroll_list.blade
 Route::get('/admin/all_payroll_month_section',[PayrollController::class,'payList'])->name('payroll_list');
 Route::get('/admin/all_payroll_january',[PayrollController::class,'payrollListMonthly'])->name('payroll_list_monthly');
+Route::get('/admin/payroll_setting',[PayrollController::class,'payrollAssign'])->name('payroll_assign');
