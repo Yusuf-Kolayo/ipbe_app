@@ -177,9 +177,13 @@
             $( "input[name='med']" ).change(function (){
                 if(med !== $(this).val()){
                     let med =$(this).val();
+                    console.log(med);
+
                 }
             })
 
+            
+            
             $("#overtime").on("input", function() {
                 let overtime =$(this).val();
             });

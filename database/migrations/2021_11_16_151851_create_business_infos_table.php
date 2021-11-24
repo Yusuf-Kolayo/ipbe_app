@@ -15,7 +15,6 @@ class CreateBusinessInfosTable extends Migration
     {
         if(Schema::hasTable('business_infos')) return;
         Schema::create('business_infos', function (Blueprint $table) {
-            $table->id();
             $table->integer('id')->primary();
             $table->string('name', 55)->nullable();
             $table->string('logo', 100)->nullable();
