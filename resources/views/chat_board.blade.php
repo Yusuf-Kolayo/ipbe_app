@@ -67,7 +67,8 @@
                   </div><!-- /.card-header -->
                   <div class="card-body">
                 @foreach ($chat_patners as $user) 
-                  @php   // dd($user);
+                  @php  
+                      // dd($user[0]->user_id);
                       //  if ($user[0]->usr_type=='usr_admin') { 
                       //       $fullname = $user[0]->staff->agt_first_name.' '.$user[0]->staff->agt_first_name;   
                       //   } elseif ($user[0]->usr_type=='usr_agent') {
@@ -76,28 +77,32 @@
                       //       $fullname = $user[0]->client->first_name.' '.$user[0]->client->last_name;
                       //   } 
                   @endphp
-                <a href="{{route('chat_board', ['user_id'=>$user[0]->user_id])}}" class="dropdown-item px-1">   
-                    <!-- Message Start -->
-                    <div class="media">
-                      <img src="{{ asset('images/avatar_dummy.png') }}" alt="User Avatar" class="img-size-50 mr-3 img-circle">
-                      <div class="media-body" style="font-size:13px;">
-                        <h6 class="dropdown-item-title mb-1">
-                          {{$user[0]->username}}  
-                        </h6>
+
+                  @if ($user[0])
+                      <a href="{{route('chat_board', ['user_id'=>$user[0]->user_id])}}" class="dropdown-item px-1">   
+                        <!-- Message Start -->
+                        <div class="media">
+                          <img src="{{ asset('images/avatar_dummy.png') }}" alt="User Avatar" class="img-size-50 mr-3 img-circle">
+                          <div class="media-body" style="font-size:13px;">
+                            <h6 class="dropdown-item-title mb-1">
+                              {{$user[0]->username}}   
+                            </h6>
 
 
-                        @if ($user[1])
-                        <p class="text-sm short_msg">{{substr($user[1]->message,0,75)}} ...</p>
-                        <p class="text-sm text-muted mb-0"><i class="far fa-clock mr-1"></i>{{$user[1]->created_at}}</p>
-                        @else
-                        <p class="text-sm short_msg">---</p>
-                        @endif
+                            @if ($user[1])
+                            <p class="text-sm short_msg">{{substr($user[1]->message,0,75)}} ...</p>
+                            <p class="text-sm text-muted mb-0"><i class="far fa-clock mr-1"></i>{{$user[1]->created_at}}</p>
+                            @else
+                            <p class="text-sm short_msg">---</p>
+                            @endif
 
-                      </div>
-                    </div>
-                    <!-- Message End -->
-                  </a>
-                  <div class="dropdown-divider"></div> 
+                          </div>
+                        </div>
+                        <!-- Message End -->
+                      </a> 
+                      <div class="dropdown-divider"></div> 
+                  @endif 
+                  
                 @endforeach
 
   

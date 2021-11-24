@@ -359,7 +359,7 @@
                         <!-- /.card -->
                      </div>
                      <div class="col-md-8">
-                        <table class="table mb-0">
+                        <table class="table table-hover mb-0">
                             <tr> <th class="p_tb_th">Fullname</th> <td class="p_tb_td">{{ "$client->first_name $client->last_name $client->other_name"}}</td> </tr>
                             <tr> <th class="p_tb_th">Telephone</th> <td class="p_tb_td">{{ $client->phone }}</td> </tr> 
                             <tr> <th class="p_tb_th">Email</th> <td class="p_tb_td">{{ $client->user->email }}</td> </tr> 

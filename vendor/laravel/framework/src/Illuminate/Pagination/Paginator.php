@@ -18,7 +18,7 @@ class Paginator extends AbstractPaginator implements Arrayable, ArrayAccess, Cou
      *
      * @return bool
      */
-    protected $hasMore;
+    public $hasMore;   // changed this from protected to public on 6th November 2021 for easy access from custom codes 
 
     /**
      * Create a new paginator instance.
@@ -158,7 +158,6 @@ class Paginator extends AbstractPaginator implements Arrayable, ArrayAccess, Cou
      *
      * @return array
      */
-    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         return $this->toArray();

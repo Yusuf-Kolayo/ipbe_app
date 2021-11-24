@@ -1,84 +1,111 @@
-<div class="row "> @method('PATCH')
-  <div class="col-md-12 text-center pb-4">
-        <img src="{{asset('storage/uploads/products_img/'.$product->img_name)}}" alt="" class="img img-fluid" id="update_preview_img" style="height:200px;"/>
-  </div>  
-      
-  <div class="col-md-6">
-      <div class="form-group">
-          <label>  Product Picture </label>
-          <input type="file" class="form-control"  name="img_name" id="update_img_name"/>  
-          <input type="hidden" value="{{$product->product_id}}"  name="product_id_update_form" id="product_id_update_form"/>  
-        </div>   
-  </div>   
 
-  <div class="col-md-6">
-      <div class="form-group">
-          <label> Name </label>
-          <input type="text" class="form-control" value="{{$product->prd_name}}" required name="prd_name"/> 
-      </div>
-  </div> 
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" style="display:inline;" id="exampleModalLabel"> Update Product</h5>
+          <button type="button" style="float:right;"  class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        {!! Form::open(['route' => ['product.update', ['product'=>$product->product_id]], 'method'=>'POST', 'files' => true, 'id'=>'product_update_form', ]) !!} 
+          <div class="modal-body">
 
 
+            <div class="row "> @method('PATCH')
+              <div class="col-md-12 text-center pb-4">
+                    <img src="{{asset('storage/uploads/products_img/'.$product->img_name)}}" alt="" class="img img-fluid" id="update_preview_img" style="height:200px;"/>
+              </div>  
+                  
+              <div class="col-md-6">
+                  <div class="form-group">
+                      <label>  Product Picture </label>
+                      <input type="file" class="form-control"  name="img_name" id="update_img_name"/>  
+                      <input type="hidden" value="{{$product->product_id}}"  name="product_id_update_form" id="product_id_update_form"/>  
+                    </div>   
+              </div>   
+            
+              <div class="col-md-6">
+                  <div class="form-group">
+                      <label> Name </label>
+                      <input type="text" class="form-control" value="{{$product->prd_name}}" required name="prd_name"/> 
+                  </div>
+              </div> 
+            
+            
+            
+              <div class="col-md-12">
+                  <div class="form-group">
+                    <label> Description </label>
+                    <textarea name="description" id="editor2" class="ck_editor form-control"  rows="2">{!!$product->description!!}</textarea>
+                  </div>
+                </div>
+            
+            
+              <div class="col-md-6">
+                  <div class="form-group">
+                    <label> Brand </label>
+                    <select name="brand_id" id="brand_id" class="form-control">
+                      @if ($product->brand)
+                         <option value="{{$product->brand->id}}">{{$product->brand->brd_name}}</option> 
+                      @endif
+            
+                      @foreach ($brands as $brand)
+                        <option value="{{$brand->id}}">{{$brand->brd_name}}</option>
+                      @endforeach
+                     </select> 
+                  </div>
+              </div>
+            
+            
+              <div class="col-md-6">
+                  <div class="form-group">
+                    <label> Price </label>
+                    <input type="number" name="price" value="{{$product->price}}" id="price" class="form-control">
+                  </div>
+              </div>
+            
+            
+              <div class="col-md-6">
+                  <div class="form-group">
+                    <label> Main Category </label>
+                    <select name="main_category_id" id="main_category_id_update_form" onchange="fetch_sub_cat();" class="form-control">
+                      <option value="{{$product->main_category->id}}">{{$product->main_category->cat_name}}</option> 
+                      @foreach ($main_categories as $main_category)
+                        <option value="{{$main_category->id}}">{{$main_category->cat_name}}</option>
+                      @endforeach
+                     </select> 
+                  </div>
+              </div>
+            
+            
+              <div class="col-md-6">
+                  <div class="form-group">
+                    <label> Sub Category </label>
+                    <select name="sub_category_id" class="form-control" id="sub_category_id_update_form">
+                        <option value="{{$product->sub_category->id}}">{{$product->sub_category->cat_name}}</option> 
+                    </select> 
+                  </div>
+              </div> 
+              
+            
+            
+            
+            
+            </div>
 
-  <div class="col-md-12">
-      <div class="form-group">
-        <label> Description </label>
-        <textarea name="description" id="editor2" class="ck_editor form-control"  rows="2">{!!$product->description!!}</textarea>
-      </div>
-    </div>
-
-
-  <div class="col-md-6">
-      <div class="form-group">
-        <label> Brand </label>
-        <select name="brand_id" id="brand_id" class="form-control">
-          @if ($product->brand)
-             <option value="{{$product->brand->id}}">{{$product->brand->brd_name}}</option> 
-          @endif
-
-          @foreach ($brands as $brand)
-            <option value="{{$brand->id}}">{{$brand->brd_name}}</option>
-          @endforeach
-         </select> 
-      </div>
-  </div>
-
-
-  <div class="col-md-6">
-      <div class="form-group">
-        <label> Price </label>
-        <input type="number" name="price" value="{{$product->price}}" id="price" class="form-control">
-      </div>
-  </div>
-
-
-  <div class="col-md-6">
-      <div class="form-group">
-        <label> Main Category </label>
-        <select name="main_category_id" id="main_category_id_update_form" onchange="fetch_sub_cat();" class="form-control">
-          <option value="{{$product->main_category->id}}">{{$product->main_category->cat_name}}</option> 
-          @foreach ($main_categories as $main_category)
-            <option value="{{$main_category->id}}">{{$main_category->cat_name}}</option>
-          @endforeach
-         </select> 
-      </div>
-  </div>
-
-
-  <div class="col-md-6">
-      <div class="form-group">
-        <label> Sub Category </label>
-        <select name="sub_category_id" class="form-control" id="sub_category_id_update_form">
-            <option value="{{$product->sub_category->id}}">{{$product->sub_category->cat_name}}</option> 
-        </select> 
-      </div>
-  </div> 
-  
+          
+          </div>
+          <div class="modal-footer justify-content-between">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button class="btn btn-primary" type="submit" name="update_product_btn" >Update</button>
+          </div>
+        {!! Form::close() !!} 
+      </div> 
 
 
 
 
-</div>
+
+
 
 
 

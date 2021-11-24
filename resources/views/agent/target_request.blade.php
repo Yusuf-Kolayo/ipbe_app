@@ -41,7 +41,7 @@
 
 <div class="row">
     <div class="col-12 table-responsive">
-        <table class="table table-bordered table-sm">
+        <table class="table table-hover table-bordered table-sm">
             <thead class="thead-dark">
                 <?php
                     $agent_id=Auth()->User()->user_id;

@@ -1,0 +1,88 @@
+/*
+    Template Name: Rabeya - eCommerce Baby Shop Bootstrap4 Template
+    Author: themedream1
+    Description: eCommerce Baby Shop Bootstrap4 Template
+    Version: 1.0
+
+*/
+
+@import url("../css/shortcode/default.css");
+@import url("../css/shortcode/helpers.css");
+@import url("../css/shortcode/banner.css");
+@import url("../css/shortcode/bundle.css");
+@import url("../css/shortcode/padding.css");
+@import url("../css/shortcode/header.css");
+@import url("../css/shortcode/footer.css");
+@import url("../css/shortcode/method.css");
+@import url("../css/shortcode/sidebar.css");
+@import url("../css/shortcode/categorynav.css");
+@import url("../css/shortcode/navigation.css");
+@import url("../css/shortcode/mobile-menu.css");
+@import url("../css/shortcode/form.css");
+@import url("../css/shortcode/custom-field.css");
+@import url("../css/shortcode/checkout-form.css");
+@import url("../css/shortcode/slider.css");
+@import url("../css/shortcode/button.css");
+@import url("../css/shortcode/tab.css");
+@import url("../css/shortcode/product.css");
+@import url("../css/shortcode/modal.css");
+@import url("../css/shortcode/blog.css");
+@import url("../css/shortcode/breadcrumb.css");
+@import url("../css/shortcode/pagination.css");
+@import url("../css/shortcode/team.css");
+@import url("../css/shortcode/comment.css");
+@import url("../css/shortcode/table.css");
+@import url("../css/shortcode/shop.css");
+@import url("../css/shortcode/single-product.css");
+@import url("../css/shortcode/animation.css");
+@import url("../css/shortcode/checkout.css");
+@import url("../css/shortcode/cart.css");
+@import url("../css/shortcode/about.css");
+@import url("../css/shortcode/contact.css");
+@import url("../css/shortcode/404.css");
+
+@import url("https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700|Roboto:300,400,500,700");
+
+
+
+/******************************
+
+INDEX:
+
+    01 - Default Css (../css/shortcode/default.css)
+    02 - Helpers Css (../css/shortcode/helpers.css)
+    03 - Banner Css (../css/shortcode/banner.css)
+    04 - Bundle Css (../css/shortcode/bundle.css)
+    05 - padding Css (../css/shortcode/padding.css)
+    06 - header Css (../css/shortcode/header.css)
+    07 - footer Css (../css/shortcode/footer.css)
+    08 - method Css (../css/shortcode/method.css)
+    09 - sidebar Css (../css/shortcode/sidebar.css)
+    10 - categorynav Css (../css/shortcode/categorynav.css)
+    11 - navigation Css (../css/shortcode/navigation.css)
+    12 - mobile-menu Css (../css/shortcode/mobile-menu.css)
+    13 - form Css (../css/shortcode/form.css)
+    14 - custom-field Css (../css/shortcode/custom-field.css)
+    15 - checkout-form Css (../css/shortcode/checkout-form.css)
+    16 - slider Css (../css/shortcode/slider.css)
+    17 - button Css (../css/shortcode/button.css)
+    18 - tab Css (../css/shortcode/tab.css)
+    19 - product Css (../css/shortcode/product.css)
+    20 - modal Css (../css/shortcode/modal.css)
+    21 - blog Css (../css/shortcode/blog.css)
+    22 - breadcrumb Css (../css/shortcode/breadcrumb.css)
+    23 - pagination Css (../css/shortcode/pagination.css)
+    24 - team Css (../css/shortcode/team.css)
+    25 - comment Css (../css/shortcode/comment.css)
+    26 - table Css (../css/shortcode/table.css)
+    27 - shop Css (../css/shortcode/shop.css)
+    28 - single-product Css (../css/shortcode/single-product.css)
+    29 - Animation CSS (../css/shortcode/animation.css)
+    30 - Checkout CSS (../css/shortcode/checkout.css)
+    31 - Cart CSS (../css/shortcode/cart.css)
+    32 - About CSS (../css/shortcode/about.css)
+    33 - Contact CSS (../css/shortcode/contact.css)
+    34 - 404 CSS (../css/shortcode/404.css)
+
+******************************/
+

@@ -119,7 +119,6 @@
                     <th>Telephone</th>
                     <th>Email</th>
                     <th>Address</th>
-                    <th>Catchment ID</th>
                     <th>LGA</th> 
                     <th>...</th> 
                   </tr>
@@ -136,8 +135,7 @@
                   <td> {{$client->phone}} </td>
                   <td> {{$client->user->email}} </td>
                   <td> {{$client->address}} </td>
-                  <td> {{$client->agent->catchment->catchment_id}} </td>
-                  <td> {{$client->agent->catchment->lga}} </td>  
+                  <td> {{''}} </td>  
                   <td>  <a class="btn btn-primary btn-xs" href="{{ route('client.show', ['client'=>$client->client_id]) }}"> <span class="fa fa-user"></span> Profile</a> </td>
                  </tr>
                 @endforeach

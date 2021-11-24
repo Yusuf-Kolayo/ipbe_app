@@ -160,6 +160,34 @@
                     </li><!-- .nk-menu-item -->
 
 
+
+
+
+                      
+                    <li class="nk-menu-item has-sub">
+                        <a href="#" class="nk-menu-link nk-menu-toggle">
+                            <span class="nk-menu-icon"> <em class="icon ni ni-archived"></em> </span>
+                            <span class="nk-menu-text">Storefront</span>
+                        </a>
+                        <ul class="nk-menu-sub"> 
+                           
+                            <li class="nk-menu-item">
+                                <a href="{{ route('frontstore.business_info') }}" class="nk-menu-link"><span class="nk-menu-text">Business Info </span></a>
+                            </li> 
+
+                            <li class="nk-menu-item">
+                                <a href="{{ route('frontstore.banners') }}" class="nk-menu-link"><span class="nk-menu-text">Banners</span></a>
+                            </li>  
+
+                            
+                           
+                        </ul><!-- .nk-menu-sub -->
+                    </li><!-- .nk-menu-item -->
+
+
+
+
+
                     <li class="nk-menu-item has-sub">
                         <a href="#" class="nk-menu-link nk-menu-toggle">
                             <span class="nk-menu-icon"> <em class="icon ni ni-cc-secure-fill"></em> </span>
