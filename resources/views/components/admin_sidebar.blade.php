@@ -152,7 +152,7 @@
                                 </a>
                             </li>
                             <li class="nk-menu-item">
-                                <a href="{{ route('target_request')}}" class="nk-menu-link">
+                                <a href="{{ route('payroll_report')}}" class="nk-menu-link">
                                     <span class="nk-menu-text">Payroll Report</span>
                                 </a>
                             </li>

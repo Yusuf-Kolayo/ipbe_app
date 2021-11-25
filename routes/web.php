@@ -219,3 +219,5 @@ Route::post('/admin/refreshdiv',[TargetSavingController::class,'refreshTargetReq
 Route::get('/admin/all_payroll_month_section',[PayrollController::class,'payList'])->name('payroll_list');
 Route::get('/admin/all_payroll_january',[PayrollController::class,'payrollListMonthly'])->name('payroll_list_monthly');
 Route::get('/admin/payroll_setting',[PayrollController::class,'payrollAssign'])->name('payroll_assign');
+Route::put('/admin/save_new_payroll',[PayrollController::class,'savePayroll'])->name('save_payroll_detail');
+Route::get('/admin/payroll_summary_and_report',[PayrollController::class,'payrollReport'])->name('payroll_report');
