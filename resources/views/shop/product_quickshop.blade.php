@@ -1,12 +1,12 @@
-<div class="row no-gutters">
-    <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+<div class="row no-gutters mt-4">
+    <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12 col-12">
         <!-- Product Slider -->
             <div class="product-gallery">
                 <div class="quickview-slider-active">
                     <div class="single-slider">
-                        <img src="{{asset('storage/uploads/products_img/'.$product->img_name)}}" alt="#">
+                        <img class="img img-fluid" src="{{asset('storage/uploads/products_img/'.$product->img_name)}}" alt="#">
                     </div>
-                    {{-- <div class="single-slider">
+                  {{--    <div class="single-slider">
                         <img src="{{asset('storage/uploads/products_img/'.$product->img_name)}}" alt="#">
                     </div> 
                     <div class="single-slider">
@@ -33,7 +33,7 @@
             </div>
         <!-- End Product slider -->
     </div>
-    <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+    <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12 col-12">
         <div class="quickview-content">
             <h2>{{$product->prd_name}}</h2>
             <div class="quickview-ratting-review">
@@ -95,9 +95,31 @@
                 <!--/ End Input Order -->
             </div> --}}
             <div class="add-to-cart">
-                <a href="#" class="btn">Add to cart</a>
-                <a href="#" class="btn min"><i class="ti-heart"></i></a>
-                <a href="#" class="btn min"><i class="fa fa-compress"></i></a>
+                <div class="row"> 
+                    <div class="col-12 col-md-8">
+                        <table border="0" cellpadding="2" cellspacing="4" width="100%" class="mb-0">
+                            <tr>  
+                            @guest
+
+                                <th width="65%" class="p-1">
+                                    {!! Form::open(['route' => ['buy',['product_id'=>$product->product_id,'purchase_type'=>'buy_now']], 'method'=>'POST', 'files' => false, 'class'=>'mb-0']) !!}
+                                    <button type="submit" class="btn btn-block w-100 m-0">Buy Now</button>
+                                    {!! Form::close() !!}
+                                </th>  
+                                <td width="35%" class="p-1">
+                                    {!! Form::open(['route' => ['buy',['product_id'=>$product->product_id,'purchase_type'=>'installment']], 'method'=>'POST', 'files' => false, 'class'=>'mb-0']) !!}
+                                    <button type="submit" class="btn btn-block w-100 m-0">Installment</button>
+                                    {!! Form::close() !!}                                
+                                </td>
+                            
+                            @else
+                            <th width="65%" class="p-1"><a href="#" class="btn btn-block w-100 m-0">Buy in Installment</a></th>  
+                            <td width="35%" class="p-1"><a href="#" class="btn btn-block w-100 m-0">Buy now</a></td>
+                            @endguest
+                            </tr>
+                        </table>
+                    </div>
+                </div> 
             </div>
             <div class="default-social">
                 <h4 class="share-now">Share:</h4>

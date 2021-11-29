@@ -7,6 +7,29 @@
             <div class="card-header">{{ __('Dashboard') }}</div>
 
             <div class="card-body">
+
+
+                @if(session('purchase_wrong_account'))   
+                <div class="alert alert-danger alert-icon">
+                  <em class="icon ni ni-cross-circle"></em> <span>{!!session('purchase_wrong_account')!!}</span> <button class="close"></button>
+                  <div class="row mt-1">
+                    <div class="col-md-6 text-center">
+                        <img src="{{asset('storage/uploads/products_img/'.$product_attp->img_name)}}" alt="" class="img img-fluid" id="update_preview_img" style="height:200px;"/>
+                    </div>  
+                        
+                    <div class="col-md-6">
+                        <table class="table table-hover w-100">
+                            <tr><td>Product ID</td>  <td><b>{{$product_attp->product_id}}</b></td></tr>
+                            <tr><td>Name</td>        <td><b>{{$product_attp->prd_name}}</b></td></tr>
+                            <tr><td>Price</td>       <td><b>{{$product_attp->price}}</b></td></tr>
+                            <tr><td>Description</td> <td><b>{!!substr($product_attp->description,0,200)!!} ...</b></td></tr>
+                        </table>
+                    </div>   
+                  </div>
+                </div> 
+                @endif
+
+  
                 @if (session('status'))
                     <div class="alert alert-success" role="alert">
                         {{ session('status') }}
@@ -17,6 +40,7 @@
             </div>
         </div>
 
+        
        
 
     <!-- Main content -->
