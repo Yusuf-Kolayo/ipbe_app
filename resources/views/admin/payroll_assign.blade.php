@@ -14,7 +14,7 @@
         <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
     </div>
     @endif
-    {{ Form::open(array('url' => route('save_payroll_detail'), 'method' => 'PUT', 'class'=>'form')) }}
+    {{ Form::open(array('url' => route('save_payroll_detail'), 'method' => 'PUT', 'class'=>'form form-validate')) }}
         @csrf
         <div class="row">
             <div class="col-12 card py-2">
@@ -53,9 +53,9 @@
                                     </p>
                                 @enderror
                             </div>
-                            <div class="col-12">
+                            <div class="col-12 form-control-wrap">
                                 <label for="pay_day">Payment Date</label>
-                                <input id="pay_day" name="pay_day" type="date" class="form-control form-control-sm" required>
+                                <input id="pay_day" name="pay_day" type="text" class="form-control form-control-sm date-picker date-picker-alt" data-date-format="dd-mm-yyyy"required>
                             </div>
                         </div>
                     </div>

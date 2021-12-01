@@ -11,9 +11,11 @@ use App\Models\Payroll;
 
 class PayrollController extends Controller
 {
-    //Admin can view all payroll(the function will list all pay roll)
+    //Admin can view all payroll(the function will list all Employee payroll)
     public function payList(){
-        return view('admin.payroll_list');
+        $employeePayrollInfo=Payroll::orderBy('created_at','Desc')->get();
+        $no=1;
+        return view('admin.payroll_list',compact('employeePayrollInfo','no'));
     }
 
     public function payrollListMonthly(){
@@ -42,11 +44,13 @@ class PayrollController extends Controller
             'basic_salary' => 'required',
             'pay_day'=>'required',
         ]);
+        $dateFormat = $req->pay_day;  
+        $newDate = date("Y-m-d", strtotime($dateFormat));
 
         $newPayroll= new Payroll();
         $newPayroll->employee_id = $req->employee_name;
         $newPayroll->employee_type = $req->emp_type;
-        $newPayroll->pay_day = $req->pay_day;
+        $newPayroll->pay_day = $newDate;
         $newPayroll->salary = $req->basic_salary;
         $newPayroll->rent_A = $req->rent;
         $newPayroll->med_A = $req->med;
