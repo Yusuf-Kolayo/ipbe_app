@@ -35,8 +35,12 @@ use App\Http\Controllers\PayrollController;
 // Route::get('/', function () {  return view('welcome'); });
 
 Route::get('/', [ShopController::class, 'home'])->name('homepage');
-Route::get('/shop/{cat_id}/{slug?}', [ShopController::class, 'shop'])->name('shop');
+Route::get('/register_login/{purchase_type?}/{product_id?}', [ShopController::class, 'register_login'])->name('register_login');
+Route::post('/buy/{purchase_type?}/{product_id?}', [ShopController::class, 'buy'])->name('buy');
+Route::post('/register_submit', [ShopController::class, 'register_submit'])->name('register_submit');
+Route::post('/login_submit', [ShopController::class, 'login_submit'])->name('login_submit');
 Route::get('/shop/product_quickshop', [ShopController::class, 'product_quickshop'])->name('shop.product_quickshop');
+Route::get('/shop/{cat_id}/{slug?}', [ShopController::class, 'shop'])->name('shop');
 
 
 //============================  DEV PUBLIC PASSWORD PROTECTED ROUTES  ================================//

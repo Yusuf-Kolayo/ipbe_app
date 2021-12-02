@@ -79,7 +79,7 @@
 					<div class="row">
 						<div class="col-lg-6 col-12">
 							<div class="left">
-								<p>Copyright &copy; <script>document.write(new Date().getFullYear());</script> <a href="#" target="_blank">{{$store_data['business_info']->name}}</a>  -  All Rights Reserved.</p>
+								<p>Copyright &copy;  <a href="#" target="_blank">{{$store_data['business_info']->name}}</a>  -  All Rights Reserved.</p>
 							</div>
 						</div>
 						<div class="col-lg-6 col-12">
@@ -93,3 +93,41 @@
 		</div>
 	</footer>
 	<!-- /End Footer Area -->
+
+
+	
+    <!-- Jquery -->
+    <script src="{{ asset('assets/store/js/jquery.min.js') }}"></script>
+    <script src="{{ asset('assets/store/js/jquery-migrate-3.0.0.js') }}"></script>
+    <script src="{{ asset('assets/store/js/jquery-ui.min.js') }}"></script>
+    <!-- Popper JS -->
+    <script src="{{ asset('assets/store/js/popper.min.js') }}"></script>
+    <!-- Bootstrap JS -->
+    <script src="{{ asset('assets/store/js/bootstrap.min.js') }}"></script>
+    <!-- Color JS -->
+    <script src="{{ asset('assets/store/js/colors.js') }}"></script>
+    <!-- Slicknav JS -->
+    <script src="{{ asset('assets/store/js/slicknav.min.js') }}"></script>
+    <!-- Owl Carousel JS -->
+    <script src="{{ asset('assets/store/js/owl-carousel.js') }}"></script>
+    <!-- Magnific Popup JS -->
+    <script src="{{ asset('assets/store/js/magnific-popup.js') }}"></script>
+    <!-- Waypoints JS -->
+    <script src="{{ asset('assets/store/js/waypoints.min.js') }}"></script>
+    <!-- Countdown JS -->
+    <script src="{{ asset('assets/store/js/finalcountdown.min.js') }}"></script>
+    <!-- Nice Select JS -->
+    <script src="{{ asset('assets/store/js/nicesellect.js') }}"></script>
+    <!-- Flex Slider JS -->
+    <script src="{{ asset('assets/store/js/flex-slider.js') }}"></script>
+    <!-- ScrollUp JS -->
+    <script src="{{ asset('assets/store/js/scrollup.js') }}"></script>
+    <!-- Onepage Nav JS -->
+    <script src="{{ asset('assets/store/js/onepage-nav.min.js') }}"></script>
+    <!-- Easing JS -->
+    <script src="{{ asset('assets/store/js/easing.js') }}"></script>
+    <!-- Active JS -->
+    <script src="{{ asset('assets/store/js/active.js') }}"></script>
+
+
+ 

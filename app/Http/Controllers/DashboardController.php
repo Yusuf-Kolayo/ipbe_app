@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB; 
+use Illuminate\Support\Facades\Session;
 use App\Models\Notification;  
 use App\Models\User;  
 use App\Models\Message;  
 use App\Models\Active_state;
 use App\Models\Target_request;
 use App\Models\Target_saving; 
-
+use App\Models\Product; 
 
 class DashboardController extends BaseController
 {
@@ -31,7 +32,7 @@ class DashboardController extends BaseController
      * @return \Illuminate\Contracts\Support\Renderable
      */
     
-    public function index()
+    public function index(Request $request)
     {
         $curr_user = auth()->user();  // get user data
         $target_saving = Target_saving::first();
@@ -41,8 +42,18 @@ class DashboardController extends BaseController
                                                      { $view = 'admin.dashboard'; } 
         else if ($curr_user->usr_type=='usr_agent')  { $view='agent.dashboard';   }
         else if ($curr_user->usr_type=='usr_client') { $view='client.dashboard';  }
-        
-        return view($view,   [  'curr_user'=>$curr_user  ]);  
+      
+        $product_attp = null;
+        if ($request->cookie('purchase_attempt')) {
+            $error_message = 'This account cannot support this purchase type, please log out and register a new account to proceed';
+            Session::flash('purchase_wrong_account', $error_message); 
+ 
+            $ard = explode('::',$request->cookie('purchase_attempt'));
+            $product_id = $ard[1];
+            $product_attp = Product::where('product_id', $product_id)->first();
+        } 
+        // dd($product_attp);
+        return view($view,   compact('curr_user','product_attp'));  
     }
 
 

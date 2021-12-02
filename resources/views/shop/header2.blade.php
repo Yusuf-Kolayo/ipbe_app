@@ -139,7 +139,7 @@
 															<li><a href="checkout.html">Checkout</a></li> --}}
 														</ul>
 													</li>
-												 									
+
 													<li><a href="#">About Us</a></li>
 													<li><a href="contact.html">Contact Us</a></li>
 													<li><a href="#">Terms of Service</a></li>
