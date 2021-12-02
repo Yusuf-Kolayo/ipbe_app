@@ -1,24 +1,8 @@
-@extends('layouts.main')
-@section('content')
-
-<div class="container-fluid card">
-    @if (session('successful'))
-    <div class="alert alert-success alert-dismissible fade show mb-1 py-1" role="alert">
-        <p class="text-center">{{ session('successful') }}</p>
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
-    </div>
-    @endif
-    @if (session('error'))
-    <div class="alert alert-danger alert-dismissible fade show mb-1 py-1" role="alert">
-        <p class="text-center">{{ session('error') }}</p>
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
-    </div>
-    @endif
-    {{ Form::open(array('url' => route('save_payroll_detail'), 'method' => 'PUT', 'class'=>'form form-validate')) }}
+{{ Form::open(array('url' => route('update_employee_payroll'), 'method' => 'POST', 'class'=>'form form-validate')) }}
         @csrf
         <div class="row">
             <div class="col-12 card py-2">
-                <h3><i class="fas fa-cogs mr-2"></i>Payroll Setup</h3>
+                <h3><i class="fas fa-cogs mr-2"></i>Edit Payroll</h3>
             </div>
         </div>
         <div class="row mt-3 mx-1">
@@ -31,33 +15,26 @@
                         <div class="row">
                             <div class="col-12">
                                 <label for="emp_name">Employee Name</label>
-                                <select class="custom-select custom-select-sm @error('employee_name') is-invalid @enderror" id="emp_name" name="employee_name">
-                                    <option class="text-center" value="">- - EMPLOYEE NAME - -</option>
-                                    @foreach($employee as $employees)
-                                    <option value="{{$employees->user_id}}" {{(old("employee_name") == $employees->user_id  ? "selected" : "")}} >
-                                        @if($employees->usr_type=='usr_admin')
-                                        {{ucfirst($employees->staff->last_name).' '. ucfirst($employees->staff->first_name)}}
+                                    <input id="emp_name" name="employee_name" type="text" class="form-control form-control-sm" readonly="readonly" 
+                                        @if($employeePayrollInfo->user->usr_type=='usr_admin')
+                                        value="{{ucfirst($employeePayrollInfo->user()->staff->last_name).' '. ucfirst($employeePayrollInfo->user()->staff->first_name)}}"
                                         @else
-                                        {{ucfirst($employees->agent->agt_last_name).' '. ucfirst($employees->agent->agt_first_name)}}
-                                        @endif
-                                    </option>
-                                    @endforeach
+                                        value="{{ucfirst($employeePayrollInfo->user->agent->agt_last_name).' '. ucfirst($employeePayrollInfo->user->agent->agt_first_name)}}"
+                                        @endif    
+                                    >
                                 </select>
-                                @error('employee_name')
-                                    <p class="alert alert-danger py-1 mt-1">
-                                        @if($message=='The employee name has already been taken.')
-                                        <small class="px-0">Payroll has been created for this Employee before , Edit employee payroll instead ! <a href="{{ route('payroll_list')}}"><i class="fas fa-plus-circle text-dark pl-1"></i></a>
-                                            
-                                        </small>
-                                        @else
-                                        {{$message}}
-                                        @endif
-                                    </p>
-                                @enderror
+
                             </div>
                             <div class="col-12 form-control-wrap">
                                 <label for="pay_day">Payment Date</label>
-                                <input id="pay_day" name="pay_day" type="text" class="form-control form-control-sm date-picker date-picker-alt" data-date-format="dd-mm-yyyy"required>
+                                <input name="id" type="hidden" class="form-control form-control-sm" required value="{{$employeePayrollInfo->id}}">
+                                <input id="pay_day" name="pay_day" type="date" class="form-control form-control-sm" required
+                                @if(old('pay_day'))
+                                value="{{old('pay_day')}}"
+                                @else
+                                value="{{$employeePayrollInfo->pay_day}}"
+                                @endif 
+                                >
                             </div>
                         </div>
                     </div>
@@ -66,9 +43,18 @@
                             <div class="col-12">
                                 <label for="emp_type">Type of Employee</label>
                                 <select class="custom-select custom-select-sm" id="emp_type" name="emp_type"required>
-                                    <option class="text-center" value=""> - - SELECT - -</option>
-                                    <option value="permanent" @if(old('emp_type')== "permanent") selected="selected" @endif >Permanent Staff</option>
-                                    <option value="temporary" @if(old('emp_type')== "temporary") selected="selected" @endif>Temporary Staff</option>
+                                    <option class="text-center"> - - SELECT - -</option>
+                                    <option value="permanent" 
+                                        @if(old('emp_type')== "permanent") selected="selected" @endif 
+                                        @if($employeePayrollInfo->employee_type== "permanent") selected="selected" @endif>
+                                        Permanent Staff
+                                    </option>
+                                    
+                                    <option value="temporary" 
+                                        @if(old('emp_type')== "temporary") selected="selected" @endif
+                                        @if($employeePayrollInfo->employee_type== "temporary") selected="selected" @endif>
+                                        Temporary Staff
+                                    </option>
                                 </select>
                             </div>
                             <div class="col-12">
@@ -77,7 +63,7 @@
                                 @if(old('basic_salary'))
                                 value="{{old('basic_salary')}}"
                                 @else
-                                value="0" 
+                                value="{{$employeePayrollInfo->salary}}" 
                                 @endif
                                 class="form-control form-control-sm" required>
                                 <div class="d-none row text-center" id="validation">
@@ -107,7 +93,7 @@
                                 @if(old('rent'))
                                 value="{{old('rent')}}"
                                 @else
-                                value="0" 
+                                value="{{$employeePayrollInfo->rent_A}}" 
                                 @endif
                                 class="form-control form-control-sm">
                             </div>
@@ -117,7 +103,7 @@
                                 @if(old('overtime'))
                                 value="{{old('overtime')}}"
                                 @else
-                                value="0" 
+                                value="{{$employeePayrollInfo->overtime_A}}" 
                                 @endif
                                 class="form-control form-control-sm">
                             </div>
@@ -127,7 +113,7 @@
                                 @if(old('retire'))
                                 value="{{old('retire')}}"
                                 @else
-                                value="0" 
+                                value="{{$employeePayrollInfo->retire_A}}" 
                                 @endif
                                 class="form-control form-control-sm">
                             </div>
@@ -141,7 +127,7 @@
                                 @if(old('med'))
                                 value="{{old('med')}}"
                                 @else
-                                value="0" 
+                                value="{{$employeePayrollInfo->med_A}}" 
                                 @endif
                                 class="form-control form-control-sm">
                             </div>
@@ -151,7 +137,7 @@
                                 @if(old('convey'))
                                 value="{{old('convey')}}"
                                 @else
-                                value="0" 
+                                value="{{$employeePayrollInfo->convey_A}}" 
                                 @endif
                                 class="form-control form-control-sm">
                             </div>
@@ -161,7 +147,7 @@
                                 @if(old('other'))
                                 value="{{old('other')}}"
                                 @else
-                                value="0" 
+                                value="{{$employeePayrollInfo->other_A}}" 
                                 @endif
                                 class="form-control form-control-sm">
                             </div>
@@ -184,7 +170,7 @@
                                 @if(old('tax'))
                                 value="{{old('tax')}}"
                                 @else
-                                value="0" 
+                                value="{{$employeePayrollInfo->tax_D}}" 
                                 @endif
                                 class="form-control form-control-sm">
                             </div>
@@ -194,7 +180,7 @@
                                 @if(old('pension'))
                                 value="{{old('pension')}}"
                                 @else
-                                value="0" 
+                                value="{{$employeePayrollInfo->pension_D}}" 
                                 @endif
                                 class="form-control form-control-sm">
                             </div>
@@ -208,7 +194,7 @@
                                 @if(old('abwork'))
                                 value="{{old('abwork')}}"
                                 @else
-                                value="0" 
+                                value="{{$employeePayrollInfo->ab_work_D}}" 
                                 @endif
                                 class="form-control form-control-sm">
                             </div>
@@ -218,7 +204,7 @@
                                 @if(old('advance'))
                                 value="{{old('advance')}}"
                                 @else
-                                value="0" 
+                                value="{{$employeePayrollInfo->advance_D}}" 
                                 @endif
                                 class="form-control form-control-sm">
                             </div>
@@ -261,19 +247,39 @@
             </div>
         </div>
         <div class="row mt-3 mx-1">
-            <div class="col-12 mt-0 mb-5 ">
+            <div class="col-6 mt-0 mb-5 ">
+                <button type="button" class="btn btn-secondary btn-block btn-sm py-3 font-weight-bolder" data-dismiss="modal">CLOSE</button>
+            </div>
+            <div class="col-6 mt-0 mb-5 ">
                 <input type="submit" class="btn btn-block btn-sm btn-primary py-3 font-weight-bolder" id="savePayroll" value="SAVE">
             </div>
         </div>
         {{ Form::close() }}
-</div>
 
-<script type="text/javascript" src="{{ URL::asset('js/jquery-3.5.1.min.js') }}"></script>
+        <script type="text/javascript" src="{{ URL::asset('js/jquery-3.5.1.min.js') }}"></script>
 <script type="text/javascript" src="{{ URL::asset('js/popper.min.js') }}"></script>
 <script type="text/javascript" src="{{ URL::asset('js/bootstrap.min.js') }}"></script>
 
 <script type="text/javascript">
     $(document).ready(function() {
+        let allowance=0;
+        let deduction=0;
+        $('#bsalary').val($('#salary').val())
+        $("#deduction").find(':input').each(function(){
+            deduction += parseInt($(this).val());
+            $('#deduct').val(deduction);
+        });
+        $("#allowance").find(':input').each(function(){
+            deduction += parseInt($(this).val());
+            $('#allowee').val(deduction);
+        });
+        let bsalary=parseInt($('#bsalary').val());
+        let allDeduct=parseInt($('#deduct').val());
+        let allAllowance=parseInt($('#allowee').val());
+        let grossIncome=bsalary + allAllowance;
+        let netIncome= grossIncome - allDeduct;
+        netSalary= $('#nsalary').val(netIncome);
+    
         $('form').mouseenter(function(){
             $("#salary").keyup("input", function() {
                 if($('#salary').val() > 0){
@@ -308,7 +314,6 @@
                 let grossIncome=bsalary + allAllowance;
                 let netIncome= grossIncome - allDeduct;
                 netSalary= $('#nsalary').val(netIncome);
-                console.log($('#nsalary').val());
             })
             $('#deduction').keyup(function(){
                 let deduction=0;
@@ -339,29 +344,6 @@
                     $('#showMsg').html('Basic Salary can not be zero "0"')
                 }
             })
-        // function salarySummary(){
-        //     let allowance=0;
-        //     let deduction=0;
-
-        //     $('#bsalary').val($("#salary").val());
-
-        //     $("#allowance").find(':input').each(function(){
-        //         allowance += parseInt($(this).val());
-        //         $('#allowee').val(allowance);           
-        //     });
-
-        //     $("#deduction").find(':input').each(function(){
-        //         deduction += parseInt($(this).val());
-        //         $('#deduct').val(deduction);
-        //     });
-        //     let bsalary=parseInt($('#bsalary').val());
-        //     let allDeduct=parseInt($('#deduct').val());
-        //     let allAllowance=parseInt($('#allowee').val());
-        //     let grossIncome=bsalary + allAllowance;
-        //     let netIncome= grossIncome - allDeduct;
-        //     netSalary= $('#nsalary').val(netIncome);
-        // }
         })
     })
 </script>
-@endsection

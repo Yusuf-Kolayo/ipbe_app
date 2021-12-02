@@ -135,12 +135,7 @@
                             <span class="nk-menu-text"> Payroll Control</span>
                         </a> 
                     
-                        <ul class="nk-menu-sub"> 
-                            <li class="nk-menu-item">
-                                <a href="{{ route('target_saving')}}" class="nk-menu-link">
-                                    <span class="nk-menu-text">Payroll Summary</span>
-                                </a>
-                            </li>
+                        <ul class="nk-menu-sub">
                             <li class="nk-menu-item">
                                 <a href="{{ route('payroll_list')}}" class="nk-menu-link">
                                     <span class="nk-menu-text">Employee Detail</span>

@@ -216,8 +216,11 @@ Route::post('/admin/delete_target_request',[TargetSavingController::class,'delet
 Route::post('/admin/refreshdiv',[TargetSavingController::class,'refreshTargetRequestDiv'])->name('refresh_request_div');
 
 //=========================      PAYROLL ROUTES      ==========================//payroll_list.blade
-Route::get('/admin/all_payroll_month_section',[PayrollController::class,'payList'])->name('payroll_list');
+Route::get('/admin/all_employee_payroll_detail',[PayrollController::class,'payList'])->name('payroll_list');
 Route::get('/admin/all_payroll_january',[PayrollController::class,'payrollListMonthly'])->name('payroll_list_monthly');
 Route::get('/admin/payroll_setting',[PayrollController::class,'payrollAssign'])->name('payroll_assign');
 Route::put('/admin/save_new_payroll',[PayrollController::class,'savePayroll'])->name('save_payroll_detail');
 Route::get('/admin/payroll_summary_and_report',[PayrollController::class,'payrollReport'])->name('payroll_report');
+Route::get('/admin/edit_employee_payroll',[PayrollController::class,'editEmployeePayrollRecord'])->name('edit_employee_payroll');
+Route::post('/admin/edit_employee_payroll',[PayrollController::class,'updateEditedPayroll'])->name('update_employee_payroll');
+Route::post('/admin/delete_employee_payroll_record',[PayrollController::class,'deleteEmployeePayroll'])->name('delete_employee_payroll');
