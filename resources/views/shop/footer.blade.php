@@ -96,10 +96,7 @@
 
 
 	
-    <!-- Jquery -->
-    <script src="{{ asset('assets/store/js/jquery.min.js') }}"></script>
-    <script src="{{ asset('assets/store/js/jquery-migrate-3.0.0.js') }}"></script>
-    <script src="{{ asset('assets/store/js/jquery-ui.min.js') }}"></script>
+
     <!-- Popper JS -->
     <script src="{{ asset('assets/store/js/popper.min.js') }}"></script>
     <!-- Bootstrap JS -->

@@ -43,15 +43,23 @@ class DashboardController extends BaseController
         else if ($curr_user->usr_type=='usr_agent')  { $view='agent.dashboard';   }
         else if ($curr_user->usr_type=='usr_client') { $view='client.dashboard';  }
       
+        // dd(explode('::', $request->cookie('purchase_attempt'))[0]);
         $product_attp = null;
-        if ($request->cookie('purchase_attempt')) {
-            $error_message = 'This account cannot support this purchase type, please log out and register a new account to proceed';
+        if ($request->cookie('purchase_attempt')&&($curr_user->client->client_type!='self_reg')) {
+            $error_message = 'This account was not self registered and cannot support this purchase type, please log out and register a new account to proceed';
             Session::flash('purchase_wrong_account', $error_message); 
  
-            $ard = explode('::',$request->cookie('purchase_attempt'));
-            $product_id = $ard[1];
+            $product_id = explode('::',$request->cookie('purchase_attempt'))[1]; 
             $product_attp = Product::where('product_id', $product_id)->first();
         } 
+         else if ($request->cookie('purchase_attempt')&&($curr_user->client->client_type=='self_reg')) {
+             if (explode('::', $request->cookie('purchase_attempt'))[0]=='buy_now') {
+                return redirect()->route('shop.checkout_buy_now');
+             }  else if (explode('::', $request->cookie('purchase_attempt'))[0]=='installment') {
+                return redirect()->route('shop.checkout_installment');
+            }
+
+        }
         // dd($product_attp);
         return view($view,   compact('curr_user','product_attp'));  
     }

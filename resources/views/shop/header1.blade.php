@@ -20,8 +20,20 @@
 							<ul class="list-main">
 								{{-- <li><i class="ti-location-pin"></i> Store location</li> --}}
 								<li><i class="ti-alarm-clock"></i> <a href="#">Daily deal</a></li>
+								@guest
+								<li><i class="ti-power-off"></i><a href="{{route('register_login')}}">Login</a></li>
+								@else 
 								<li><i class="ti-user"></i> <a href="#">My account</a></li>
-								<li><i class="ti-power-off"></i><a href="{{route('login')}}">Login</a></li>
+								<li> 
+									<form id="logout-form" action="{{ route('shop_sign_out') }}" method="POST">
+										@csrf
+										<button type="submit" class="btn_link">Sign out</button>
+									</form>
+								 </li>
+
+
+
+								@endguest 
 							</ul>
 						</div>
 						<!-- End Top Right -->

@@ -18,10 +18,22 @@
 							<!-- Top Right -->
 							<div class="right-content">
 								<ul class="list-main">
-									<li><i class="ti-location-pin"></i> Store location</li>
-									<li><i class="ti-alarm-clock"></i> <a href="#">Daily deal</a></li>
-									<li><i class="ti-user"></i> <a href="#">My account</a></li>
-                                    <li><i class="ti-power-off"></i><a href="{{route('login')}}">Login</a></li>
+										{{-- <li><i class="ti-location-pin"></i> Store location</li> --}}
+										<li><i class="ti-alarm-clock"></i> <a href="#">Daily deal</a></li>
+										@guest
+										<li><i class="ti-power-off"></i><a href="{{route('register_login')}}">Login</a></li>
+										@else 
+										<li><i class="ti-user"></i> <a href="#">My account</a></li>
+										<li> 
+											<form id="logout-form" action="{{ route('shop_sign_out') }}" method="POST">
+												@csrf
+												<button type="submit" class="btn_link">Sign out</button>
+											</form>
+										 </li>
+		
+		
+		
+										@endguest 
 								</ul>
 							</div>
 							<!-- End Top Right -->
@@ -53,7 +65,7 @@
 							</div>
 							<!--/ End Search Form -->
 							<div class="mobile-nav"></div>
-						</div>
+						</div> 
 						<div class="col-lg-8 col-md-7 col-12">
 							<div class="search-bar-top">
 								<div class="search-bar">
@@ -80,7 +92,7 @@
 									<a href="#" class="single-icon"><i class="fa fa-user-circle-o" aria-hidden="true"></i></a>
 								</div>
 								<div class="sinlge-bar shopping">
-									<a href="#" class="single-icon"><i class="ti-bag"></i> <span class="total-count">2</span></a>
+									<a href="#" class="single-icon"><i class="ti-shopping-cart mr-2"></i> <span class="total-count">2</span></a>
 									<!-- Shopping Item -->
 									<div class="shopping-item">
 										<div class="dropdown-cart-header">

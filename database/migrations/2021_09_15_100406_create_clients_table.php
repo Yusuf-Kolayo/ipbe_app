@@ -16,13 +16,17 @@ class CreateClientsTable extends Migration
         if(Schema::hasTable('clients')) return;
         Schema::create('clients', function (Blueprint $table) {
             $table->id();
+            $table->string('client_type', 22);
             $table->string('client_id', 55);
-            $table->string('agent_id', 55);
+            $table->string('agent_id', 55)->nullable();
             $table->string('first_name', 100);
             $table->string('last_name', 55);
             $table->string('other_name', 55)->nullable();
             $table->string('phone', 55);
             $table->string('address', 1000);
+            $table->string('city', 1000)->nullable();
+            $table->string('state', 22)->nullable();
+            $table->string('country', 22)->nullable(); 
             $table->timestamps();
         });
     }

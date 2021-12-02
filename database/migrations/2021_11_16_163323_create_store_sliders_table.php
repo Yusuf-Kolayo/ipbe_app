@@ -15,13 +15,13 @@ class CreateStoreSlidersTable extends Migration
     {   if(Schema::hasTable('store_sliders')) return;
         Schema::create('store_sliders', function (Blueprint $table) {
             $table->integer('id')->primary();
-            $table->string('slider_id', 22);
-            $table->string('status', 11);
-            $table->string('background', 100);
+            $table->string('slider_id', 55);
+            $table->string('status', 22);
+            $table->string('background', 1000);
             $table->integer('position');
-            $table->string('type');
-            $table->string('link_text');
-            $table->string('link_url'); 
+            $table->string('type', 22);
+            $table->string('link_text', 22);
+            $table->string('link_url', 5000);
             $table->timestamps();
         });
     }

@@ -43,12 +43,21 @@
 	<link rel="stylesheet" href="{{asset('assets/store/css/style.css')}}">
   <link rel="stylesheet" href="{{ asset('assets/store/css/responsive.css') }}">
 
+
+
+      <!-- Jquery -->
+      <script src="{{ asset('assets/store/js/jquery.min.js') }}"></script>
+      <script src="{{ asset('assets/store/js/jquery-migrate-3.0.0.js') }}"></script>
+      <script src="{{ asset('assets/store/js/jquery-ui.min.js') }}"></script>
+
 <style>
     .quickview-content .add-to-cart .btn {  white-space: nowrap; }
     .quickview-content .add-to-cart h3 {  white-space: nowrap; }
     .modal-dialog .quickview-slider-active { width: 100%; }
     .quickview-content .add-to-cart {  display: block;  }
-
+    .btn_link { background: none; border: 0px ; font-size: 1em;}
+    .btn_link:hover { background: none; border: 0px ; font-size: 1em; color: #46b9eb; }
+    
     @media only screen and (max-width: 450px) {
       .modal-dialog .quickview-slider-active {
         display: block;     width: 100%;
@@ -81,6 +90,7 @@
     </div>
     <!-- End Preloader -->
     
+
 
 
 

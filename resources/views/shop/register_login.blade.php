@@ -34,6 +34,12 @@
 		<!-- Start Checkout -->
 		<section class="shop checkout section">
 			<div class="container">
+
+				  <div class="container-fluid pb-2">
+					<x-alerts /> 
+				  </div>
+
+
 				<div class="row"> 
 					<div class="col-lg-5 col-12 p-1">
 						<div class="checkout-form p-4" style="background-color:#ffc107;">
@@ -124,6 +130,28 @@
 										<div class="form-group">
 											<label>Address</label>
 											<input class="input_field" type="text" name="address" placeholder="" required="required">
+										</div>
+									</div>  
+
+
+									<div class="col-lg-6 col-md-6 col-12">
+										<div class="form-group">
+											<label>Username</label>
+											<input class="input_field" type="text" name="username" placeholder="" required="required">
+										</div>
+									</div>  
+
+									<div class="col-lg-6 col-md-6 col-12">
+										<div class="form-group">
+											<label>Password</label>
+											<input class="input_field" type="password" name="password" placeholder="" required="required">
+										</div>
+									</div>  
+
+									<div class="col-lg-6 col-md-6 col-12">
+										<div class="form-group">
+											<label>Confirm Password</label>
+											<input class="input_field" type="password" name="confirm_password" placeholder="" required="required">
 										</div>
 									</div>  
 								</div>

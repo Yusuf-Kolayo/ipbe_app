@@ -39,7 +39,10 @@ Route::get('/register_login/{purchase_type?}/{product_id?}', [ShopController::cl
 Route::post('/buy/{purchase_type?}/{product_id?}', [ShopController::class, 'buy'])->name('buy');
 Route::post('/register_submit', [ShopController::class, 'register_submit'])->name('register_submit');
 Route::post('/login_submit', [ShopController::class, 'login_submit'])->name('login_submit');
+Route::post('/shop_sign_out', [ShopController::class, 'shop_sign_out'])->name('shop_sign_out');
 Route::get('/shop/product_quickshop', [ShopController::class, 'product_quickshop'])->name('shop.product_quickshop');
+Route::get('/shop/checkout_buy_now', [ShopController::class, 'checkout_buy_now'])->name('shop.checkout_buy_now');
+Route::get('/shop/checkout_installment', [ShopController::class, 'checkout_installment'])->name('shop.checkout_installment');
 Route::get('/shop/{cat_id}/{slug?}', [ShopController::class, 'shop'])->name('shop');
 
 

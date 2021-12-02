@@ -25,6 +25,11 @@ if(!function_exists('get_position')) {
         else              { $pos= 'null';  }
         return $pos;
     }
-
    
+}
+
+
+
+if(!function_exists('naira')) {
+    function naira() {  return '&#8358;';  }
 }

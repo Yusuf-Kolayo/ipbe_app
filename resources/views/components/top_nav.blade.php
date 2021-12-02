@@ -91,11 +91,11 @@
                                                     @foreach ($new_notifications as $new_notification)
                                                     <div class="nk-notification-item dropdown-inner">
                                                         <a href="{{route('resolve_notification', ['id'=>$new_notification->id])}}">
-                                                        <div class="nk-notification-icon">
-                                                            <em class="icon icon-circle bg-warning-dim ni ni-curve-down-right"></em>
+                                                        <div class="nk-notification-icon d-inline">
+                                                            {{-- <em class="icon icon-circle bg-warning-dim ni ni-curve-down-right"></em> --}}
                                                             <i class="{{$notification_icon_array[$new_notification->type]}}"></i>
                                                         </div>
-                                                        <div class="nk-notification-content">
+                                                        <div class="nk-notification-content d-inline">
                                                             <div class="nk-notification-text">{!!$new_notification->message!!}</div>
                                                             <div class="nk-notification-time"> {{$new_notification->created_at}}</div>
                                                         </div>

@@ -17,19 +17,20 @@ class CreateBusinessInfosTable extends Migration
         Schema::create('business_infos', function (Blueprint $table) {
             $table->integer('id')->primary();
             $table->string('name', 55)->nullable();
-            $table->string('logo', 100)->nullable();
-            $table->string('slogan', 55)->nullable();
-            $table->string('phone_a', 55)->nullable();
-            $table->string('phone_b', 55)->nullable();
-            $table->string('support_email', 55)->nullable();
-            $table->string('address_a', 55)->nullable();
-            $table->string('address_b', 55)->nullable();
-            $table->string('about_us', 55)->nullable();
-            $table->string('facebook_link', 55)->nullable();
-            $table->string('twitter_link', 55)->nullable();
-            $table->string('instagram_link', 55)->nullable();
-            $table->string('terms_of_service', 55)->nullable();
-            $table->string('privacy_policy', 55)->nullable();
+            $table->string('logo', 555)->nullable();
+            $table->string('slogan', 111)->nullable();
+            $table->string('phone_a', 22)->nullable();
+            $table->string('phone_b', 22)->nullable();
+            $table->string('email_a', 111)->nullable();
+            $table->string('email_b', 111)->nullable();
+            $table->string('address_a', 111)->nullable();
+            $table->string('address_b', 111)->nullable();
+            $table->text('about_us')->nullable();
+            $table->string('facebook_link', 111)->nullable();
+            $table->string('twitter_link', 111)->nullable();
+            $table->string('instagram_link', 111)->nullable();
+            $table->text('terms_of_service')->nullable();
+            $table->text('privacy_policy')->nullable();
             $table->timestamps();
         });
     }
