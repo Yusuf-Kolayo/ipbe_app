@@ -22,6 +22,8 @@
 <link id="skin-default" rel="stylesheet" href="{{asset('assets/css/theme.css?ver=2.2.0')}}">
 <!-- fontawesome icons -->
 <link rel="stylesheet" href="{{ asset('icons/css/all.min.css') }}">
+{{-- sweet alert link --}}
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
  
 
