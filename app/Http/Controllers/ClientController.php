@@ -121,6 +121,7 @@ class ClientController extends BaseController
         $catchment_id = auth()->user()->agent->catchment_id;
 
         $client = Client::create([  
+            'client_type' => 'agent_reg',
             'client_id' => $client_id,
             'agent_id' => $agent_id, 
             'first_name' => $data['first_name'],

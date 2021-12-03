@@ -18,13 +18,13 @@ class CreateProductsTable extends Migration
             $table->integer('id')->primary();
             $table->string('product_id', 22);
             $table->string('prd_name', 100);
-            $table->string('description', 1000);
+            $table->text('description');
             $table->integer('price');
             $table->string('img_name', 1000);
             $table->integer('sub_category_id');
             $table->integer('main_category_id');
             $table->integer('brand_id');
-            $table->timestamps()->default('current_timestamp()');
+            $table->timestamps();
         });
     }
 

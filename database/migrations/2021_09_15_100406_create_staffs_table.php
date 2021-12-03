@@ -27,7 +27,7 @@ class CreateStaffsTable extends Migration
             $table->string('state', 22)->nullable();
             $table->date('birth_date')->nullable();
             $table->string('actor_id', 22);
-            $table->timestamps()->default('current_timestamp()');
+            $table->timestamps();
         });
     }
 

@@ -24,6 +24,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->string('usr_type', 22);
+            $table->string('adm_type', 11)->nullable();
             $table->timestamps();
         });
     }

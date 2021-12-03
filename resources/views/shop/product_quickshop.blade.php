@@ -51,7 +51,7 @@
                     <span><i class="fa fa-check-circle-o"></i> in stock</span>
                 </div>
             </div>
-            <h3>{{number_format($product->price)}}</h3>
+            <h3>{!! naira() !!} {{ number_format($product->price)}}</h3>
             <div class="quickview-peragraph mb-4">
                 <p>{!!$product->description!!}</p>
             </div>
@@ -99,7 +99,7 @@
                     <div class="col-12 col-md-8">
                         <table border="0" cellpadding="2" cellspacing="4" width="100%" class="mb-0">
                             <tr>  
-                            @guest
+                            {{-- @guest --}}
 
                                 <th width="65%" class="p-1">
                                     {!! Form::open(['route' => ['buy',['product_id'=>$product->product_id,'purchase_type'=>'buy_now']], 'method'=>'POST', 'files' => false, 'class'=>'mb-0']) !!}
@@ -112,11 +112,11 @@
                                     {!! Form::close() !!}                                
                                 </td>
                             
-                            @else
+                            {{-- @else
                             <th width="65%" class="p-1"><a href="#" class="btn btn-block w-100 m-0">Buy in Installment</a></th>  
                             <td width="35%" class="p-1"><a href="#" class="btn btn-block w-100 m-0">Buy now</a></td>
                             @endguest
-                            </tr>
+                            </tr> --}}
                         </table>
                     </div>
                 </div> 
