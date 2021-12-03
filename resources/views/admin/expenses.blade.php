@@ -120,8 +120,12 @@
                  </tr>
             </thead>
             <tbody>
+                @if($countAllExpense =='0')
+                    <tr>
+                        <th colspan="11" class="text-center">No Expense Record found</th>
+                    </tr>
+                @else
                 @foreach($Expense as $allExpense) 
-                
                 <tr class="rowprint">
                     <td><input id="optionsCheckbox" class="checkBox" name="selector[]" type="checkbox" value=""></td>
                     <td class="d-none">{{$allExpense['id']}}</td>
@@ -145,6 +149,7 @@
                 </tr> 
                 <p class="d-none">{{$no++}}</p>
                 @endforeach
+                @endif
                      
             </tbody>
         </table>  

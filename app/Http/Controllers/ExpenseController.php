@@ -37,8 +37,10 @@ class ExpenseController extends BaseController
         }   
 
         // this category function loads all expenses category created
-        $data=Expenses_category::orderBy('expense_catname', 'ASC')->get();   $no=1;
-        return view('Admin\expenseseditcat',['data'=>$data,'no'=>$no]);
+        $data=Expenses_category::orderBy('expense_catname', 'ASC')->get();   
+        $no=1;
+        $countDate=$data->count();
+        return view('Admin\expenseseditcat',['data'=>$data, 'no'=>$no, 'countDate'=>$countDate]);
     }
         
     public function newExpensesCatgory(Request $cat){
@@ -211,9 +213,9 @@ class ExpenseController extends BaseController
         ->get();
 
         $category=Expenses_category::orderBy('expense_catname', 'ASC')->get();
-
+        $countAllExpense = $allExpense->count();
         $no=1;
-        return view ('Admin\expenses',['Expense'=>$allExpense,'no'=>$no,'category'=>$category]) ; 
+        return view ('Admin\expenses',['Expense'=>$allExpense,'no'=>$no,'category'=>$category,'countAllExpense'=>$countAllExpense]) ; 
               
     }
 

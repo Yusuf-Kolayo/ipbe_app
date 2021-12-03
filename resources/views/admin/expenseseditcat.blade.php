@@ -45,6 +45,14 @@
                 </tr>
             </thead>
             <tbody class="text-center">
+            @if($countDate =='0')
+            <tr>
+                <td colspan="4" class="text-center">
+                    Expenses Category is empty ! Create the first category 
+                    <i class="fas fa-plus-square text-dark" data-toggle="modal" data-target="#addmodal"></i>
+                </td>
+            </tr>
+            @else
             @foreach($data as $expensecategory)
                 <tr>
                     <td class="">{{$no}}</td> 
@@ -56,8 +64,8 @@
                         data-name="{{$expensecategory['expense_catname']}}" data-id="{{$expensecategory['id']}}">DELETE</button></td>
                     <?php $no++ ?>
                 </tr>
-               
-            @endforeach   
+            @endforeach  
+            @endif
             </tbody>
         </table>
     </div>
@@ -69,24 +77,24 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Add New Expense Category</h5>
+                <h5 class="modal-title d-inline-block" id="exampleModalLabel">Add New Expense Category</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <form action="{{route('cat_newname')}}" method="POST">
-                <div class="modal-body">
+                <div class="modal-body pb-0">
                     @csrf
                     <div class="row">
-                        <div class="col form-group">
+                        <div class="col-2 form-group">
                             <label for="catname">Title</label>
                         </div>
-                        <div class="col form-group">       
-                            <input type="text" name="cat_name" required>
+                        <div class="col-10 form-group">       
+                            <input type="search" name="cat_name" required class="form-control form-control-sm">
                         </div>
                     </div>
                 </div>
-                <div class="text-right pr-4 form-group">
+                <div class="text-right pr-4 mb-2 form-group">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Exit</button>
                     <button type="submit" class="btn btn-primary">Add</button>
                 </div>
