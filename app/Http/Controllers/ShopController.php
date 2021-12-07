@@ -6,14 +6,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB; 
 use Intervention\Image\Facades\Image;
-use Illuminate\Support\Facades\File; 
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Session;  
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Auth;  
+use Illuminate\Support\Facades\Auth;
 use App\Models\Business_info;
 use App\Models\Store_slider;
 use App\Models\Category;
+use App\Models\Brand;
 use App\Models\Product;
 use App\Models\Client;
 use App\Models\Activity;
@@ -32,7 +33,8 @@ class ShopController extends BaseController
     public function __construct() {
         $business_info = Business_info::where('id', '>', '0')->get()[0];
         $main_categories = Category::where('parent_id', 0)->get();
-        $this->store_data = ['business_info'=>$business_info, 'main_categories'=>$main_categories];
+        $brands = Brand::all();
+        $this->store_data = ['business_info'=>$business_info, 'main_categories'=>$main_categories, 'brands'=>$brands];
     }
 
 
@@ -154,14 +156,44 @@ class ShopController extends BaseController
             return redirect()->intended('dashboard');
         }
 
-      }
+    }
 
 
-    // loads up shop page
-    public function shop()
-    {     
+
+
+
+
+
+    //  loads up shop page [default]
+    public function shop(Request $request, $cat_id, $slug)
+    {
         $store_data = $this->store_data;
-        return view('shop.shop', compact('store_data'));
+        $category = Category::where('id', $cat_id)->first();
+
+        if (count($category->products)>0) {  // product found under category
+            $h_price = Product::where('main_category_id', $cat_id)->orderBy('price', 'desc')->first()->price; 
+            $l_price = Product::where('main_category_id', $cat_id)->orderBy('price', 'asc')->first()->price; 
+    
+            if ($h_price==$l_price) { 
+                $price_array = array($l_price, $h_price);
+            } else {
+                $a = $l_price; $b = (int) $h_price/4; $c = (int) $b*2; $d = (int) $b*3; $e = $h_price;
+                $price_array = array($a, $b, $c, $d, $e);
+            }
+        } else {  // no product found under category
+                $price_array = null; 
+        }
+
+
+        return view('shop.shop', compact('store_data', 'category', 'price_array'));
+    }
+
+
+
+    // fetch_catalog_ajax
+    public function fetch_catalog_ajax (Request $request)
+    {
+        dd($request);
     }
 
 

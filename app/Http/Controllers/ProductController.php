@@ -273,7 +273,7 @@ class ProductController extends BaseController
         $data = request()->validate([
             'img_name' => ['nullable', 'image'],
             'prd_name' => ['required', 'string', 'max:100'],
-            'description' => ['required', 'string', 'max:1000'],
+            'description' => ['required', 'string'],
             'brand_id' => ['required', 'string', 'max:55'],
             'price' => ['required', 'string', 'max:55'],
             'main_category_id' => ['required', 'string', 'max:55'],

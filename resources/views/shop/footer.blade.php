@@ -95,6 +95,28 @@
 	<!-- /End Footer Area -->
 
 
+
+
+
+        
+		<!-- Modal -->
+		<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span class="ti-close" aria-hidden="true"></span></button>
+                    </div>
+                    <div class="modal-body" style="height: initial;">
+						<div id="quickshop_ready_div">
+							<div class="text-center mt-4"> <img src="{{asset('images/preloader1.gif')}}" class="img mx-auto mt-4" alt=""> </div>  
+						</div> 
+                    </div>
+                </div>
+            </div>
+    </div>
+    <!-- Modal end -->
+
+
 	
 
     <!-- Popper JS -->
@@ -114,7 +136,7 @@
     <!-- Countdown JS -->
     <script src="{{ asset('assets/store/js/finalcountdown.min.js') }}"></script>
     <!-- Nice Select JS -->
-    <script src="{{ asset('assets/store/js/nicesellect.js') }}"></script>
+    {{-- <script src="{{ asset('assets/store/js/nicesellect.js') }}"></script> --}}
     <!-- Flex Slider JS -->
     <script src="{{ asset('assets/store/js/flex-slider.js') }}"></script>
     <!-- ScrollUp JS -->
@@ -128,3 +150,20 @@
 
 
  
+	<script>
+		function product_quickshop_modal(product_id) {   
+		$('#quickshop_ready_div').html('<div class="text-center mt-5 mb-5"> <img src=" {{ asset('images/preloader1.gif') }} " class="img mx-auto" alt=""> </div>');
+		// $('#quickshop_ready_div').html('');  
+			var data2send={'product_id':product_id};  
+			$.ajaxSetup({ headers: { 'X-CSRF-TOKEN': $("meta[name=csrf-token]").attr('content') }  });
+			$.ajax({
+				url:"{{ route('shop.product_quickshop') }}",
+				dataType:"text",
+				method:"GET",
+				data:data2send,
+				success:function(resp){
+					$('#quickshop_ready_div').html(resp);
+				}
+		  }); 
+		}
+	</script>

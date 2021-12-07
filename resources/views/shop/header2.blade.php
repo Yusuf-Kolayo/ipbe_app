@@ -69,7 +69,7 @@
 						<div class="col-lg-8 col-md-7 col-12">
 							<div class="search-bar-top">
 								<div class="search-bar">
-									<select>
+									<select class="select_search">
 										<option selected="selected">All Category</option>
                                         @foreach ($store_data['main_categories'] as $main_category) 
 									     	<option>{{$main_category->cat_name}}</option>									

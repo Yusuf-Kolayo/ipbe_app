@@ -41,6 +41,8 @@
 				</div>
 			</div>
 		</div>
+
+		
 		<!-- End Topbar -->
 		<div class="middle-inner">
 			<div class="container">
@@ -69,7 +71,7 @@
 					<div class="col-lg-8 col-md-7 col-12">
 						<div class="search-bar-top">
 							<div class="search-bar">
-								<select> <option>All Categories</option>
+								<select class="select_search"> <option>All Categories</option>
 									@foreach ($store_data['main_categories'] as $main_category) 
 										<option>{{$main_category->cat_name}}</option>									
 									@endforeach 
@@ -127,6 +129,7 @@
 				</div>
 			</div>
 		</div>
+
 		<!-- Header Inner -->
 		<div class="header-inner">
 			<div class="container">

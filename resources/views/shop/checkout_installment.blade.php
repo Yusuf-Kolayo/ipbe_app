@@ -11,6 +11,10 @@
  .wizard>.actions a, .wizard>.actions a:hover, .wizard>.actions a:active { background: #40bbe7; }
  .wizard>.content { background: #ffffff; }
  .wizard>.steps>ul>li { width: 33.3%; }
+ .wizard, .tabcontrol { overflow: visible; }
+ .wizard>.content { overflow: visible; }
+ .wizard>.content>.body label { margin-bottom: 0px; }
+ .shop.checkout .nice-select .list { width: fit-content; }
  @media (max-width: 480px) {
    .wizard>.steps>ul>li { width: 50%; }
  }
@@ -82,10 +86,11 @@
                                     {{--START=> Your next of kin data --}}
                                     <div class="row">
                                         <input type="hidden" name="amt" id="amt" value="{{$product_attp->price}}">
+                                        <input type="hidden"  name="limit" id="limit">
                                         <div class="col-md-6">
                                             <div class="form-group">
                                               <label for="nok_fullname"> Payment Frequency  </label>
-                                              <select class="form-control" name="freq" id="freqs">
+                                              <select class="form-control" name="frequency" id="frequency">
                                                 <option value=""> choose</option>
                                                 <option value="daily">Daily</option>
                                                 <option value="weekly">Weekly</option> 
@@ -97,37 +102,35 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                               <label for="nok_address"> Installment Duration  </label>
-                                              <select class="form-control" name="duration" id="duration"required>
-                                                <option value=""> choose</option>
+                                              <select class="form-control" name="duration" id="duration" required>
+                                                <option value=""></option>
                                                     <option value="2">Two Months</option>
                                                     <option value="3">Three Months</option>
                                                     <option value="4">Four Months</option>
                                                 </select>
                                             </div> 
                                         </div> 
-                        
-                                     
-                                       
+                         
                                         <div class="col-md-6">
                                         <div class="form-group">
                                             <label id="tot-text"> First Payment  </label>
-                                            <input required type="number" class="form-control" id="tot" name="tot" readonly>
+                                            <input required type="number" class="form-control" id="rec_amt" name="rec_amt" readonly>
                                             </div>
                                         </div>
                         
-                                        <div class="col-md-6">                    
+
+                                        <div class="col-md-6">
                                             <div class="form-group">
-                                                <div class="form-radio" style="margin-bottom:10px">
-                                                    <input name="mode" class="d-inline mr-1" id="mode1" type="radio" value='automatic'> 
-                                                    <label class="d-inline" for="mode1">Allow Auto debit on card on payment due date</label>
-                                                </div>
-                                                <div class="form-radio">
-                                                    <input name="mode" id="mode2" class="d-inline mr-1" type="radio" value="manual">  
-                                                    <label class="d-inline" for="mode2">Manually pay on payment due date</label>
-                                                </div> 
-                                            </div>
-                                        </div>
-                                
+                                                <label for="debit_mode"> Debit Mode </label>
+                                                <select class="form-control" name="debit_mode" id="debit_mode" required>
+                                                    <option value=""></option>
+                                                    <option value="automatic">Allow card auto-debit on due-date</option>
+                                                    <option value="manual">Manually pay on due-date</option> 
+                                                </select> 
+                                            </div>         
+                                        </div> 
+
+                                         
 
                                     </div>  
                                       {{--END=> Your next of kin data --}}
@@ -187,7 +190,7 @@
                                             <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="state"> {{__('State')}}  </label>
-                                            <select required id="state" class="form-control" name="state"> 
+                                            <select required id="state" class="form-control" name="state" id="state"> 
                                                 <option value="Lagos">Lagos</option> 
                                               </select>
                                             </div>
@@ -210,7 +213,41 @@
                                  <div class="row">
                     
                                       <div class="col-12">
-                                         
+                                            <table class="table table-hover">
+                                                <tr>
+                                                    <td><label for="">Total Amount</label></td>  <td><label for="" id="s_amt"></label></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="">Frequency</label></td>  <td><label for="" id="s_frequency"></label></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="">Duration</label></td>  <td><label for="" id="s_duration"></label></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="">Recurrent Pay</label></td>  <td><label for="" id="s_rec_amt"></label></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="">Debit Mode</label></td>  <td><label for="" id="s_debit_mode"></label></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="">First Name</label></td>  <td><label for="" id="s_full_name"></label></td>
+                                                </tr> 
+                                                <tr>
+                                                    <td><label for="">Email</label></td>  <td><label for="" id="s_email"></label></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="">Phone</label></td>  <td><label for="" id="s_phone"></label></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="">Address</label></td>  <td><label for="" id="s_address"></label></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="">City</label></td>  <td><label for="" id="s_city"></label></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="">State</label></td>  <td><label for="" id="s_state"></label></td>
+                                                </tr>
+                                            </table>
                                       </div> 
                        
                                   </div>  
@@ -221,110 +258,9 @@
                           </form>
                       </div>  
                     </div>
+ 
 
 
-					{{-- <div class="col-lg-8 col-12">
-						<div class="checkout-form">
-							<h2>Make Your Checkout Here</h2>
-							<p>Please register in order to checkout more quickly</p>
-							<!-- Form -->
-							<form class="form" method="post" action="#">
-								<div class="row">
-									<div class="col-lg-6 col-md-6 col-12">
-										<div class="form-group">
-											<label>First Name</label>
-											<input type="text" name="name" value="{{auth()->user()->client->first_name}}" required="required">
-										</div>
-									</div>
-									<div class="col-lg-6 col-md-6 col-12">
-										<div class="form-group">
-											<label>Last Name</label>
-											<input type="text" name="name" value="{{auth()->user()->client->last_name}}" required="required">
-										</div>
-									</div>
-									<div class="col-lg-6 col-md-6 col-12">
-										<div class="form-group">
-											<label>Email Address</label>
-											<input type="email" name="email" value="{{auth()->user()->email}}" required="required">
-										</div>
-									</div>
-									<div class="col-lg-6 col-md-6 col-12">
-										<div class="form-group">
-											<label>Phone Number</label>
-											<input type="number" name="number" value="{{auth()->user()->client->phone}}" required="required">
-										</div>
-									</div>
-									<div class="col-lg-6 col-md-6 col-12">
-										<div class="form-group">
-											<label>Country</label>
-                                            <input type="text" name="country" value="{{auth()->user()->client->country}}" required="required">
-
-										</div>
-									</div>
-									<div class="col-lg-6 col-md-6 col-12">
-										<div class="form-group">
-											<label>State </label>
-                                            <input type="text" name="country" value="{{auth()->user()->client->state}}" required="required">
-										</div>
-									</div>
-									<div class="col-lg-6 col-md-6 col-12">
-										<div class="form-group">
-											<label>Address </label>
-											<input type="text" name="address" value="{{auth()->user()->client->address}}"  required="required">
-										</div>
-									</div>  
-  
-
-								 
-								</div>
-							</form>
-							<!--/ End Form -->
-						</div>
-					</div>
-					<div class="col-lg-4 col-12">
-						<div class="order-details">
-
-							<!-- Order Widget -->
-							<div class="single-widget">
-								<h2>INSTALLMENT SET-UP</h2>
-								<div class="content">
-									   <div class="row">
-                                              
-                                       </div>
-								</div>
-							</div>
-							<!--/ End Order Widget -->
-
-
-							<!-- Order Widget -->
-							<div class="single-widget">
-								<h2>Payments</h2>
-								<div class="content">
-									<div class="radio mb-1 ml-4 pt-2">
-										<label class="d-block mb-1" for="online_payment"><input name="pay_method" id="online_payment" type="radio"> Online Payment</label>
-										<label class="d-block mb-1" for="cash"><input name="pay_method" id="cash" type="radio"> Cash On Delivery</label>
-									</div>
-								</div>
-							</div>
-							<!--/ End Order Widget -->
-							  
-
-
-
-
-
-
-							<!-- Button Widget -->
-							<div class="single-widget get-button">
-								<div class="content">
-									<div class="button">
-										<a href="#" class="btn">Confirm Transaction</a>
-									</div>
-								</div>
-							</div>
-							<!--/ End Button Widget -->
-						</div>
-					</div> --}}
 				</div>
 			</div>
 		</section>
@@ -458,7 +394,7 @@
                   if(first_name == '') {
                     $('#error_msg').show();
                     $('#error_msg').html('All the required fields must be filled');
-                } else{
+                } else {
                     $('#error_msg').hide();
         
                     $.ajaxSetup({
@@ -517,79 +453,80 @@
 
 
  
-            $(document).ready(function(){
+    $(document).ready(function(){
                 
-                        // DAILY
-                $('#duration').change(function(){
-                        var freqs= $('#freqs').val();
+                // DAILY
+                $('#duration').change(
+                    
+                function calc_rec_amt () {
+                        var frequency= $('#frequency').val();
                         var duration=$('#duration').val();
                         var amt=$('#amt').val();
-                        var tot=$('#tot').val();
-                        
-                        
+                        var tot=$('#rec_amt').val();
+                         
                         
                 
                         // for weekly
-                        if (freqs=='weekly' && duration=='2') {
+                        if (frequency=='weekly' && duration=='2') {
                         var amt1=Math.round(amt/8);
-                        $('#tot-text').html(freqs + ' '+"pay" + ':');
-                        $('#tot').val(amt1);
+                        $('#tot-text').html(frequency + ' '+"pay" + ':');
+                        $('#rec_amt').val(amt1);
                         $('#limit').val('8');
                         
                         }
-                        if (freqs=='weekly' && duration=='3') {
+                        if (frequency=='weekly' && duration=='3') {
                         var amt1=Math.round(amt/12);
-                        $('#tot-text').html(freqs + ' '+"pay" + ':');
-                        $('#tot').val(amt1);
+                        $('#tot-text').html(frequency + ' '+"pay" + ':');
+                        $('#rec_amt').val(amt1);
                         $('#limit').val('12');
                         
                         }
-                        if (freqs=='weekly' && duration=='4') {
+                        if (frequency=='weekly' && duration=='4') {
                         var amt1=Math.round(amt/16);
-                        $('#tot-text').html(freqs + ' '+"pay" + ':');
-                        $('#tot').val(amt1);
+                        $('#tot-text').html(frequency + ' '+"pay" + ':');
+                        $('#rec_amt').val(amt1);
                         $('#limit').val('16');
                         }
                 
                         // for daily 
-                        if (freqs=='daily' && duration=='2') {
+                        if (frequency=='daily' && duration=='2') {
                         var amt1=Math.round(amt/60);
-                        $('#tot-text').html(freqs + ' '+"pay" + ':');
-                        $('#tot').val(amt1);
+                        $('#tot-text').html(frequency + ' '+"pay" + ':');
+                        $('#rec_amt').val(amt1);
                         $('#limit').val('60');
                         
                         }
-                        if (freqs=='daily' && duration=='3') {
+                        if (frequency=='daily' && duration=='3') {
                         var amt1=Math.round(amt/90);
-                        $('#tot-text').html(freqs + ' '+"pay" + ':');
-                        $('#tot').val(amt1);
+                        $('#tot-text').html(frequency + ' '+"pay" + ':');
+                        $('#rec_amt').val(amt1);
                         $('#limit').val('90');
                         
                         }
-                        if (freqs=='daily' && duration=='4') {
+                        if (frequency=='daily' && duration=='4') {
                         var amt1=Math.round(amt/120);
-                        $('#tot-text').html(freqs + ' '+"pay" + ':');
-                        $('#tot').val(amt1);
+                        $('#tot-text').html(frequency + ' '+"pay" + ':');
+                        $('#rec_amt').val(amt1);
                         $('#limit').val('120');
                         }
                 
                         //for monthly
-                        if (freqs=='monthly' && duration=='2') {
+                        if (frequency=='monthly' && duration=='2') {
                         var amt1=Math.round(amt/2);
-                        $('#tot-text').html(freqs + ' '+"pay" + ':');
-                        $('#tot').val(amt1);
+                        $('#tot-text').html(frequency + ' '+"pay" + ':');
+                        $('#rec_amt').val(amt1);
                         $('#limit').val('2');
                         }
-                        if (freqs=='monthly' && duration=='3') {
+                        if (frequency=='monthly' && duration=='3') {
                         var amt1=Math.round(amt/3);
-                        $('#tot-text').html(freqs + ' '+"pay" + ':');
-                        $('#tot').val(amt1);
+                        $('#tot-text').html(frequency + ' '+"pay" + ':');
+                        $('#rec_amt').val(amt1);
                         $('#limit').val('3');
                         }
-                        if (freqs=='monthly' && duration=='4') {
+                        if (frequency=='monthly' && duration=='4') {
                         var amt1=Math.round(amt/4);
-                        $('#tot-text').html(freqs + ' '+"pay" + ':');
-                        $('#tot').val(amt1);
+                        $('#tot-text').html(frequency + ' '+"pay" + ':');
+                        $('#rec_amt').val(amt1);
                         $('#limit').val('4');
                         }
                 
@@ -599,48 +536,22 @@
                         // }else{
                         //   $('#btn').removeAttr('disabled');
                         // }
-                        });
+                        }
+                        
+                        );
                 
-                        $('#freqs').change(function(){
+                        $('#frequency').change(function(){
                         if(duration!=''){
                         $('#duration').val('');
                         $('#tot-text').html("Total pay" + ':');
-                        $('#tot').val('');
+                        $('#rec_amt').val('');
                         }
                 });
 
 
 
 
-                function summary(){
-        var freq=document.getElementById('freqs').value;
-      var durations=document.getElementById('duration').value;
-     var pay=document.getElementById('tot').value;
-     //scroll to the top on mobile view
-      jQuery('html,body').animate({scrollTop:0});
 
-      document.getElementById('sfreq').innerHTML=freq;
-      document.getElementById('sduration').innerHTML=durations + "months";
-      document.getElementById('stot').innerHTML=pay;
-
-      
-      }
-
-      function summary2(){
-          
-      var fullname= document.getElementById('fname').value;
-      var phone=document.getElementById('phone').value;
-      var email= document.getElementById('email').value;
-      var username= document.getElementById('username').value;
-
-      //scroll to the top on mobile view
-      jQuery('html,body').animate({scrollTop:0});
-
-      document.getElementById('sname').innerHTML=fullname;
-      document.getElementById('sphone').innerHTML=phone;
-      document.getElementById('semail').innerHTML=email;
-      document.getElementById('susername').innerHTML=username;
-      }
                 
             });
         </script> 

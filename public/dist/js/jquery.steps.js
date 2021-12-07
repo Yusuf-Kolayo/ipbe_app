@@ -456,8 +456,50 @@ function getValidEnumValue(enumType, keyOrValue)
  **/
 function goToNextStep(wizard, options, state)
 {
+    summary1();
     return paginationClick(wizard, options, state, increaseCurrentIndexBy(state, 1));
 }
+
+
+
+
+
+function summary1() { var s_debit_mode = '';
+    var amt       = document.getElementById('amt').value;
+    var frequency = document.getElementById('frequency').value;
+    var duration  = document.getElementById('duration').value;
+    var rec_amt   = document.getElementById('rec_amt').value;
+
+    var debit_mode = document.getElementById('debit_mode').value;
+    var first_name = document.getElementById('first_name').value;
+    var last_name  = document.getElementById('last_name').value;
+
+    var email  = document.getElementById('email').value;
+    var phone  = document.getElementById('phone').value;
+    var address  = document.getElementById('address').value;
+    var city     = document.getElementById('city').value;
+    var state    = document.getElementById('state').value;
+
+    document.getElementById('s_amt').innerHTML = amt;
+    document.getElementById('s_frequency').innerHTML = frequency;
+    document.getElementById('s_duration').innerHTML  = duration + "months";
+    document.getElementById('s_rec_amt').innerHTML   = rec_amt;
+    if (debit_mode=='automatic') { s_debit_mode = 'Allow card auto-debit on due-date'; } 
+                            else { s_debit_mode = 'Manually pay on due-date';          }
+    document.getElementById('s_debit_mode').innerHTML = s_debit_mode;
+    document.getElementById('s_full_name').innerHTML = first_name+' '+last_name; 
+
+    document.getElementById('s_email').innerHTML   = email;
+    document.getElementById('s_phone').innerHTML   = phone;
+    document.getElementById('s_address').innerHTML = address;
+    document.getElementById('s_city').innerHTML    = city;
+    document.getElementById('s_state').innerHTML   = state;
+
+  //scroll to the top on mobile view
+  //   jQuery('html,body').animate({scrollTop:0}); 
+  }
+
+
 
 /**
  * Routes to the previous step.
@@ -2006,7 +2048,7 @@ var defaults = $.fn.steps.defaults = {
          * @default "Finish"
          * @for defaults
          **/
-        finish: "Finish",
+        finish: "Proceed to Payment",
 
         /**
          * Label for the next button.

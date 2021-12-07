@@ -28,7 +28,7 @@
 	<!-- Themify Icons -->
     <link rel="stylesheet" href="{{ asset('assets/store/css/themify-icons.css') }}">
 	<!-- Nice Select CSS -->
-    <link rel="stylesheet" href="{{ asset('assets/store/css/niceselect.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('assets/store/css/niceselect.css') }}"> --}}
 	<!-- Animate CSS -->
     <link rel="stylesheet" href="{{ asset('assets/store/css/animate.css') }}">
 	<!-- Flex Slider CSS -->
@@ -57,10 +57,11 @@
     .quickview-content .add-to-cart {  display: block;  }
     .btn_link { background: none; border: 0px ; font-size: 1em;}
     .btn_link:hover { background: none; border: 0px ; font-size: 1em; color: #46b9eb; }
-    
+    .header.shop .logo { float: left; margin: 5px 0 0; }
+    .select_search { height: 100%; border-radius: 2px; }
     @media only screen and (max-width: 450px) {
       .modal-dialog .quickview-slider-active {
-        display: block;     width: 100%;
+           display: block;  width: 100%;
       }
     }
 
