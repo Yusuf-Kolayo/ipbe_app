@@ -211,12 +211,12 @@
 										<div class="nav-inner">	
 											<ul class="nav main-menu menu navbar-nav">
 													<li class="active"><a href="{{route('homepage')}}">Home</a></li>
-												   <li><a href="#">Products<i class="ti-angle-down"></i><span class="new">New</span></a>
+												    <li><a href="#">Products<i class="ti-angle-down"></i><span class="new">New</span></a>
 														<ul class="dropdown">
 														@foreach ($store_data['main_categories'] as $main_category) 
-															<li> <a href="{{route('shop', ['cat_id'=>$main_category->id, 'slug'=>$main_category->cat_name_hard()])}}">{{$main_category->cat_name}}</a> </li>									
+															<li> <a href="{{route('shop.shop_by_categories', ['cat_id'=>$main_category->id, 'slug'=>$main_category->cat_name_hard()])}}">{{$main_category->cat_name}}</a> </li>									
 														@endforeach 
-															{{-- <li><a href="shop-grid.html">Shop Grid</a></li>
+													   {{-- <li><a href="shop-grid.html">Shop Grid</a></li>
 															<li><a href="cart.html">Cart</a></li>
 															<li><a href="checkout.html">Checkout</a></li> --}}
 														</ul>

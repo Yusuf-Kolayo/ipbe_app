@@ -150,7 +150,7 @@ class ProductController extends BaseController
                 }  
             }   
             $brand_id = (int) $request['brand_id'];     $cat_id = $request['cat_id'];  // dd($request['cat_id']);
-            $products = ($brand_id==0) ? Product::where(['sub_category_id'=> $cat_id])->simplePaginate(1) : Product::where(['sub_category_id'=> $cat_id, 'brand_id'=>$brand_id])->simplePaginate(1);
+            $products = ($brand_id==0) ? Product::where(['sub_category_id'=> $cat_id])->simplePaginate(10) : Product::where(['sub_category_id'=> $cat_id, 'brand_id'=>$brand_id])->simplePaginate(10);
             // dd($products->hasMore);
             return view('components.products_catalog_ajax_fetch', compact('products'));
         }

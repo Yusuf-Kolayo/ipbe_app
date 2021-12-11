@@ -164,8 +164,8 @@ class ShopController extends BaseController
 
 
 
-    //  loads up shop page [default]
-    public function shop(Request $request, $cat_id, $slug)
+    //  loads up shop page [by categories]
+    public function shop_by_categories (Request $request, $cat_id, $slug)
     {
         $store_data = $this->store_data;
         $category = Category::where('id', $cat_id)->first();
@@ -173,11 +173,12 @@ class ShopController extends BaseController
         if (count($category->products)>0) {  // product found under category
             $h_price = Product::where('main_category_id', $cat_id)->orderBy('price', 'desc')->first()->price; 
             $l_price = Product::where('main_category_id', $cat_id)->orderBy('price', 'asc')->first()->price; 
-    
+            $margin = $h_price-$l_price;    $margin_div = (int) $margin/4;
+
             if ($h_price==$l_price) { 
                 $price_array = array($l_price, $h_price);
             } else {
-                $a = $l_price; $b = (int) $h_price/4; $c = (int) $b*2; $d = (int) $b*3; $e = $h_price;
+                $a = $l_price; $b = $a + $margin_div ; $c = $b + $margin_div; $d = $c + $margin_div; $e = $h_price;
                 $price_array = array($a, $b, $c, $d, $e);
             }
         } else {  // no product found under category
@@ -185,15 +186,122 @@ class ShopController extends BaseController
         }
 
 
-        return view('shop.shop', compact('store_data', 'category', 'price_array'));
+        return view('shop.shop_by_categories', compact('store_data', 'category', 'price_array'));
+    }
+
+
+
+
+
+    
+    //  loads up shop page [vy brands]
+    public function shop_by_brands (Request $request, $brand_id, $slug)
+    {
+        $store_data = $this->store_data;
+        $brand = Brand::where('id', $brand_id)->first();
+
+        $order_criteria = 'prd_name';   $order_mode = 'asc';
+        $products = Product::where('brand_id', $brand_id)->orderBy($order_criteria, $order_mode)->simplePaginate(10); 
+
+        if (count($products)>0) {  // product found under category
+            $h_price = Product::where('brand_id', $brand_id)->orderBy('price', 'desc')->first()->price; 
+            $l_price = Product::where('brand_id', $brand_id)->orderBy('price', 'asc')->first()->price; 
+            $margin = $h_price-$l_price;    $margin_div = (int) $margin/4;
+
+            if ($h_price==$l_price) { 
+                $price_array = array($l_price, $h_price);
+            } else {
+                $a = $l_price; $b = $a + $margin_div ; $c = $b + $margin_div; $d = $c + $margin_div; $e = $h_price;
+                $price_array = array($a, $b, $c, $d, $e);
+            }
+        } else {  // no product found under category
+                $price_array = null; 
+        }
+
+        // dd($price_array);
+
+        return view('shop.shop_by_brands', compact('store_data', 'brand', 'price_array', 'products'));
     }
 
 
 
     // fetch_catalog_ajax
     public function fetch_catalog_ajax (Request $request)
-    {
-        dd($request);
+    {  DB::enableQueryLog();
+        
+       $ordering = $request['ordering'];     $fetch_id = $request['fetch_id'];     $fetch_mode    = $request['fetch_mode'];  
+       $order_criteria = '';                 $order_mode = '';         $price_ranges  = $request['price_ranges'];
+       // dd("$fetch_mode - $fetch_id");
+
+       if ($ordering=='prd_name_asc') {
+           $order_criteria = 'prd_name'; $order_mode = 'asc';
+       } else if ($ordering=='prd_name_desc') {
+           $order_criteria = 'prd_name'; $order_mode = 'desc';
+       } else if ($ordering=='prd_price_asc') {
+           $order_criteria = 'price'; $order_mode = 'asc';
+       } else if ($ordering=='prd_price_desc') {
+           $order_criteria = 'price'; $order_mode = 'desc';
+       }
+       // dd($id);
+
+       if (count($price_ranges)==4) {
+    
+        $products = Product::where($fetch_mode, $fetch_id)
+                    ->where(function($query) use ($price_ranges) {  
+
+                    $price_range1 = $price_ranges[0];   $price_range2 = $price_ranges[1];   $price_range3 = $price_ranges[2];     $price_range4 = $price_ranges[3];
+                    $a = explode(':', $price_range1)[0];   $b = explode(':', $price_range1)[1];  $c = explode(':', $price_range2)[1];  $d = explode(':', $price_range3)[1]; $e = explode(':', $price_range4)[1];
+
+                       $query->WhereBetween('price', [$a, $b]) 
+                             ->orWhereBetween('price', [$b, $c]) 
+                             ->orWhereBetween('price', [$c, $d]) 
+                             ->orWhereBetween('price', [$d, $e]);
+                    })
+                     ->orderBy($order_criteria, $order_mode)->simplePaginate(10); 
+       
+       } else if (count($price_ranges)==3) {
+
+        $products = Product::where($fetch_mode, $fetch_id)
+                    ->where(function($query) use ($price_ranges) {  
+
+                    $price_range1 = $price_ranges[0];   $price_range2 = $price_ranges[1];   $price_range3 = $price_ranges[2];   
+                    $a = explode(':', $price_range1)[0];   $b = explode(':', $price_range1)[1];  $c = explode(':', $price_range2)[1];  $d = explode(':', $price_range3)[1]; 
+
+                       $query->WhereBetween('price', [$a, $b]) 
+                             ->orWhereBetween('price', [$b, $c]) 
+                             ->orWhereBetween('price', [$c, $d]);
+                    })
+                     ->orderBy($order_criteria, $order_mode)->simplePaginate(10); 
+
+       } else if (count($price_ranges)==2) {
+
+        $products = Product::where($fetch_mode, $fetch_id)
+                    ->where(function($query) use ($price_ranges) {  
+
+                    $price_range1 = $price_ranges[0];   $price_range2 = $price_ranges[1];  
+                    $a = explode(':', $price_range1)[0];   $b = explode(':', $price_range1)[1];  $c = explode(':', $price_range2)[1]; 
+
+                       $query->WhereBetween('price', [$a, $b]) 
+                             ->orWhereBetween('price', [$b, $c]);
+                    })
+                     ->orderBy($order_criteria, $order_mode)->simplePaginate(10); 
+
+       } else if (count($price_ranges)==1) {
+
+        $products = Product::where($fetch_mode, $fetch_id)
+                    ->where(function($query) use ($price_ranges) {  
+
+                    $price_range1 = $price_ranges[0];  
+                    $a = explode(':', $price_range1)[0];   $b = explode(':', $price_range1)[1];  
+
+                       $query->WhereBetween('price', [$a, $b]);
+                    })
+                     ->orderBy($order_criteria, $order_mode)->simplePaginate(10); 
+
+       }
+
+      // dd(DB::getQueryLog());
+       return view('shop.fetch_catalog_ajax', compact('products'));
     }
 
 

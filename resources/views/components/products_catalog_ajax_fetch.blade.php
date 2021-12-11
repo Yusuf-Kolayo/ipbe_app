@@ -35,7 +35,7 @@
                 @php
                 if ($products->currentPage()==1) {
                     if ($products->hasMore==true) { $prev_class= 'disabled'; $next_class= ''; $prev_onclick=''; $next_onclick='fetch_next('.$products->currentPage().')'; } 
-                                             else { $prev_class= ''; $next_class= 'disabled'; $prev_onclick='fetch_prev('.$products->currentPage().')'; $next_onclick='';  }  
+                                             else { $prev_class= 'd-none'; $next_class= 'd-none'; $prev_onclick='fetch_prev('.$products->currentPage().')'; $next_onclick='';  }  
                 } else {  //current page more > 1
                     if ($products->hasMore==true) { $prev_class= ''; $next_class= ''; $prev_onclick='fetch_prev('.$products->currentPage().')'; $next_onclick='fetch_next('.$products->currentPage().')'; } 
                                              else { $prev_class= ''; $next_class= 'disabled'; $prev_onclick='fetch_prev('.$products->currentPage().')'; $next_onclick=''; }  
