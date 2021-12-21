@@ -127,24 +127,10 @@
 
  
 @section('page_scripts')
+{!!$brand_select_change!!}
+
+
 <script>  
-       
-          $('#brand_select').change(function() {  
-              var brand_id = $(this).val();    var cat_id = $('#cat_id').val();  var page = {{$products->currentPage()}}; // console.log(cat_id);
-              var data2send={'brand_id':brand_id, 'cat_id':cat_id, 'page':page};  
-              $('#data_box').html('<div class="text-center mt-3 p-4 bg-white border rounded"> <img src=" {{ asset('images/preloader1.gif') }} " class="img mx-auto preloader1" alt=""> </div>');
-              $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': $("meta[name=csrf-token]").attr('content') }  });
-              $.ajax({
-                  url:"{{ route('fetch_product_by_brand') }}",
-                  dataType:"text",
-                  method:"GET",
-                  data:data2send,
-                  success:function(resp) { $('#data_box').html(resp); }
-            }); 
-          } );
-
-
-
           function fetch_next (current_page) {
               var brand_id = $('#brand_select').val();    var cat_id = $('#cat_id').val();  var page = current_page + 1; // console.log(cat_id);
               var data2send={'brand_id':brand_id, 'cat_id':cat_id, 'page':page};  
@@ -228,7 +214,7 @@
               method:"GET",
               data:data2send,
               success:function(resp){
-                  $('#update_ready_div').html(resp);
+                  $('#update_ready_div').html(resp); 
               }
         }); 
       }
@@ -239,7 +225,6 @@
       function delete_product_modal(product_id) {
         $('#delete_ready_div').html('<div class="text-center"> <img src=" {{ asset('images/preloader1.gif') }} " class="img mx-auto" alt=""> </div>');
           $('#delete_product_modal').modal('show'); 
-          $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': $("meta[name=csrf-token]").attr('content') }  });
 
           $.ajax({
           type:'GET',

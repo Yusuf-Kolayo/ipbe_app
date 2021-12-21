@@ -69,15 +69,15 @@
 						<div class="col-lg-8 col-md-7 col-12">
 							<div class="search-bar-top">
 								<div class="search-bar">
-									<select class="select_search">
+									<select class="select_search" id="select_category">
 										<option selected="selected">All Category</option>
                                         @foreach ($store_data['main_categories'] as $main_category) 
-									     	<option>{{$main_category->cat_name}}</option>									
+									     	<option value="{{$main_category->cat_name}}:{{$main_category->id}}">{{$main_category->cat_name}}</option>									
 								      	@endforeach 
 									</select>
-									<form>
-										<input name="search" placeholder="Search Products Here....." type="search">
-										<button class="btnn"><i class="ti-search"></i></button>
+									<form action="{{route('shop.search')}}" method="get">
+										<input name="search_input" placeholder="Search Any Product ..." type="search">
+										<button class="btnn" type="submit"><i class="ti-search"></i></button>
 									</form>
 								</div>
 							</div>
@@ -144,7 +144,7 @@
 												   <li><a href="#">Products<i class="ti-angle-down"></i><span class="new">New</span></a>
 														<ul class="dropdown">
 														@foreach ($store_data['main_categories'] as $main_category) 
-															<li> <a href="{{route('shop.shop_by_categories', ['cat_id'=>$main_category->id, 'slug'=>$main_category->cat_name_hard()])}}">{{$main_category->cat_name}}</a> </li>									
+															<li> <a href="{{route('shop.shop_by_categories', ['cat_id'=>$main_category->id, 'slug'=>$main_category->cat_name_hard(), 'cate'=>'main'])}}">{{$main_category->cat_name}}</a> </li>									
 														@endforeach 
 															{{-- <li><a href="shop-grid.html">Shop Grid</a></li>
 															<li><a href="cart.html">Cart</a></li>

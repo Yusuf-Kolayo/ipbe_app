@@ -35,7 +35,7 @@
 									<h3 class="title">Categories </h3>
 									<ul class="categor-list">
 										@foreach ($store_data['main_categories'] as $main_category) 
-									     	<li class="d-block"><a href="{{route('shop.shop_by_categories', ['cat_id'=>$main_category->id, 'slug'=>$main_category->cat_name_hard()])}}">{{$main_category->cat_name}}</a></li> 
+									     	<li class="d-block"><a href="{{route('shop.shop_by_categories', ['cat_id'=>$main_category->id, 'slug'=>$main_category->cat_name_hard(), 'cate'=>'main'])}}">{{$main_category->cat_name}}</a></li> 
 										@endforeach
 									</ul>
 								</div>

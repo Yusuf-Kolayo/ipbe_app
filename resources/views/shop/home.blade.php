@@ -20,7 +20,7 @@
       <div class="single-slider" style="background-image: initial;">
         <div class="container">
           <div class="row no-gutters">
-            <div class="col-lg-9 offset-lg-3 col-12">
+            <div class="col-lg-9 offset-lg-3 col-12" style="z-index: 0;">
 
              
               <div class="" id="slide">

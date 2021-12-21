@@ -90,8 +90,8 @@
                 </div> 
                 
 
-                <div class="col-md-12  pt-4">
-                      <input type="submit" value="Submit" class="btn btn-primary btn-block w-75 mx-auto">
+                <div class="col-md-12 pt-5 text-center ">
+                      <input type="submit" value="Submit" class="btn btn-primary btn-block w-75 ">
                 </div>
 
 
@@ -149,7 +149,7 @@
                   </div>
                   <div class="card-body"> 
                       <h6><a href="{{route('product.show', ['product'=>$product->product_id])}}">{{$product->prd_name}}</a></h6> 
-                      <p>{!!$product->description!!}</p>
+                      <p>{!!substr($product->description,0,300)!!} ...</p>
                       <div class="row">
                         @admin
                           <div class="col-6"> <button class="btn btn-primary btn-block" onclick="update_product_modal('{{$product->product_id}}')"> <i class="fas fa-edit"></i> Edit</button>  </div>
@@ -196,7 +196,27 @@
         <script>    CKEDITOR.replace('editor1');   </script>
 
 
-        @include('components.product_ext')
+
+            @component('components.product_ext')
+            
+            @slot('brand_select_change') 
+              <script>  
+                $('#brand_select').change(function() {  
+                    var brand_id = $(this).val();    var cat_id = $('#cat_id').val();  var page = {{$products->currentPage()}}; // console.log(cat_id);
+                    var data2send={'brand_id':brand_id, 'cat_id':cat_id, 'page':page};  
+                    $('#data_box').html('<div class="text-center mt-3 p-4 bg-white border rounded"> <img src=" {{ asset('images/preloader1.gif') }} " class="img mx-auto preloader1" alt=""> </div>');
+                    $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': $("meta[name=csrf-token]").attr('content') }  });
+                    $.ajax({
+                        url:"{{ route('fetch_product_by_brand') }}",
+                        dataType:"text",
+                        method:"GET",
+                        data:data2send,
+                        success:function(resp) { $('#data_box').html(resp); }
+                  }); 
+                } );
+              </script>  
+            @endslot 
+		 @endcomponent
 
       @php } @endphp
 </div>

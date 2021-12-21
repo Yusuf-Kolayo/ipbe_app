@@ -135,28 +135,29 @@ $("#update_img_name").change(function() { readURL(this); });
 $(document).ready(function(){
 $('#product_update_form').on('submit', function(e){
 e.preventDefault(); 
-
+   
 for ( instance in CKEDITOR.instances )
 CKEDITOR.instances[instance].updateElement();
-
-var product_id = $('#product_id_update_form').val() ; console.warn(product_id);
-$.ajax({
-type: 'POST',
-url: '{{ route("product.update", ["product"=>$product->product_id]) }}',
-data: new FormData(this),
-dataType: 'json',
-contentType: false,
-cache: false,
-processData:false,
-beforeSend: function() { /* $('#product_update_form').attr("disabled","disabled"); */  },
-success: function(response){ //console.log(response); 
-console.warn(response.message); 
-if (response.status == 0) { alert('An error occurred, please try again ...'); } 
-else { 
-    $('#update_product_modal').modal('hide'); 
-     refresh_product_div(product_id);
- } 
-}
+ 
+  var product_id = $('#product_id_update_form').val() ; console.warn(product_id);
+  
+  $.ajax({
+    type: 'POST',
+    url: '{{ route("product.update", ["product"=>$product->product_id]) }}',
+    data: new FormData(this),
+    dataType: 'json',
+    contentType: false,
+    cache: false,
+    processData:false,
+    beforeSend: function() { /* $('#product_update_form').attr("disabled","disabled"); */  },
+    success: function(response) { //console.log(response); 
+    console.warn(response.message); 
+    if (response.status == 0) { alert('An error occurred, please try again ...'); } 
+    else { 
+        $('#update_product_modal').modal('hide');  
+        if ($('#product_profile').length > 0) { window.location.reload(true); } else {  refresh_product_div(product_id); } 
+    }
+  }
 });
 
 

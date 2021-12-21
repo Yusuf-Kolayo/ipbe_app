@@ -1,10 +1,5 @@
 @extends('layouts.main_shop')
-@section('headers')
-   <style>
-       .sub-category>li  { margin-bottom: 1px!important; font-family: system-ui;}
-	   .has-sub-category { box-shadow: 2px 2px #ccc;     padding-bottom: 5px; }
-   </style>
-@endsection
+
 @section('content')
  
   
@@ -37,27 +32,10 @@
 						<div class="shop-sidebar">
 								<!-- Single Widget -->
 								<div class="single-widget category">
-									<h3 class="title">Categories </h3> 
-									<input id="fetch_mode" type="hidden" value="main_category_id" />
-									<input id="fetch_id" type="hidden" value="{{$category->id}}" />
+									<h3 class="title">Categories </h3>
 									<ul class="categor-list">
 										@foreach ($store_data['main_categories'] as $main_category) 
-									     	@if (($category->cat_name==$main_category->cat_name)&&($main_category->children))
-											   <li class="d-block has-sub-category">
-												<a href="{{route('shop.shop_by_categories', ['cat_id'=>$main_category->id, 'slug'=>$main_category->cat_name_hard(), 'cate'=>'main'])}}">{{$main_category->cat_name}}</a>
-												@if (($category->cat_name==$main_category->cat_name)&&($main_category->children))
-													<ul class="sub-category">
-														@foreach ($main_category->children as $sub_category)
-															<li><a href="{{route('shop.shop_by_categories', ['cat_id'=>$sub_category->id, 'slug'=>$sub_category->cat_name_hard(), 'cate'=>'sub'])}}">{{$sub_category->cat_name}}</a></li>
-														@endforeach 
-													</ul>
-												@endif 
-											   </li> 
-											@else
-												 <li class="d-block">
-													<a href="{{route('shop.shop_by_categories', ['cat_id'=>$main_category->id, 'slug'=>$main_category->cat_name_hard(), 'cate'=>'main'])}}">{{$main_category->cat_name}}</a>
-												 </li> 
-											@endif  
+									     	<li class="d-block"><a href="{{route('shop.shop_by_categories', ['cat_id'=>$main_category->id, 'slug'=>$main_category->cat_name_hard(), 'cate'=>'main'])}}">{{$main_category->cat_name}}</a></li> 
 										@endforeach
 									</ul>
 								</div>
@@ -75,33 +53,41 @@
 												</div>
 											</div>
 										</div> --}}
-										
 										<ul class="check-box-list">
 											@if ($price_array)
-											<li>
-												<label class="checkbox-inline" for="1"><input name="price_range_1" class="price_range" checked id="1" value="{{$price_array[0]}}:{{$price_array[1]}}" type="checkbox">{!!naira()!!}{{number_format($price_array[0])}} - {!!naira()!!}{{number_format($price_array[1])}}</label>
-											</li>
-											<li>
-												<label class="checkbox-inline" for="2"><input name="price_range_2" class="price_range" checked id="2" value="{{$price_array[1]}}:{{$price_array[2]}}" type="checkbox">{!!naira()!!}{{number_format($price_array[1])}} - {!!naira()!!}{{number_format($price_array[2])}}</label>
-											</li>
-											<li>
-												<label class="checkbox-inline" for="3"><input name="price_range_3" class="price_range" checked id="3" value="{{$price_array[2]}}:{{$price_array[3]}}" type="checkbox">{!!naira()!!}{{number_format($price_array[2])}} - {!!naira()!!}{{number_format($price_array[3])}}</label>
-											</li>
-											<li>
-												<label class="checkbox-inline" for="4"><input name="price_range_4" class="price_range" checked id="4" value="{{$price_array[3]}}:{{$price_array[4]}}" type="checkbox">{!!naira()!!}{{number_format($price_array[3])}} - {!!naira()!!}{{number_format($price_array[4])}}</label>
-											</li>
+                                                 @if (count($price_array)>2)
+												 <li>
+													<label class="checkbox-inline" for="1"><input name="price_range_1" class="price_range" checked id="1" value="{{$price_array[0]}}:{{$price_array[1]}}" type="checkbox">{!!naira()!!}{{number_format($price_array[0])}} - {!!naira()!!}{{number_format($price_array[1])}}</label>
+												</li>
+												<li>
+													<label class="checkbox-inline" for="2"><input name="price_range_2" class="price_range" checked id="2" value="{{$price_array[1]}}:{{$price_array[2]}}" type="checkbox">{!!naira()!!}{{number_format($price_array[1])}} - {!!naira()!!}{{number_format($price_array[2])}}</label>
+												</li>
+												<li>
+													<label class="checkbox-inline" for="3"><input name="price_range_3" class="price_range" checked id="3" value="{{$price_array[2]}}:{{$price_array[3]}}" type="checkbox">{!!naira()!!}{{number_format($price_array[2])}} - {!!naira()!!}{{number_format($price_array[3])}}</label>
+												</li>
+												<li>
+													<label class="checkbox-inline" for="4"><input name="price_range_4" class="price_range" checked id="4" value="{{$price_array[3]}}:{{$price_array[4]}}" type="checkbox">{!!naira()!!}{{number_format($price_array[3])}} - {!!naira()!!}{{number_format($price_array[4])}}</label>
+												</li>
+												@else
+												<li>
+													<label class="checkbox-inline" for="1"><input name="price_range_1" class="price_range" checked id="1" value="{{$price_array[0]}}:{{$price_array[1]}}" type="checkbox">{!!naira()!!}0 - {!!naira()!!}0</label>
+												</li>
+												 @endif
 											@else
 											<li>
-												<label class="checkbox-inline" for="1"><input name="price_range_1" class="price_range" checked id="1" value="0:0" type="checkbox">{!!naira()!!}0 - {!!naira()!!}0</label>
+												<label class="checkbox-inline" for="1"><input name="price_range_1" checked id="1" type="checkbox">{!!naira()!!}0 - {!!naira()!!}0</label>
 											</li>
 											@endif 
 										</ul>
 									</div>
-								<!--/ End Shop By Price -->
-						    
+									<!--/ End Shop By Price -->
+						 
 								<!-- Single Widget -->
 								<div class="single-widget category">
-									<h3 class="title">Brands</h3>
+									<h3 class="title">Brands</h3>   
+									<input id="fetch_mode" type="hidden" value="prd_name" />
+									<input id="fetch_id" type="hidden" value="{{$query}}" />
+
 									<ul class="categor-list">
 										@foreach ($store_data['brands'] as $brand) 
 									    	<li class="d-block"><a href="{{route('shop.shop_by_brands', ['brand_id'=>$brand->id, 'slug'=>$brand->brd_name])}}">{{$brand->brd_name}}</a></li> 
@@ -118,7 +104,7 @@
 								<div class="shop-top">
 									<div class="shop-shorter">
 										<div class="single-shorter">
-                                          <h6 class="mb-0">Category: {{$category->cat_name}}</h6>
+                                          <h6 class="mb-0">Search: {{$query}}</h6>
 										</div>
 										{{-- <div class="single-shorter">
 											<label>Show :</label>
@@ -152,9 +138,9 @@
 						</div>
 
                         <div id="product_ready_div" class="mt-3 p-3 bg-white border rounded">
-							@if (count($category->products)>0)
+							@if (count($products)>0)
 							<div class="row">
-								@foreach ($category->products as $product)
+								@foreach ($products as $product)
 									
 										<div class="col-lg-4 col-md-6 col-12">
 											<div class="single-product">
@@ -196,13 +182,17 @@
 			</div>
 		</section>
 		<!--/ End Product Style 1  -->	
- 
-    
+
+
+   
 
 
 
-         @component('components.shop_catalog_ext')
-			 {{-- @slot('fetch_mode') main_category_id @endslot --}}
-		 @endcomponent
+
+
+		@component('components.shop_catalog_ext')
+	    	{{-- @slot('fetch_mode') brand_id @endslot --}}
+    	@endcomponent
+
  
 @endsection

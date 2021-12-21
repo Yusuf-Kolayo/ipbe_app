@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('content')
-
+ 
  <link rel="stylesheet" href="{{ asset('dist/css/reset.css') }}">
  <link rel="stylesheet" href="{{ asset('dist/css/responsive.css') }}">
 
@@ -17,7 +17,10 @@
    @admin 
    <section class="content">
     <div class="container-fluid">
-      <div class="card card-body p-3 mb-2"><p class="mb-0"><b>{{$product->prd_name}}</b></p></div>
+      <div class="card card-body p-3 mb-2">
+        <p class="mb-0"><b>{{$product->prd_name}}</b></p>
+        <input type="hidden" id="product_profile" value="yes">
+      </div>
       <div class="row">
         <div class="col-md-4">
 
@@ -27,7 +30,7 @@
 <!-- Product Image -->
 <div class="card card-bordered">
     <div class="card-inner">
-        <img src="{{asset('storage/uploads/products_img/'.$product->img_name)}}" alt="" class="img img-fluid" id="update_preview_img" style="height:200px;"/>
+        <img src="{{asset('storage/uploads/products_img/'.$product->img_name)}}" alt="" class="img img-fluid" id="update_preview_img"/>
         <input type="hidden" value="{{$product->product_id}}"  name="product_id_delete_form" id="product_id_delete_form"/>  
       </div>
 </div>
@@ -82,8 +85,8 @@
                             <tr><td>Product ID</td>  <td><b>{{$product->product_id}}</b></td></tr>
                             <tr><td>Name</td>        <td><b>{{$product->prd_name}}</b></td></tr>
                             <tr><td>Price</td>       <td><b class="NPP"> {{number_format($product->price)}} </b></td></tr>
-                            <tr><td>Description</td> <td>{!!substr($product->description,0,200)!!} ...</td></tr>
-                        </table> 
+                            <tr><td>Description</td> <td>{!!$product->description!!} ...</td></tr>
+                        </table>
                     </div>
                     <div class="tab-pane table-responsive" id="purchase_sessions">
                         <table id="t1" class="table table-bordered table-striped" style="">
@@ -216,11 +219,12 @@
 
   
 
-
-
-
  
 
-   @include('components.product_ext') 
+   @component('components.product_ext')
+      @slot('brand_select_change') 
+        {{-- we guess nothing need to be here  --}}
+      @endslot 
+@endcomponent
 
 @endsection

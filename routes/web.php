@@ -44,15 +44,16 @@ Route::get('/shop/product_quickshop', [ShopController::class, 'product_quickshop
 Route::get('/shop/checkout_buy_now', [ShopController::class, 'checkout_buy_now'])->name('shop.checkout_buy_now');
 Route::get('/shop/checkout_installment', [ShopController::class, 'checkout_installment'])->name('shop.checkout_installment');
 Route::get('/shop/fetch_catalog_ajax', [ShopController::class, 'fetch_catalog_ajax'])->name('shop.fetch_catalog_ajax');
-Route::get('/shop/category/{cat_id}/{slug?}', [ShopController::class, 'shop_by_categories'])->name('shop.shop_by_categories');
-Route::get('/shop/brand/{brand_id}/{slug?}', [ShopController::class, 'shop_by_brands'])->name('shop.shop_by_brands');
+Route::get('/shop/category/{cat_id}/{slug}/{cate}', [ShopController::class, 'shop_by_categories'])->name('shop.shop_by_categories');
+Route::get('/shop/search', [ShopController::class, 'search_products'])->name('shop.search');
+Route::get('/shop/search/{query}', [ShopController::class, 'shop_by_search'])->name('shop.shop_by_search');
+Route::get('/shop/brand/{brand_id}/{slug}', [ShopController::class, 'shop_by_brands'])->name('shop.shop_by_brands');
 
 
 //============================  DEV PUBLIC PASSWORD PROTECTED ROUTES  ================================//
 Route::post('/register_an_admin', [DevController::class, 'register_an_admin'])->name('register_an_admin');
 Route::post('/grant_user_permission', [DevController::class, 'grant_user_permission'])->name('grant_user_permission');
 Route::get('/dev', [DevController::class, 'index'])->name('dev');
-
 Route::post('/update_all_permission', [DevController::class, 'update_all_permission'])->name('update_all_permission');
 
 

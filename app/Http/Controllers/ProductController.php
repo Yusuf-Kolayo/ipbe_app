@@ -19,7 +19,8 @@ class ProductController extends BaseController
   
     
     
-    public $title = 'product';
+    public $title = 'product';     
+    public $w = 1098;    public $h = 717;   // set the width & height formats for product pics
 
 
     public function __construct() {
@@ -70,7 +71,7 @@ class ProductController extends BaseController
         $data = request()->validate([
             'img_name' => ['required', 'image'],
             'prd_name' => ['required', 'string', 'max:100'],
-            'description' => ['required', 'string', 'max:1000'],
+            'description' => ['required', 'string'],
             'brand_id' => ['required', 'string', 'max:55'],
             'price' => ['required', 'string', 'max:55'],
             'main_category_id' => ['required', 'string', 'max:55'],
@@ -85,8 +86,8 @@ class ProductController extends BaseController
         $product_id = "$brand_abbr-$sub_cat_abbr-$next_id";
    
         
-        $file = $request->file('img_name');      $w=1098; $h=717;
-        $ogImage = Image::make($file)->resizeCanvas($w, $h, 'center', false, 'ffffff');
+        $file = $request->file('img_name');      
+        $ogImage = Image::make($file)->resizeCanvas($this->w, $this->h, 'center', false, 'ffffff');
         $originalPath = 'app/public/uploads/products_img/';   $random_string = Str::random(20);  
         $filename = time().'-'. $random_string .'.'. $file->getClientOriginalExtension();
         $ogImage =  $ogImage->save(storage_path($originalPath.$filename));
@@ -244,7 +245,7 @@ class ProductController extends BaseController
             }  
         }   
 
- 
+
 
         $product = Product::where('product_id', $product_id)->firstOrFail();
         return view('admin.product_profile')->with('product',$product);
@@ -268,7 +269,7 @@ class ProductController extends BaseController
             }  
         }   
 
-
+     
         
         $data = request()->validate([
             'img_name' => ['nullable', 'image'],
@@ -288,8 +289,8 @@ class ProductController extends BaseController
 
             if ($request->hasFile('img_name')) {  
 
-                $file = $request->file('img_name');    $w=1098; $h=717;
-                $ogImage = Image::make($file)->resizeCanvas($w, $h, 'center', false, 'ffffff');
+                $file = $request->file('img_name');   
+                $ogImage = Image::make($file)->resizeCanvas($this->w, $this->h, 'center', false, 'ffffff');
                 $originalPath = 'app/public/uploads/products_img/';  $random_string = Str::random(20); 
                 $filename = time().'-'. $random_string .'.'. $file->getClientOriginalExtension();
                 $ogImage =  $ogImage->save(storage_path($originalPath.$filename));
@@ -343,21 +344,20 @@ class ProductController extends BaseController
             if (!in_array(__FUNCTION__, parent::middleware_except())) {
                 return redirect()->route('access_denied'); 
             }  
-        }   
-
-   
+        }    
         
         $product = Product::where('product_id', $product_id)->firstOrFail();
         $product_img = $product->img_name;
     
         if ($product) {
-        $deleted_rows = Product::where('product_id', $product_id)->delete();
-        if ($deleted_rows>0) {
-            unlink(public_path().'/storage/uploads/products_img/'.$product_img); 
-        }
-        return response()->json(['message'=>'Product ['.$product_id.'] deleted successfully.','status'=>1]);
+            $deleted_rows = Product::where('product_id', $product_id)->delete();
+            if ($deleted_rows>0) {
+                unlink(public_path().'/storage/uploads/products_img/'.$product_img); 
+            }
+            // return response()->json(['message'=>'Product ['.$product_id.'] deleted successfully.','status'=>1]);
+            return redirect()->route('product.sub', ['sub_category_id'=>$product->sub_category_id]);
         }  else {
-        return response()->json(['message'=>'An error occurred, please try again','status'=>0]);
+           return response()->json(['message'=>'An error occurred, please try again','status'=>0]);
         } 
     }
 

@@ -59,6 +59,7 @@
     .btn_link:hover { background: none; border: 0px ; font-size: 1em; color: #46b9eb; }
     .header.shop .logo { float: left; margin: 5px 0 0; }
     .select_search { height: 100%; border-radius: 2px; }
+    /* .header.shop .sub-category { left: 123px; } */
     @media only screen and (max-width: 450px) {
       .modal-dialog .quickview-slider-active {
            display: block;  width: 100%;
@@ -106,5 +107,12 @@
 
 
     @yield('footers')
+    <script>
+        $('#select_category').change(function() { //   console.log($(this).val());
+            var str = $(this).val();   var arr = str.split(':');
+            var cat_id = arr[1];       var cat_name = arr[0];   
+            window.location.href = "shop/category/"+ cat_id +"/"+ cat_name +"/main";
+        });
+    </script>
   </body>
 </html>

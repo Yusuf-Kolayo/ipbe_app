@@ -38,20 +38,18 @@
 								<!-- Single Widget -->
 								<div class="single-widget category">
 									<h3 class="title">Categories </h3> 
-									<input id="fetch_mode" type="hidden" value="main_category_id" />
+									<input id="fetch_mode" type="hidden" value="sub_category_id" />
 									<input id="fetch_id" type="hidden" value="{{$category->id}}" />
 									<ul class="categor-list">
 										@foreach ($store_data['main_categories'] as $main_category) 
-									     	@if (($category->cat_name==$main_category->cat_name)&&($main_category->children))
+									     	@if (($category->parent->cat_name==$main_category->cat_name)&&($main_category->children))
 											   <li class="d-block has-sub-category">
 												<a href="{{route('shop.shop_by_categories', ['cat_id'=>$main_category->id, 'slug'=>$main_category->cat_name_hard(), 'cate'=>'main'])}}">{{$main_category->cat_name}}</a>
-												@if (($category->cat_name==$main_category->cat_name)&&($main_category->children))
 													<ul class="sub-category">
 														@foreach ($main_category->children as $sub_category)
 															<li><a href="{{route('shop.shop_by_categories', ['cat_id'=>$sub_category->id, 'slug'=>$sub_category->cat_name_hard(), 'cate'=>'sub'])}}">{{$sub_category->cat_name}}</a></li>
 														@endforeach 
 													</ul>
-												@endif 
 											   </li> 
 											@else
 												 <li class="d-block">
@@ -152,9 +150,9 @@
 						</div>
 
                         <div id="product_ready_div" class="mt-3 p-3 bg-white border rounded">
-							@if (count($category->products)>0)
+							@if (count($category->sub_products)>0)
 							<div class="row">
-								@foreach ($category->products as $product)
+								@foreach ($category->sub_products as $product)
 									
 										<div class="col-lg-4 col-md-6 col-12">
 											<div class="single-product">

@@ -98,7 +98,7 @@
                 <div class="row"> 
                     <div class="col-12 col-md-8">
                         <table border="0" cellpadding="2" cellspacing="4" width="100%" class="mb-0">
-                            <tr>  
+                            <tr>   
                             {{-- @guest --}}
 
                                 <th width="65%" class="p-1">
